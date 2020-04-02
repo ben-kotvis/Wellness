@@ -1,0 +1,49 @@
+﻿@page "/"
+
+@inject HttpClient Http
+@inject AppState  State
+@using Wellness.Model
+@using Wellness.Client
+
+
+<div>
+    <MonthsMenu OnMonthChanged="MonthChanged" />
+</div>
+
+@if (participation == null)
+{
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+}
+else
+{
+    <UserActivities ActivityParticipations="@participation.Activities"  />
+     
+}
+
+@code {
+
+
+    private UserParticipation participation;
+
+    protected override async Task OnInitializedAsync()
+    {
+        participation = CreateMock();
+    }
+
+    private UserParticipation CreateMock()
+    {
+
+        return new UserParticipation()
+        {
+            Activities = State.UserActivities.Where(i => i.Date.Year == DateTime.Now.Year && i.Date.Month == DateTime.Now.Month).ToList()
+        };
+    }
+
+    public async Task MonthChanged(MonthChangedEventArgs args)
+    {
+        participation.Activities = State.UserActivities.Where(i => i.Date.Year == args.Month.Year && i.Date.Month == args.Month.Number).ToList();
+    }
+
+}
