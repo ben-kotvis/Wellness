@@ -1,0 +1,21 @@
+﻿
+
+@using Wellness.Model
+@using System.Globalization
+@using Wellness.Client.Components.MonthsMenu
+@inherits MonthsMenuComponent
+
+
+<div class="month-menu">
+
+    <MatButton Unelevated="true" OnClick="@Previous">Previous</MatButton>
+
+    @foreach (var month in Months)
+    {
+
+        <MatButton Unelevated="true" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatButton>
+    }
+
+    <MatButton Unelevated="true" OnClick="@Next">Next</MatButton>
+
+</div>

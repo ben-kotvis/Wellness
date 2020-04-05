@@ -2,7 +2,7 @@
 
 .month-menu
 {
-    margin-top: 50px;
+    
 }
 
 @media (min-width:0px) and (orientation: landscape) {
@@ -72,6 +72,7 @@ app {
 
 .main {
     flex: 1;
+    margin-top: 80px; 
 }
 
     .main .top-row {

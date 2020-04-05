@@ -2,13 +2,9 @@
 
 @inject HttpClient Http
 @inject AppState  State
+@using Wellness.Client.Components.MonthsMenu
 @using Wellness.Model
-@using Wellness.Client
 
-
-<div>
-    <MonthsMenu OnMonthChanged="MonthChanged" />
-</div>
 
 @if (participation == null)
 {
@@ -17,9 +13,10 @@
     </div>
 }
 else
-{
-    <UserActivities ActivityParticipations="@participation.Activities"  />
-     
+{    
+    <MonthsMenu OnMonthChanged="MonthChanged" />
+ 
+    <UserActivities ActivityParticipations="@participation.Activities" />
 }
 
 @code {
