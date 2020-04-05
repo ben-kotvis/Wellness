@@ -2,68 +2,32 @@
 @using System.Globalization
 @inject AppState  State
 
-<Paper Square>
-    <Tabs Value="@Value"
-          IndicatorColor="@Color.Primary"
-          TextColor="@Color.Primary"
-          OnChange="@HandleChange"
-          aria-label="disabled tabs example">
-        <Tab Label="Active" Value="0" />
 
-        <Tab Label="Add" Value="1" />
-    </Tabs>
-    <TabPanel Value="@Value"
-              Index="0">
-        <Table Style="min-width: 700px"
-               aria-label="simple table">
-            <TableHead>
-                <TableRow>
-                    <TableCell>
+<MatTabGroup>
+    <MatTab Label="Activities">
 
-                    </TableCell>
-                    <TableCell Align="@Align.Left">
-                        Activity
-                    </TableCell>
-                    <TableCell Align="@Align.Left">
-                        Minutes
-                    </TableCell>
-                    <TableCell Align="@Align.Left">
-                        Points
-                    </TableCell>
-                    <TableCell Align="@Align.Left">
-                        Date
-                    </TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                @foreach (var context in ActivityParticipations)
-                {
-                    <TableRow @key="@context.Id">
-                        <TableCell Align="@Align.Left">
-
-                        </TableCell>
-                        <TableCell Align="@Align.Left">
-                            @context.Activity.Name
-                        </TableCell>
-                        <TableCell Align="@Align.Left">
-                            @context.Minutes.OptionValue
-                        </TableCell>
-                        <TableCell Align="@Align.Left">
-                            @context.Points
-                        </TableCell>
-                        <TableCell Align="@Align.Left">
-                            @context.Date.ToString("MM/dd/yyyy")
-                        </TableCell>
-                    </TableRow>
-                }
-            </TableBody>
-        </Table>
-    </TabPanel>
-    <TabPanel Value="@Value"
-              Index="1">
+        <MatTable Items="@ActivityParticipations" class="mat-elevation-z5" ShowPaging="false" ShowFooter="false">
+            <MatTableHeader>
+                <th></th>
+                <th>Activity</th>
+                <th>Minutes</th>
+                <th>Points</th>
+                <th>Date</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td></td>
+                <td>@context.Activity.Name</td>
+                <td>@context.Minutes.OptionValue</td>
+                <td>@context.Points</td>
+                <td>@context.Date.ToString("MM/dd/yyyy")</td>
+            </MatTableRow>            
+        </MatTable>
+    </MatTab>
+    <MatTab Label="New">
         <NewActivity />
-    </TabPanel>
-</Paper>
+    </MatTab>
+
+</MatTabGroup>
 
 @code {
 
@@ -74,7 +38,6 @@
 
 
     private string SelectedValue => SelectedId == default ? default : State.Activities.First(i => i.Id == SelectedId).Name;
-    private IReference AnchorRef { set; get; } = new Reference();
 
     private Guid SelectedId { set; get; } = default;
 
@@ -89,13 +52,6 @@
     }
 
     private void HandleClose(EventArgs args)
-    {
-        Open = false;
-
-        StateHasChanged();
-    }
-
-    private void HandleClose(MenuCloseReason reason)
     {
         Open = false;
 

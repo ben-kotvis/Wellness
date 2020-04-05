@@ -3,84 +3,30 @@
 @inject AppState  State
 
     <div style="width: 100%; max-width: 360px; background-color: var(--theme-palette-background-paper);">
-        <List Component="nav"
-              aria-label="Device settings">
-            <ListItem Button
-                      RootRef="@AnchorRef"
-                      OnClick="@HandleClickListItem">
-                <ListItemText Primary="Selected Activity"
-                              Secondary="@SelectedValue" />
-            </ListItem>
-        </List>
-        <Menu Id="lock-menu"
-              KeepMounted
-              Open="@Open"
-              AnchorRef="@AnchorRef"
-              OnClose="@HandleClose">
-            @foreach (var option in State.Activities)
+        <MatSelect Label="Pick a Food Group" @bind-Value="SelectedId">
+            <MatOptionString></MatOptionString>
+            @foreach (var activity in State.Activities)
             {
-                <MenuItem @key="@option.Id"
-                          Selected="@(option.Id == SelectedId)"
-                          OnClick="@((args) => UpdateSelectedIndex(option.Id))">
-                    @option.Name
-                </MenuItem>
+                <MatOptionString Value="@activity.Id.ToString()">@activity.Name</MatOptionString>
             }
-        </Menu>
+        </MatSelect>
+               
         <p>
-            <TextField @bind-Value="@NumberOfMinutes" Label="Number of Minutes" Variant="@TextFieldVariant.Standard"></TextField>
+            <MatTextField  @bind-Value="@NumberOfMinutes" Label="Number of Minutes" ></MatTextField>
         </p>
         <p>
-            
-            <TextField @bind-Value="@SelectedDate" Label="Activity Date" Variant="@TextFieldVariant.Standard"></TextField>
+            <MatDatePicker Label="Activity Date" TValue="DateTime" @bind-Value="@SelectedDate"></MatDatePicker>
         </p>
-        <Button Variant="@ButtonVariant.Contained" Color="@Color.Primary">Save</Button>
-        </div>
-        @code {
+    </div>
+
+@code {
+
+    private string SelectedId { set; get; } = default;
 
 
-            private string SelectedValue => SelectedId == default ? default : State.Activities.First(i => i.Id == SelectedId).Name;
-            private IReference AnchorRef { set; get; } = new Reference();
-
-            private Guid SelectedId { set; get; } = default;
-
-
-            public string SelectedActivity { get; set; }
-            public string NumberOfMinutes { get; set; }
-            public string SelectedDate { get; set; }
-
-            private void UpdateSelectedIndex(Guid id)
-            {
-                Open = false;
-
-                SelectedId = id;               
-
-                StateHasChanged();
-            }
-
-            private void HandleClose(EventArgs args)
-            {
-                Open = false;
-
-                StateHasChanged();
-            }
-
-            private void HandleClose(MenuCloseReason reason)
-            {
-                Open = false;
-
-                StateHasChanged();
-            }
-
-            private void HandleClickListItem()
-            {
-                Open = true;
-
-                StateHasChanged();
-            }
+    public string SelectedActivity { get; set; }
+    public string NumberOfMinutes { get; set; }
+    public DateTime SelectedDate { get; set; } = DateTime.MinValue;
 
 
-            bool Open = false;
-            private object Value { set; get; } = 0;
-
-
-        }
+}

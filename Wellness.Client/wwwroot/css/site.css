@@ -1,5 +1,10 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.month-menu
+{
+    margin-top: 50px;
+}
+
 @media (min-width:0px) and (orientation: landscape) {
     .persistent-left-drawer-header {
         min-height: 48px;

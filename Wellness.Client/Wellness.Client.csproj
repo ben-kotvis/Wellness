@@ -6,17 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>    
+    <PackageReference Include="MatBlazor" Version="2.3.0" />    
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0-preview2.20160.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0-preview2.20160.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0-preview2.20160.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview2.20160.5" />
-    <PackageReference Include="Skclusive.Material.Component" Version="2.0.0-rc" />
-    <PackageReference Include="Skclusive.Mobx.Component" Version="2.0.0-rc" />
-    <PackageReference Include="Skclusive.Script.DevTools" Version="2.0.0-rc" />
-    <PackageReference Include="Skclusive.Script.DomHelpers" Version="2.0.0-rc" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Wellness.Model\Wellness.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\" />
   </ItemGroup>
 </Project>

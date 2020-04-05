@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Skclusive.Material.Component;
 
 namespace Wellness.Client
 {
@@ -18,9 +17,6 @@ namespace Wellness.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
-
-            builder.Services.TryAddMaterialServices(new MaterialConfigBuilder().Build());
-
 
             await builder.Build().RunAsync();
         }

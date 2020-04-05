@@ -2,149 +2,121 @@
 @using System.Globalization;
 
 
+    <div class="month-menu">
 
-<!--
-    <div class="mat-layout-grid mat-layout-grid-align-right" style="max-width: 95%;">
-        <div class="mat-layout-grid-inner">
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">
-                <NavLink class="page-link" @onclick="@(e => SelectMonth(previousRelativeIndex))">
-                    <span class="oi oi-arrow-left" aria-hidden="true"></span>
-                </NavLink>
-            </div>
-            @foreach (var month in months)
-            {
-                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
-                    <NavLink class="page-link" @onclick="@(e => SelectMonth(month.RelativeIndex))">
-                        <span class="oi" aria-hidden="true"></span>@month.Name, @month.Year.ToString().Substring(2)
-                    </NavLink>
-                 </div>
-            }
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">
-                <NavLink class="page-link" @onclick="@(e => SelectMonth(nextRelativeIndex))">
-                    <span class="oi oi-arrow-right" aria-hidden="true"></span>
-                </NavLink>
-            </div>
-        </div>
-    </div>
--->
+        <MatButton Unelevated="true">Previous</MatButton>
 
-<div>
-    <IconButton aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                OnClick="@OnOpen"
-                RootRef="@ButtonRef">
-        <AccessTimeIcon />
-    </IconButton>
-    <Menu Id="long-menu"
-          Open="@Open"
-          AnchorRef="@ButtonRef"
-          OnClose="@HandleClose"
-          PaperStyle="width: 200px; max-height: 216px;">
         @foreach (var month in months)
         {
-            <MenuItem @key="@month.RelativeIndex"
-                      Selected="@(month.RelativeIndex == SelectedIndex)"
-                      OnClick="@((args) => UpdateSelectedIndex(month.RelativeIndex))">
-                @month.Name, @month.Year
-            </MenuItem>
-        }
-    </Menu>
-</div>
 
-
-@code {
-
-    private List<Month> months;
-    private int previousRelativeIndex = -5;
-    private int nextRelativeIndex = 5;
-
-    private Month SelectedMonth => this.months[SelectedIndex + 2];
-
-    private int SelectedIndex { get; set; } = 0;
-
-    [Parameter]
-    public EventCallback<MonthChangedEventArgs> OnMonthChanged { get; set; }
-
-    private Month createMonth(int monthNumber, int relativeIndex, int year)
-    {
-        return new Month()
-        {
-            Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthNumber),
-            Number = monthNumber,
-            RelativeIndex = relativeIndex,
-            Year = year
-        };
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        months = new List<Month>();
-        var today = DateTime.Now;
-        var start = today.AddMonths(-2);
-
-        for (var i = 0; i < 5; i++)
-        {
-            var current = start.AddMonths(i);
-
-            months.Add(createMonth(current.Month, (-2 + i), current.Year));
+            <MatButton Unelevated="true" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatButton>
         }
 
-        await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(today.Month, 0, today.Year)));
-    }
+        <MatButton Unelevated="true">Next</MatButton>
 
-    private async Task SelectMonth(int relatveIndex)
-    {
-        months = new List<Month>();
-        var today = DateTime.Now;
-        var start = today.AddMonths(relatveIndex - 2);
-
-        for (var i = 0; i < 5; i++)
-        {
-            var current = start.AddMonths(i);
-
-            months.Add(createMonth(current.Month, (relatveIndex - 2) + i, current.Year));
-        }
-
-        previousRelativeIndex = relatveIndex - 5;
-        nextRelativeIndex = relatveIndex + 5;
-
-        var selectedMonth = today.AddMonths(relatveIndex);
-
-        await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, relatveIndex, selectedMonth.Year)));
-    }
+    </div>
 
 
-    private bool Open { set; get; }
+@code
+{
+        private Dictionary<string, object> ListAttributes { get; set; } =
+        new Dictionary<string, object>()
+            {
+            {"vertical", false }
+            };
 
-    private IReference ButtonRef { set; get; } = new Reference();
+        private List<Month>
+            months;
+            private int previousRelativeIndex = -5;
+            private int nextRelativeIndex = 5;
 
-    private async Task UpdateSelectedIndex(int relativeIndex)
-    {
-        Open = false;
-        SelectedIndex = relativeIndex;
-        await SelectMonth(relativeIndex);
-        StateHasChanged();
-    }
+            private Month SelectedMonth => this.months[SelectedIndex + 2];
 
-    private void HandleClose(EventArgs args)
-    {
-        Open = false;
+            private int SelectedIndex { get; set; } = 0;
 
-        StateHasChanged();
-    }
+            [Parameter]
+            public EventCallback<MonthChangedEventArgs>
+                OnMonthChanged { get; set; }
 
-    private void HandleClose(MenuCloseReason reason)
-    {
-        Open = false;
+                public async Task MonthChanged(MouseEventArgs args, int index)
+                {
+                await SelectMonth(index);
+                }
 
-        StateHasChanged();
-    }
+                private Month createMonth(int monthNumber, int relativeIndex, int year)
+                {
+                return new Month()
+                {
+                Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthNumber),
+                Number = monthNumber,
+                RelativeIndex = relativeIndex,
+                Year = year
+                };
+                }
 
-    private void OnOpen()
-    {
-        Open = true;
+                protected override async Task OnInitializedAsync()
+                {
+                months = new List<Month>
+                    ();
+                    var today = DateTime.Now;
+                    var start = today.AddMonths(-2);
 
-        StateHasChanged();
-    }
-}
+                    for (var i = 0; i < 5; i++)
+                    {
+                    var current = start.AddMonths(i);
+
+                    months.Add(createMonth(current.Month, (-2 + i), current.Year));
+                    }
+
+                    await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(today.Month, 0, today.Year)));
+                    }
+
+                    private async Task SelectMonth(int relatveIndex)
+                    {
+                    months = new List<Month>
+                        ();
+                        var today = DateTime.Now;
+                        var start = today.AddMonths(relatveIndex - 2);
+
+                        for (var i = 0; i < 5; i++)
+                        {
+                        var current = start.AddMonths(i);
+
+                        months.Add(createMonth(current.Month, (relatveIndex - 2) + i, current.Year));
+                        }
+
+                        previousRelativeIndex = relatveIndex - 5;
+                        nextRelativeIndex = relatveIndex + 5;
+
+                        var selectedMonth = today.AddMonths(relatveIndex);
+
+                        await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, relatveIndex, selectedMonth.Year)));
+                        }
+
+
+                        private bool Open { set; get; }
+
+
+                        private async Task UpdateSelectedIndex(int relativeIndex)
+                        {
+                        Open = false;
+                        SelectedIndex = relativeIndex;
+                        await SelectMonth(relativeIndex);
+                        StateHasChanged();
+                        }
+
+                        private void HandleClose(EventArgs args)
+                        {
+                        Open = false;
+
+                        StateHasChanged();
+                        }
+
+
+                        private void OnOpen()
+                        {
+                        Open = true;
+
+                        StateHasChanged();
+                        }
+                        }

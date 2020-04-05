@@ -1,28 +1,20 @@
 ﻿@inherits LayoutComponentBase
 @using Wellness.Model
 
+<MatAppBar Fixed="true">
+    <MatAppBarRow>
+        <MatAppBarSection>
+            <MatIconButton Icon="menu"></MatIconButton>
+            <MatAppBarTitle>MatBlazor - Material Design components for Blazor</MatAppBarTitle>
+        </MatAppBarSection>
+        <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+            <MatIconButton Icon="favorite"></MatIconButton>
+        </MatAppBarSection>
+    </MatAppBarRow>
+</MatAppBar>
+
 
 <div class="main">
-    <div class="top-row px-4">
-
-        <AppBar Position="@AppBarPosition.Static">
-            <Toolbar>
-                <IconButton Edge="@IconButtonEdge.Start"
-                            Style="margin-right: 16px;"
-                            Color="@Color.Inherit"
-                            aria-label="menu">
-                    <MenuIcon />
-                </IconButton>
-                <Typography Variant="@TypographyVariant.H6"
-                            Style="flex-grow: 1;">
-                    News
-                </Typography>
-                <Button Color="@Color.Inherit">
-                    Login
-                </Button>
-            </Toolbar>
-        </AppBar>
-    </div>
 
 
     <div class="content px-4">
