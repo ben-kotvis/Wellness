@@ -1,23 +1,5 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-.persistent-left-app-bar {
-    transition: margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
-}
-
-.persistent-left-app-bar-shifted {
-    width: calc(100% - 240px);
-    transition: margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,width 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
-    margin-left: 240px;
-}
-
-.persistent-left-drawer-header {
-    display: flex;
-    padding: 0px 8px;
-    min-height: 56px;
-    align-items: center;
-    justify-content: flex-end;
-}
-
 @media (min-width:0px) and (orientation: landscape) {
     .persistent-left-drawer-header {
         min-height: 48px;
@@ -229,7 +211,7 @@ app {
         top: 0;
     }
 
-    .main > div {
+    .main > div.content {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
