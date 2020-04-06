@@ -3,26 +3,16 @@
 
 
 
-<MatAppBar Fixed="false">
-    <MatAppBarRow>
-        <MatAppBarSection>
-            <MatIconButton Icon="menu"></MatIconButton>
-            <MatAppBarTitle>MatBlazor - Material Design components for Blazor</MatAppBarTitle>
-        </MatAppBarSection>
-        <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-            <MatIconButton Icon="favorite"></MatIconButton>
-        </MatAppBarSection>
-    </MatAppBarRow>
-</MatAppBar>
+                @Body
 
 
-<div class="main">
-
-
-    <div class="content px-4">
-
-        @Body
-
-    </div>
-</div>
-
+@code 
+{
+    BaseMatIconButton accountButton;
+    BaseMatMenu accountMenu;
+ 
+    public async Task OnClick(MouseEventArgs e)
+    {
+        await this.accountMenu.OpenAsync(accountButton.Ref);
+    }
+}

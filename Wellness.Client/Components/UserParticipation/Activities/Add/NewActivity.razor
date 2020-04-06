@@ -1,0 +1,26 @@
+﻿@using Wellness.Model
+@using System.Globalization
+@inject AppState State
+@inherits Components.UserParticipation.Activities.Add.NewActivityComponent
+
+<div style="width: 100%; max-width: 360px; background-color: var(--theme-palette-background-paper);">
+    <p>
+        <MatSelect Label="Selected Activity" @bind-Value="SelectedId">
+            <MatOptionString Value="@Guid.Empty.ToString()">None</MatOptionString>
+            @foreach (var activity in State.Activities)
+            {
+                <MatOptionString Value="@activity.Id.ToString()">@activity.Name</MatOptionString>
+            }
+        </MatSelect>
+    </p>
+    <p>
+        <MatTextField @bind-Value="@NumberOfMinutes" Label="Number of Minutes"></MatTextField>
+    </p>
+    <p>
+        <MatDatePicker Label="Activity Date" TValue="DateTime" @bind-Value="@SelectedDate"></MatDatePicker>
+    </p>
+    <p>
+        <MatButton Raised="true">Save</MatButton>
+    </p>
+</div>
+

@@ -1,4 +1,4 @@
-
+<MatThemeProvider Theme="@theme">
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -9,3 +9,14 @@
         </LayoutView>
     </NotFound>
 </Router>
+</MatThemeProvider>
+
+
+@code {
+
+    MatTheme theme = new MatTheme()
+    {
+        Primary = MatThemeColors.BlueGrey._700.Value,
+        Secondary = MatThemeColors.Blue._50.Value
+    };
+}

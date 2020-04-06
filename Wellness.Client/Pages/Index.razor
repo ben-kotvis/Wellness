@@ -4,8 +4,26 @@
 @inject AppState  State
 @using Wellness.Client.Components.MonthsMenu
 @using Wellness.Model
+@using Wellness.Client.Components.UserParticipation.Activities.List
 
-
+<MatAppBarContainer>
+    <MatAppBar Fixed="true">
+        <MatAppBarRow>
+           <MatAppBarSection>
+                    <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
+                </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <MatIconButton Icon="account_circle" OnClick="@OnClick" @ref="accountButton"></MatIconButton>
+                <MatMenu @ref="accountMenu">
+                    <MatList>
+                        <MatListItem>Item 1</MatListItem>
+                        <MatListItem>Item 2</MatListItem>
+                    </MatList>
+                </MatMenu>
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+</MatAppBarContainer>
 @if (participation == null)
 {
     <div class="progress">
@@ -13,11 +31,18 @@
     </div>
 }
 else
-{    
-    <MonthsMenu OnMonthChanged="MonthChanged" />
- 
-    <UserActivities ActivityParticipations="@participation.Activities" />
+{
+
+    <div class="main">
+        <div class="content">
+            <MonthsMenu OnMonthChanged="MonthChanged" />
+
+            <UserActivities ActivityParticipations="@participation.Activities" />
+        </div>
+    </div>
+
 }
+
 
 @code {
 
@@ -41,6 +66,15 @@ else
     public async Task MonthChanged(MonthChangedEventArgs args)
     {
         participation.Activities = State.UserActivities.Where(i => i.Date.Year == args.Month.Year && i.Date.Month == args.Month.Number).ToList();
+    }
+
+
+    BaseMatIconButton accountButton;
+    BaseMatMenu accountMenu;
+
+    public async Task OnClick(MouseEventArgs e)
+    {
+        await this.accountMenu.OpenAsync(accountButton.Ref);
     }
 
 }

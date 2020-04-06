@@ -1,0 +1,42 @@
+﻿@using Wellness.Model
+@using System.Globalization
+@using Wellness.Client.Components.UserParticipation.Activities.Add
+@inject AppState State
+
+@inherits Components.UserParticipation.Activities.List.UserActivitiesComponent
+
+<MatTabGroup>
+    <MatTab Label="Activities">
+
+        <MatTable Items="@ActivityParticipations" class="mat-elevation-z5" ShowPaging="false" ShowFooter="false">
+            <MatTableHeader>
+                <th></th>
+                <th>Activity</th>
+                <th>Minutes</th>
+                <th>Points</th>
+                <th>Date</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>
+                    <p>
+                        <MatIconButton Icon="more_vert" OnClick="@OnClick" @ref="activityItemButton"></MatIconButton>
+                        <MatMenu @ref="activityItemMenu">
+                            <MatList>
+                                <MatListItem>Delete</MatListItem>
+                            </MatList>
+                        </MatMenu>
+                    </p>
+                </td>
+                <td>@context.Activity.Name</td>
+                <td>@context.Minutes.OptionValue</td>
+                <td>@context.Points</td>
+                <td>@context.Date.ToString("MM/dd/yyyy")</td>
+            </MatTableRow>
+        </MatTable>
+    </MatTab>
+    <MatTab Label="New">
+        <NewActivity />
+    </MatTab>
+
+</MatTabGroup>
+

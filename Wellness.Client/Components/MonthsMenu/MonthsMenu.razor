@@ -1,10 +1,7 @@
-﻿
-
-@using Wellness.Model
+﻿@using Wellness.Model
 @using System.Globalization
 @using Wellness.Client.Components.MonthsMenu
-@inherits MonthsMenuComponent
-
+@inherits Wellness.Client.Components.MonthsMenu.MonthsMenuComponent
 
 <div class="month-menu">
 
@@ -13,7 +10,7 @@
     @foreach (var month in Months)
     {
 
-        <MatButton Unelevated="true" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatButton>
+        <MatButton Class="month-menu-item" Unelevated="true" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatButton>
     }
 
     <MatButton Unelevated="true" OnClick="@Next">Next</MatButton>
