@@ -1,20 +1,19 @@
 ﻿@page "/"
 
 @inject HttpClient Http
-@inject AppState  State
 @using Wellness.Client.Components.MonthsMenu
-@using Wellness.Model
 @using Wellness.Client.Components.UserParticipation.Activities.List
+@inherits Wellness.Client.Pages.IndexComponent
 
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
         <MatAppBarRow>
-           <MatAppBarSection>
-                    <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
-                </MatAppBarSection>
+            <MatAppBarSection>
+                <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
+            </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MatIconButton Icon="account_circle" OnClick="@OnClick" @ref="accountButton"></MatIconButton>
-                <MatMenu @ref="accountMenu">
+                <MatIconButton Icon="account_circle" OnClick="@ViewModel.OnClick" @ref="ViewModel.accountButton"></MatIconButton>
+                <MatMenu @ref="ViewModel.accountMenu">
                     <MatList>
                         <MatListItem>Item 1</MatListItem>
                         <MatListItem>Item 2</MatListItem>
@@ -24,7 +23,7 @@
         </MatAppBarRow>
     </MatAppBar>
 </MatAppBarContainer>
-@if (participation == null)
+@if (ViewModel.participation == null)
 {
     <div class="progress">
         <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
@@ -35,46 +34,10 @@ else
 
     <div class="main">
         <div class="content">
-            <MonthsMenu OnMonthChanged="MonthChanged" />
+            <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
 
-            <UserActivities ActivityParticipations="@participation.Activities" />
+            <UserActivities ActivityParticipations="@ViewModel.participation.Activities" />
         </div>
     </div>
-
-}
-
-
-@code {
-
-
-    private UserParticipation participation;
-
-    protected override async Task OnInitializedAsync()
-    {
-        participation = CreateMock();
-    }
-
-    private UserParticipation CreateMock()
-    {
-
-        return new UserParticipation()
-        {
-            Activities = State.UserActivities.Where(i => i.Date.Year == DateTime.Now.Year && i.Date.Month == DateTime.Now.Month).ToList()
-        };
-    }
-
-    public async Task MonthChanged(MonthChangedEventArgs args)
-    {
-        participation.Activities = State.UserActivities.Where(i => i.Date.Year == args.Month.Year && i.Date.Month == args.Month.Number).ToList();
-    }
-
-
-    BaseMatIconButton accountButton;
-    BaseMatMenu accountMenu;
-
-    public async Task OnClick(MouseEventArgs e)
-    {
-        await this.accountMenu.OpenAsync(accountButton.Ref);
-    }
 
 }

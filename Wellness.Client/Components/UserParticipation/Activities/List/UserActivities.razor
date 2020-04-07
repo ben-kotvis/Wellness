@@ -18,19 +18,13 @@
             </MatTableHeader>
             <MatTableRow>
                 <td>
-                    <p>
-                        <MatIconButton Icon="more_vert" OnClick="@OnClick" @ref="activityItemButton"></MatIconButton>
-                        <MatMenu @ref="activityItemMenu">
-                            <MatList>
-                                <MatListItem>Delete</MatListItem>
-                            </MatList>
-                        </MatMenu>
-                    </p>
+                    <MatIconButton Icon="delete" OnClick="@((args) => DeleteActivity(args, context.Id))" @ref="activityItemButton"></MatIconButton>
+
                 </td>
-                <td>@context.Activity.Name</td>
-                <td>@context.Minutes.OptionValue</td>
+                <td>@context.ActivityName</td>
+                <td>@context.Minutes</td>
                 <td>@context.Points</td>
-                <td>@context.Date.ToString("MM/dd/yyyy")</td>
+                <td>@context.ParticipationDate.ToString("MM/dd/yyyy")</td>
             </MatTableRow>
         </MatTable>
     </MatTab>
@@ -40,3 +34,14 @@
 
 </MatTabGroup>
 
+
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>Delete Confirmation</MatDialogTitle>
+    <MatDialogContent>
+        <p>Are you sure you want to delete this Activity?</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@OkClick">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>

@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wellness.Client.ViewModels;
+using Wellness.Model;
 
 namespace Wellness.Client.Components.UserParticipation.Activities.Add
 {
-    public class NewActivityComponent : ComponentBase
+    public class NewActivityComponent : WellnessComponentBase<NewActivityViewModel>
     {
-        public string SelectedId { set; get; } = Guid.Empty.ToString();
-
-        public string SelectedActivity { get; set; }
-        public string NumberOfMinutes { get; set; }
-        public DateTime SelectedDate { get; set; } = DateTime.MinValue;
+        [Inject] public override NewActivityViewModel ViewModel { get; set; }
     }
 }

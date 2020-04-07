@@ -17,7 +17,7 @@ namespace Wellness.Model
         public Guid? ApprovedByUserId { get; set; }
         public User ApprovedByUser { get; set; }
 
-        public List<EventParticipation> Events { get; set; }
-        public List<ActivityParticipation> Activities { get; set; }
+        public IEnumerable<EventParticipation> Events { get; set; }
+        public IEnumerable<ActivityParticipation> Activities { get; set; }
     }
 }

@@ -8,5 +8,9 @@ namespace Wellness.Model
     public interface IActivityManagementService
     {
         Task Create(Activity activity);
+
+        Task<IEnumerable<Activity>> GetAll();
+
+        Task Disable(Guid activityId);
     }
 }
