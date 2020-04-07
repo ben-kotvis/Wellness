@@ -34,7 +34,7 @@ namespace Wellness.Client.ViewModels
         public int NumberOfMinutes { get; set; }
         public DateTime SelectedDate { get; set; } = DateTime.MinValue;
 
-        public async Task Save(MouseEventArgs e)
+        public async Task Save()
         {
             await _activityPartcipation.Create(new ActivityParticipation() 
             { 

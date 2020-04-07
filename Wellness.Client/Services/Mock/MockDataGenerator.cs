@@ -36,6 +36,12 @@ namespace Wellness.Client.Services.Mock
                 ActivityParticipations.Add(ap);
                 return Task.FromResult(true);
             });
+
+            activityParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
+            {
+                ActivityParticipations.RemoveAll(ap => ap.Id == id);
+                return Task.FromResult(true);
+            });
             return activityParticipationMock.Object;
         }
 

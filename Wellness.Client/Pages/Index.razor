@@ -3,6 +3,7 @@
 @inject HttpClient Http
 @using Wellness.Client.Components.MonthsMenu
 @using Wellness.Client.Components.UserParticipation.Activities.List
+@using Wellness.Client.Components.Shared
 @inherits Wellness.Client.Pages.IndexComponent
 
 <MatAppBarContainer>
@@ -12,13 +13,7 @@
                 <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MatIconButton Icon="account_circle" OnClick="@ViewModel.OnClick" @ref="ViewModel.accountButton"></MatIconButton>
-                <MatMenu @ref="ViewModel.accountMenu">
-                    <MatList>
-                        <MatListItem>Item 1</MatListItem>
-                        <MatListItem>Item 2</MatListItem>
-                    </MatList>
-                </MatMenu>
+                <MaterialMenu Items="@ViewModel.MainMenuItems" Icon="account_circle" OnItemSelected="@ViewModel.AccountMenuItemSelected" />
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>

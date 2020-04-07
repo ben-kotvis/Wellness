@@ -10,14 +10,18 @@ namespace Wellness.Client.ViewModels
 {    
     public class MainViewModel : IViewModelBase
     {
-        public BaseMatIconButton accountButton;
-        public BaseMatMenu accountMenu;
+
+        public Dictionary<string, string> MainMenuItems { get; set; }
+
         public UserParticipation participation;
                
         private IActivityParticipationService _activityParticipationService;
         public MainViewModel(IActivityParticipationService activityParticipationService)
         {
-            _activityParticipationService = activityParticipationService;            
+            _activityParticipationService = activityParticipationService;
+            MainMenuItems = new Dictionary<string, string>();
+            MainMenuItems.Add("profile", "Profile");
+            MainMenuItems.Add("logout", "Logout");
         }
 
         public IEnumerable<Activity> activities { get; private set; }
@@ -43,9 +47,9 @@ namespace Wellness.Client.ViewModels
             participation.Activities = await _activityParticipationService.GetByRelativeMonthIndex(args.Month.RelativeIndex);
         }
         
-        public async Task OnClick(MouseEventArgs e)
+        public async Task AccountMenuItemSelected(string selectedMenuItem)
         {
-            await this.accountMenu.OpenAsync(accountButton.Ref);
+            Console.WriteLine(selectedMenuItem);
         }
     }
 }

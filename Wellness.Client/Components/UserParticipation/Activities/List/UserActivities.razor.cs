@@ -11,6 +11,9 @@ namespace Wellness.Client.Components.UserParticipation.Activities.List
 {
     public class UserActivitiesComponent : ComponentBase
     {
+
+        [Inject] IActivityParticipationService activityParticipationService { get; set; }
+
         [Parameter]
         public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
 
@@ -18,24 +21,22 @@ namespace Wellness.Client.Components.UserParticipation.Activities.List
         public BaseMatIconButton activityItemButton;
 
         public bool dialogIsOpen = false;
-        public string name = null;
-        public string animal = null;
-        public string dialogAnimal = null;
+        public Guid selectedId;
 
         public void OpenDialog()
         {
-            dialogAnimal = null;
             dialogIsOpen = true;
         }
 
-        public void OkClick()
+        public async Task OkClick()
         {
-            animal = dialogAnimal;
+            await activityParticipationService.Delete(selectedId);
             dialogIsOpen = false;
         }
 
         public void DeleteActivity(MouseEventArgs e, Guid id)
         {
+            selectedId = id;
             OpenDialog();
         }
     }

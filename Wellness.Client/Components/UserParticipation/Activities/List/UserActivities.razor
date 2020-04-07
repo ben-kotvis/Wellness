@@ -7,8 +7,7 @@
 
 <MatTabGroup>
     <MatTab Label="Activities">
-
-        <MatTable Items="@ActivityParticipations" class="mat-elevation-z5" ShowPaging="false" ShowFooter="false">
+        <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
             <MatTableHeader>
                 <th></th>
                 <th>Activity</th>
@@ -19,7 +18,6 @@
             <MatTableRow>
                 <td>
                     <MatIconButton Icon="delete" OnClick="@((args) => DeleteActivity(args, context.Id))" @ref="activityItemButton"></MatIconButton>
-
                 </td>
                 <td>@context.ActivityName</td>
                 <td>@context.Minutes</td>
@@ -31,7 +29,6 @@
     <MatTab Label="New">
         <NewActivity />
     </MatTab>
-
 </MatTabGroup>
 
 

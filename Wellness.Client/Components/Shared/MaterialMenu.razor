@@ -1,0 +1,11 @@
+﻿@inherits MaterialMenuComponent
+
+<MatIconButton Icon="@Icon" @onclick="OnMenuButtonClicked" @ref="MenuButton"></MatIconButton>
+<MatMenu @ref="Menu">
+    <MatList>
+        @foreach (var item in Items)
+        {
+            <MatListItem @onclick="((args) => Select(item.Key))" >@item.Value</MatListItem>
+        }
+    </MatList>
+</MatMenu>
