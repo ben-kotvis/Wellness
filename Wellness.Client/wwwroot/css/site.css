@@ -1,4 +1,16 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+.demo-mat-card {
+    max-width: 95%;
+}
+
+.demo-mat-card-content {
+    padding: 1rem;
+}
+
+.demo-mat-card-clean-margin {
+    margin: 0px;
+}
+
 .wellness-table tr td:nth-child(2) {
     width:60%;
 }

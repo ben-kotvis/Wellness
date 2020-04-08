@@ -8,8 +8,12 @@ using Wellness.Model;
 
 namespace Wellness.Client.Components.UserParticipation.Activities.Add
 {
-    public class NewActivityComponent : WellnessComponentBase<NewActivityViewModel>
+    public class NewActivityComponent : ComponentBase
     {
-        [Inject] public override NewActivityViewModel ViewModel { get; set; }
+        [Parameter] public IEnumerable<Activity> Activities { get; set; }
+        [Parameter] public string SelectedActivityName { get; set; }
+        [Parameter] public int NumberOfMinutes { get; set; }
+        [Parameter] public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
+        [Parameter] public EventCallback OnSaveSelected { get; set; }
     }
 }

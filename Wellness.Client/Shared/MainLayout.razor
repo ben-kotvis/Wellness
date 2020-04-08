@@ -1,18 +1,72 @@
 ﻿@inherits LayoutComponentBase
 @using Wellness.Model
+@using Wellness.Client.Components.Shared
+
+<MatAppBarContainer>
+    <MatAppBar Fixed="true">
+        <MatAppBarRow>
+            <MatAppBarSection>
+                <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <MaterialMenu Items="@MainMenuItems" Icon="account_circle" OnItemSelected="@AccountMenuItemSelected" />
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+</MatAppBarContainer>
+
+
+<div class="mat-layout-grid">
+    <div class="mat-layout-grid-inner">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+            <MatCard class="demo-mat-card">
+                <MatCardContent>
+                    <div class="demo-mat-card-content">
+                        <MatHeadline6 class="demo-mat-card-clean-margin">
+                            Totals
+                        </MatHeadline6>
+                    </div>
+                    <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+                        Visit ten places on our planet that are undergoing the biggest changes today.
+                    </MatBody2>
+                </MatCardContent>
+            </MatCard>
+
+            <MatCard class="demo-mat-card">
+                <MatCardContent>
+                    <div class="demo-mat-card-content">
+                        <MatHeadline6 class="demo-mat-card-clean-margin">
+                            Search
+                        </MatHeadline6>
+                    </div>
+                    <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+                        Visit ten places on our planet that are undergoing the biggest changes today.
+                    </MatBody2>
+                </MatCardContent>
+            </MatCard>
+
+        </div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-9">
+        @Body
+        </div>
+    </div>
+</div>
 
 
 
-                @Body
-
-
-@code 
+@code
 {
-    BaseMatIconButton accountButton;
-    BaseMatMenu accountMenu;
- 
-    public async Task OnClick(MouseEventArgs e)
+    public Dictionary<string, string> MainMenuItems { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        await this.accountMenu.OpenAsync(accountButton.Ref);
+        MainMenuItems = new Dictionary<string, string>();
+        MainMenuItems.Add("profile", "Profile");
+        MainMenuItems.Add("logout", "Logout");
+    }
+
+    public async Task AccountMenuItemSelected(string selectedMenuItem)
+    {
+        Console.WriteLine(selectedMenuItem);
     }
 }

@@ -1,36 +1,28 @@
 ﻿@using Wellness.Model
 @using System.Globalization
 @using Wellness.Client.Components.UserParticipation.Activities.Add
-@inject AppState State
 
 @inherits Components.UserParticipation.Activities.List.UserActivitiesComponent
 
-<MatTabGroup>
-    <MatTab Label="Activities">
-        <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
-            <MatTableHeader>
-                <th></th>
-                <th>Activity</th>
-                <th>Minutes</th>
-                <th>Points</th>
-                <th>Date</th>
-            </MatTableHeader>
-            <MatTableRow>
-                <td>
-                    <MatIconButton Icon="delete" OnClick="@((args) => DeleteActivity(args, context.Id))" @ref="activityItemButton"></MatIconButton>
-                </td>
-                <td>@context.ActivityName</td>
-                <td>@context.Minutes</td>
-                <td>@context.Points</td>
-                <td>@context.ParticipationDate.ToString("MM/dd/yyyy")</td>
-            </MatTableRow>
-        </MatTable>
-    </MatTab>
-    <MatTab Label="New">
-        <NewActivity />
-    </MatTab>
-</MatTabGroup>
 
+<MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false" >
+    <MatTableHeader>
+        <th></th>
+        <th>Activity</th>
+        <th>Minutes</th>
+        <th>Points</th>
+        <th>Date</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>
+            <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
+        </td>
+        <td>@context.ActivityName</td>
+        <td>@context.Minutes</td>
+        <td>@context.Points</td>
+        <td>@context.ParticipationDate.ToString("MM/dd/yyyy")</td>
+    </MatTableRow>
+</MatTable>
 
 <MatDialog @bind-IsOpen="@dialogIsOpen">
     <MatDialogTitle>Delete Confirmation</MatDialogTitle>
@@ -39,6 +31,6 @@
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="@(e => { dialogIsOpen = false; })">Cancel</MatButton>
-        <MatButton OnClick="@OkClick">OK</MatButton>
+        <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">OK</MatButton>
     </MatDialogActions>
 </MatDialog>

@@ -5,39 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wellness.Client.ViewModels;
 using Wellness.Model;
 
 namespace Wellness.Client.Components.UserParticipation.Activities.List
 {
     public class UserActivitiesComponent : ComponentBase
     {
+        [Parameter] public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
 
-        [Inject] IActivityParticipationService activityParticipationService { get; set; }
-
-        [Parameter]
-        public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
-
-
-        public BaseMatIconButton activityItemButton;
+        [Parameter] public EventCallback<Guid> OnConfirmDelete { get; set; }
 
         public bool dialogIsOpen = false;
-        public Guid selectedId;
 
-        public void OpenDialog()
-        {
-            dialogIsOpen = true;
-        }
-
-        public async Task OkClick()
-        {
-            await activityParticipationService.Delete(selectedId);
-            dialogIsOpen = false;
-        }
-
-        public void DeleteActivity(MouseEventArgs e, Guid id)
-        {
-            selectedId = id;
-            OpenDialog();
-        }
+        public Guid SelectedId { get; set; }
     }
 }

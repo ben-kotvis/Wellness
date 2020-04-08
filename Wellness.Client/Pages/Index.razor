@@ -3,22 +3,11 @@
 @inject HttpClient Http
 @using Wellness.Client.Components.MonthsMenu
 @using Wellness.Client.Components.UserParticipation.Activities.List
-@using Wellness.Client.Components.Shared
+@using Wellness.Client.Components.UserParticipation.Activities.Add
 @inherits Wellness.Client.Pages.IndexComponent
 
-<MatAppBarContainer>
-    <MatAppBar Fixed="true">
-        <MatAppBarRow>
-            <MatAppBarSection>
-                <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
-            </MatAppBarSection>
-            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MaterialMenu Items="@ViewModel.MainMenuItems" Icon="account_circle" OnItemSelected="@ViewModel.AccountMenuItemSelected" />
-            </MatAppBarSection>
-        </MatAppBarRow>
-    </MatAppBar>
-</MatAppBarContainer>
-@if (ViewModel.participation == null)
+
+@if (ViewModel.ActivityParticipations == null)
 {
     <div class="progress">
         <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
@@ -31,7 +20,18 @@ else
         <div class="content">
             <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
 
-            <UserActivities ActivityParticipations="@ViewModel.participation.Activities" />
+            <MatTabGroup ActiveIndex="@ViewModel.ActivityTabIndex">
+                <MatTab Label="Activities">
+                    <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                </MatTab>
+                <MatTab Label="New">
+                    <NewActivity Activities="@ViewModel.Activities"
+                                 SelectedActivityName="@ViewModel.SelectedActivityName" 
+                                 NumberOfMinutes="@ViewModel.NumberOfMinutes" 
+                                 SelectedActivityDate="@ViewModel.SelectedActivityDate" 
+                                 OnSaveSelected="@ViewModel.SaveActivity" />
+                </MatTab>
+            </MatTabGroup>
         </div>
     </div>
 

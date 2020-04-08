@@ -10,46 +10,56 @@ namespace Wellness.Client.ViewModels
 {    
     public class MainViewModel : IViewModelBase
     {
+        public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
 
-        public Dictionary<string, string> MainMenuItems { get; set; }
-
-        public UserParticipation participation;
-               
         private IActivityParticipationService _activityParticipationService;
-        public MainViewModel(IActivityParticipationService activityParticipationService)
+        private IActivityManagementService _activityManagementService;
+        public MainViewModel(IActivityParticipationService activityParticipationService, IActivityManagementService activityManagementService)
         {
             _activityParticipationService = activityParticipationService;
-            MainMenuItems = new Dictionary<string, string>();
-            MainMenuItems.Add("profile", "Profile");
-            MainMenuItems.Add("logout", "Logout");
+            _activityManagementService = activityManagementService;
         }
 
-        public IEnumerable<Activity> activities { get; private set; }
+        public IEnumerable<Activity> Activities { get; private set; }
+
+        public int ActivityTabIndex { get; set; }
 
         private IActivityManagementService ActivityManagement { get; set; }
 
         public string SelectedId { set; get; } = Guid.Empty.ToString();
 
-        public string SelectedActivity { get; set; }
-        public string NumberOfMinutes { get; set; }
-        public DateTime SelectedDate { get; set; } = DateTime.MinValue;
+        public string SelectedActivityName { get; set; }
+        public int NumberOfMinutes { get; set; }
+        public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
+
+        public async Task ActivityParticipationDeleted(Guid id)
+        {
+            await _activityParticipationService.Delete(id);
+        }
 
         public async Task OnInit()
         {
-            participation = new UserParticipation()
-            {
-                Activities = await _activityParticipationService.GetByRelativeMonthIndex(0)
-            };
+            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(0);
+            Activities = await _activityManagementService.GetAll();
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)
         {
-            participation.Activities = await _activityParticipationService.GetByRelativeMonthIndex(args.Month.RelativeIndex);
+            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(args.Month.RelativeIndex);
         }
-        
-        public async Task AccountMenuItemSelected(string selectedMenuItem)
+
+        public async Task SaveActivity()
         {
-            Console.WriteLine(selectedMenuItem);
+            await _activityParticipationService.Create(new ActivityParticipation()
+            {
+                Id = Guid.NewGuid(),
+                ActivityName = SelectedActivityName,
+                Minutes = NumberOfMinutes,
+                ParticipationDate = SelectedActivityDate
+            });
+
+            ActivityTabIndex = 0;
         }
+
     }
 }
