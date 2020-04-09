@@ -24,18 +24,20 @@ namespace Wellness.Client.Components.MonthsMenu
         public async Task Previous(MouseEventArgs args)
         {
             var index = Months[0].RelativeIndex - 3;
-            await SelectMonth(index);
+            await ChangeMenu(index);
         }
 
         public async Task Next(MouseEventArgs args)
         {
             var index = Months[4].RelativeIndex + 3;
-            await SelectMonth(index);
+            await ChangeMenu(index);
         }
 
         public async Task MonthChanged(MouseEventArgs args, int index)
         {
-            await SelectMonth(index);
+            var today = DateTime.Now;            
+            var selectedMonth = today.AddMonths(index);
+            await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, index, selectedMonth.Year)));
         }
 
         private Month createMonth(int monthNumber, int relativeIndex, int year)
@@ -65,17 +67,15 @@ namespace Wellness.Client.Components.MonthsMenu
             await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(today.Month, 0, today.Year)));
         }
 
-        private async Task SelectMonth(int relatveIndex)
+        private async Task ChangeMenu(int relatveIndex)
         {
-            Months = new List<Month>
-                ();
+            Months = new List<Month>();
             var today = DateTime.Now;
             var start = today.AddMonths(relatveIndex - 2);
 
             for (var i = 0; i < 5; i++)
             {
                 var current = start.AddMonths(i);
-
                 Months.Add(createMonth(current.Month, (relatveIndex - 2) + i, current.Year));
             }
 
@@ -85,6 +85,7 @@ namespace Wellness.Client.Components.MonthsMenu
             var selectedMonth = today.AddMonths(relatveIndex);
 
             await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, relatveIndex, selectedMonth.Year)));
-        }
+       }
+
     }
 }

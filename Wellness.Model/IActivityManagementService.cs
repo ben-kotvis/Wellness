@@ -8,6 +8,7 @@ namespace Wellness.Model
     public interface IActivityManagementService
     {
         Task Create(Activity activity);
+        Task Update(Activity activity);
 
         Task<IEnumerable<Activity>> GetAll();
 

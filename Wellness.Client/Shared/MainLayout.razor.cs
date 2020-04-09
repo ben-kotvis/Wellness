@@ -10,19 +10,9 @@ namespace Wellness.Client.Shared
 {
     public class MainLayoutComponent : LayoutComponentBase
     {
-        public Dictionary<string, string> MainMenuItems { get; set; }
+        public BaseMatIconButton MenuButton;
+        public BaseMatMenu Menu;
 
 
-        protected override async Task OnInitializedAsync()
-        {
-            MainMenuItems = new Dictionary<string, string>();
-            MainMenuItems.Add("profile", "Profile");
-            MainMenuItems.Add("logout", "Logout");
-        }
-
-        public async Task AccountMenuItemSelected(string selectedMenuItem)
-        {
-            Console.WriteLine(selectedMenuItem);
-        }
     }
 }

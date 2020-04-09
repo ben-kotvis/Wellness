@@ -1,4 +1,4 @@
-﻿@inherits LayoutComponentBase
+﻿@inherits MainLayoutComponent
 @using Wellness.Model
 @using Wellness.Client.Components.Shared
 
@@ -6,17 +6,24 @@
     <MatAppBar Fixed="true">
         <MatAppBarRow>
             <MatAppBarSection>
-                <MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle>
+                <MatNavItem Href="/"><MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle></MatNavItem>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MaterialMenu Items="@MainMenuItems" Icon="account_circle" OnItemSelected="@AccountMenuItemSelected" />
+                <MatIconButton Icon="settings" @onclick="(async e => await Menu.OpenAsync(MenuButton.Ref))" @ref="MenuButton"></MatIconButton>
+                <MatMenu @ref="Menu">
+                    <MatList>
+                        <MatListItem Href="/ActivityManagement">Manage Activities</MatListItem>
+                        <MatListItem Href="/EventManagement">Manage Events</MatListItem>
+                        <MatListItem Href="/FrequentlyAskedQuestionManagement">Manage FAQs</MatListItem>
+                    </MatList>
+                </MatMenu>
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
 </MatAppBarContainer>
 
 
-<div class="mat-layout-grid">
+<div class="mat-layout-grid main">
     <div class="mat-layout-grid-inner">
         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
             <MatCard class="demo-mat-card">
@@ -47,26 +54,8 @@
 
         </div>
         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-9">
-        @Body
+            @Body
         </div>
     </div>
 </div>
 
-
-
-@code
-{
-    public Dictionary<string, string> MainMenuItems { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        MainMenuItems = new Dictionary<string, string>();
-        MainMenuItems.Add("profile", "Profile");
-        MainMenuItems.Add("logout", "Logout");
-    }
-
-    public async Task AccountMenuItemSelected(string selectedMenuItem)
-    {
-        Console.WriteLine(selectedMenuItem);
-    }
-}

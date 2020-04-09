@@ -11,6 +11,14 @@
     margin: 0px;
 }
 
+.wellness-table thead th  {
+    white-space:nowrap;
+}
+
+.wellness-table tbody td {
+    white-space: nowrap;
+}
+
 .wellness-table tr td:nth-child(2) {
     width:60%;
 }
@@ -160,7 +168,8 @@ app {
 
 .month-menu-item {
     width: 160px;
-    text-align:center;
+    text-align: center;
+    justify-content: center;
 }
 
 .navbar-toggler {

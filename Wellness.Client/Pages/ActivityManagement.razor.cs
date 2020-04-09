@@ -11,8 +11,11 @@ using Wellness.Model;
 
 namespace Wellness.Client.Pages
 {
-    public class IndexComponent : WellnessComponentBase<MainViewModel>
+    public class ActivityManagementComponent : WellnessComponentBase<ActivityManagementViewModel>
     {
-        [Inject] public override MainViewModel ViewModel { get; set; }
+        [Inject] public override ActivityManagementViewModel ViewModel { get; set; }
+
+        public BaseMatIconButton ActivityManagementMenuButton;
+        public BaseMatMenu ActivityManagementMenu;
     }
 }

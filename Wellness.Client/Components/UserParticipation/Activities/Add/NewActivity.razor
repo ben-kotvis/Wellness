@@ -4,7 +4,7 @@
 
 <div style="width: 100%; max-width: 360px; background-color: var(--theme-palette-background-paper);">
     <p>
-        <MatSelect Label="Selected Activity" @bind-Value="SelectedActivityName">
+        <MatSelect Label="Selected Activity" @bind-Value="ViewModel.SelectedActivityName">
             <MatOptionString Value="">None</MatOptionString>
             @foreach (var activity in Activities)
             {
@@ -13,10 +13,10 @@
         </MatSelect>
     </p>
     <p>
-        <MatTextField @bind-Value="@NumberOfMinutes" Label="Number of Minutes"></MatTextField>
+        <MatTextField @bind-Value="ViewModel.NumberOfMinutes" Label="Number of Minutes"></MatTextField>
     </p>
     <p>
-        <MatDatePicker Label="Activity Date" TValue="DateTime" @bind-Value="@SelectedActivityDate"></MatDatePicker>
+        <MatDatePicker Label="Activity Date" TValue="DateTime" @bind-Value="ViewModel.SelectedActivityDate"></MatDatePicker>
     </p>
     <p>
         <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">Save</MatButton>

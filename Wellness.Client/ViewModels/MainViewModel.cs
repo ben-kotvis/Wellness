@@ -8,12 +8,13 @@ using Wellness.Model;
 
 namespace Wellness.Client.ViewModels
 {    
-    public class MainViewModel : IViewModelBase
+    public class MainViewModel : IViewModelBase, IActivityParticipationViewModel
     {
         public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
 
         private IActivityParticipationService _activityParticipationService;
         private IActivityManagementService _activityManagementService;
+        
         public MainViewModel(IActivityParticipationService activityParticipationService, IActivityManagementService activityManagementService)
         {
             _activityParticipationService = activityParticipationService;
@@ -39,13 +40,20 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(0);
-            Activities = await _activityManagementService.GetAll();
+            await SetActivityParticipations(0);
+            Activities = await _activityManagementService.GetAll();            
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)
         {
-            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(args.Month.RelativeIndex);
+            await SetActivityParticipations(args.Month.RelativeIndex);
+        }
+
+        private async Task SetActivityParticipations(int relativeMonthIndex)
+        {
+            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(relativeMonthIndex);
+
+            Console.WriteLine($"Activity Count: {ActivityParticipations.Count()}");
         }
 
         public async Task SaveActivity()
@@ -57,6 +65,10 @@ namespace Wellness.Client.ViewModels
                 Minutes = NumberOfMinutes,
                 ParticipationDate = SelectedActivityDate
             });
+
+            var monthDifference = DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month;
+            
+            await SetActivityParticipations(monthDifference);
 
             ActivityTabIndex = 0;
         }

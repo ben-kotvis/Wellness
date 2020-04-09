@@ -1,0 +1,41 @@
+﻿@page "/ActivityManagement"
+
+@inject HttpClient Http
+@inherits Wellness.Client.Pages.ActivityManagementComponent
+
+<h2>Activity Management</h2>
+
+<div class="float-right">
+    <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
+</div>
+<MatTable Items="@ViewModel.Activities" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
+    <MatTableHeader>
+        <th></th>
+        <th>Name</th>
+        <th>Active</th>
+        <th>Created On</th>
+        <th>Created By</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>
+            <MatIconButton Icon="delete" @onclick="(e => ViewModel.Delete(context.Id))"></MatIconButton>
+            <MatIconButton Icon="edit" @onclick="(e => ViewModel.Edit(context.Id))"></MatIconButton>
+        </td>
+        <td>@context.Name</td>
+        <td>@context.Active</td>
+        <td>@context.Common.CreatedOn.ToString("yyyy-MM-dd")</td>
+        <td>@context.Common.CreatedBy</td>
+    </MatTableRow>
+</MatTable>
+
+<MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
+    <MatDialogTitle>Activity</MatDialogTitle>
+    <MatDialogContent>
+        <MatTextField @bind-Value="ViewModel.ActivityName" Label="Name"></MatTextField>
+        <MatCheckbox @bind-Value="ViewModel.Active" Label="Active"></MatCheckbox>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@ViewModel.Save">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>

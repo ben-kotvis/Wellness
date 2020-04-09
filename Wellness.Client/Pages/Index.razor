@@ -16,9 +16,10 @@
 else
 {
 
-    <div class="main">
+    <div class="mat-elevation-z2">
+
+        <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
         <div class="content">
-            <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
 
             <MatTabGroup ActiveIndex="@ViewModel.ActivityTabIndex">
                 <MatTab Label="Activities">
@@ -26,13 +27,26 @@ else
                 </MatTab>
                 <MatTab Label="New">
                     <NewActivity Activities="@ViewModel.Activities"
-                                 SelectedActivityName="@ViewModel.SelectedActivityName" 
-                                 NumberOfMinutes="@ViewModel.NumberOfMinutes" 
-                                 SelectedActivityDate="@ViewModel.SelectedActivityDate" 
+                                 ViewModel="@ViewModel"
                                  OnSaveSelected="@ViewModel.SaveActivity" />
                 </MatTab>
             </MatTabGroup>
         </div>
+
+        <div class="content">
+            <MatTabGroup ActiveIndex="@ViewModel.ActivityTabIndex">
+                <MatTab Label="Events">
+                    Event Table
+                </MatTab>
+                <MatTab Label="New">
+
+
+                </MatTab>
+            </MatTabGroup>
+
+        </div>
     </div>
+
+
 
 }

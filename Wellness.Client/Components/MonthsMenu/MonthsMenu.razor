@@ -4,15 +4,15 @@
 @inherits Wellness.Client.Components.MonthsMenu.MonthsMenuComponent
 
 <div class="month-menu">
+    <MatList SingleSelection="true" Class="list-group list-group-horizontal-md">
+        <MatListItem Class="month-menu-item" OnClick="@Previous">Previous</MatListItem>
 
-    <MatButton Unelevated="true" OnClick="@Previous">Previous</MatButton>
+        @foreach (var month in Months)
+        {
+            <MatListItem Class="month-menu-item" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatListItem>
+        }
 
-    @foreach (var month in Months)
-    {
-
-        <MatButton Class="month-menu-item" Unelevated="true" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatButton>
-    }
-
-    <MatButton Unelevated="true" OnClick="@Next">Next</MatButton>
+        <MatListItem Class="month-menu-item" OnClick="@Next">Next</MatListItem>
+    </MatList>
 
 </div>

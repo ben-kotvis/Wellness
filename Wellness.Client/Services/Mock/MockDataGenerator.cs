@@ -10,7 +10,7 @@ namespace Wellness.Client.Services.Mock
 {
     public class MockDataGenerator
     {
-        static IEnumerable<Activity> Activities;
+        static List<Activity> Activities;
         static List<ActivityParticipation> ActivityParticipations;
 
         static MockDataGenerator()
@@ -23,7 +23,40 @@ namespace Wellness.Client.Services.Mock
         public static IActivityManagementService CreateActivityManagement()
         {
             var activityManagementMock = new Mock<IActivityManagementService>();
-            activityManagementMock.Setup(ams => ams.GetAll()).Returns(Task.FromResult(Activities));
+            activityManagementMock.Setup(ams => ams.GetAll()).Returns(Task.FromResult(Activities.AsEnumerable()));
+
+            activityManagementMock.Setup(ams => ams.Create(It.IsAny<Activity>())).Returns((Activity a) =>
+            {
+                a.Common = CreateCommon();
+                Activities.Add(a);
+                return Task.FromResult(true);
+            });
+
+            activityManagementMock.Setup(ams => ams.Update(It.IsAny<Activity>())).Returns((Activity a) =>
+            {
+                Activities.ForEach(ap =>
+                {
+                    if (ap.Id == a.Id)
+                    {
+                        ap.Active = a.Active;
+                        ap.Name = a.Name;
+                    }
+                });
+                return Task.FromResult(true);
+            });
+
+            activityManagementMock.Setup(ams => ams.Disable(It.IsAny<Guid>())).Returns((Guid id) =>
+            {
+                Activities.ForEach(ap =>
+                {
+                    if(ap.Id == id)
+                    {
+                        ap.Active = false;
+                    }
+                });
+                return Task.FromResult(true);
+            });
+
             return activityManagementMock.Object;
         }
 
@@ -33,6 +66,7 @@ namespace Wellness.Client.Services.Mock
             activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>())).Returns((int i) => GetByRelativeIndex(i));
             activityParticipationMock.Setup(ams => ams.Create(It.IsAny<ActivityParticipation>())).Returns((ActivityParticipation ap) =>
             {
+                ap.Common = CreateCommon();
                 ActivityParticipations.Add(ap);
                 return Task.FromResult(true);
             });
@@ -86,7 +120,7 @@ namespace Wellness.Client.Services.Mock
 
 
 
-        private static IEnumerable<Activity> GetActivities()
+        private static List<Activity> GetActivities()
         {
             var activities = new List<Activity>();
             activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Walking", Common = CreateCommon() });

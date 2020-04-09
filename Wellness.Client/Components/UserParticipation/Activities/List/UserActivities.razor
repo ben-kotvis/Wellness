@@ -5,24 +5,32 @@
 @inherits Components.UserParticipation.Activities.List.UserActivitiesComponent
 
 
-<MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false" >
-    <MatTableHeader>
-        <th></th>
-        <th>Activity</th>
-        <th>Minutes</th>
-        <th>Points</th>
-        <th>Date</th>
-    </MatTableHeader>
-    <MatTableRow>
-        <td>
-            <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
-        </td>
-        <td>@context.ActivityName</td>
-        <td>@context.Minutes</td>
-        <td>@context.Points</td>
-        <td>@context.ParticipationDate.ToString("MM/dd/yyyy")</td>
-    </MatTableRow>
-</MatTable>
+
+@if (!ActivityParticipations.Any())
+{ 
+    <span>No activities have been created for the selected month.</span>
+}
+else
+{
+    <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
+        <MatTableHeader>
+            <th></th>
+            <th>Activity</th>
+            <th>Minutes</th>
+            <th>Points</th>
+            <th>Date</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>
+                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
+            </td>
+            <td>@context.ActivityName</td>
+            <td>@context.Minutes</td>
+            <td>@context.Points</td>
+            <td>@context.ParticipationDate.ToString("MM/dd/yyyy")</td>
+        </MatTableRow>
+    </MatTable>
+}
 
 <MatDialog @bind-IsOpen="@dialogIsOpen">
     <MatDialogTitle>Delete Confirmation</MatDialogTitle>
