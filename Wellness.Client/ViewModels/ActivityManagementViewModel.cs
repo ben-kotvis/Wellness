@@ -32,7 +32,8 @@ namespace Wellness.Client.ViewModels
 
         public async Task Delete(Guid id)
         {
-            await _activityManagementService.Disable(id);
+            await _activityManagementService.Disable(id);            
+            Activities = await _activityManagementService.GetAll();
         }
 
         public async Task New()
@@ -50,6 +51,7 @@ namespace Wellness.Client.ViewModels
 
             EditModalOpen = true;
         }
+
         public async Task Save()
         {
             var activity = Activities.FirstOrDefault(i => i.Id == DialogId);
@@ -62,7 +64,8 @@ namespace Wellness.Client.ViewModels
 
             if(activity == default)
             {
-                activity = new Activity();
+                activity = new Activity();                
+                activity.Id = DialogId;
                 action.Invoke(activity);
                 await _activityManagementService.Create(activity);
             }
@@ -73,7 +76,7 @@ namespace Wellness.Client.ViewModels
             }
             
             EditModalOpen = false;
-
+            Activities = await _activityManagementService.GetAll();
         }
     }
 }

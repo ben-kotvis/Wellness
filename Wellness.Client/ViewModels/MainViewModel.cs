@@ -29,6 +29,7 @@ namespace Wellness.Client.ViewModels
 
         public string SelectedId { set; get; } = Guid.Empty.ToString();
 
+        public int SelectedRelativeIndex { get; set; } = 0;
         public string SelectedActivityName { get; set; }
         public int NumberOfMinutes { get; set; }
         public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
@@ -36,23 +37,24 @@ namespace Wellness.Client.ViewModels
         public async Task ActivityParticipationDeleted(Guid id)
         {
             await _activityParticipationService.Delete(id);
+            await SetActivityParticipations();
         }
 
         public async Task OnInit()
         {
-            await SetActivityParticipations(0);
+            await SetActivityParticipations();
             Activities = await _activityManagementService.GetAll();            
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)
         {
-            await SetActivityParticipations(args.Month.RelativeIndex);
+            SelectedRelativeIndex = args.Month.RelativeIndex;
+            await SetActivityParticipations();
         }
 
-        private async Task SetActivityParticipations(int relativeMonthIndex)
+        private async Task SetActivityParticipations()
         {
-            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(relativeMonthIndex);
-
+            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex);
             Console.WriteLine($"Activity Count: {ActivityParticipations.Count()}");
         }
 
@@ -66,9 +68,9 @@ namespace Wellness.Client.ViewModels
                 ParticipationDate = SelectedActivityDate
             });
 
-            var monthDifference = DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month;
+            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month);
             
-            await SetActivityParticipations(monthDifference);
+            await SetActivityParticipations();
 
             ActivityTabIndex = 0;
         }

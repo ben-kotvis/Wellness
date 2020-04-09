@@ -23,12 +23,15 @@ namespace Wellness.Client.Services.Mock
         public static IActivityManagementService CreateActivityManagement()
         {
             var activityManagementMock = new Mock<IActivityManagementService>();
-            activityManagementMock.Setup(ams => ams.GetAll()).Returns(Task.FromResult(Activities.AsEnumerable()));
+            activityManagementMock.Setup(ams => ams.GetAll())
+            .Returns(() => {
+                return Task.FromResult(new List<Activity>(Activities).AsEnumerable());
+            });
 
             activityManagementMock.Setup(ams => ams.Create(It.IsAny<Activity>())).Returns((Activity a) =>
             {
-                a.Common = CreateCommon();
-                Activities.Add(a);
+                a.Common = CreateCommon();                               
+                Activities.Add(a);                
                 return Task.FromResult(true);
             });
 
@@ -63,7 +66,9 @@ namespace Wellness.Client.Services.Mock
         public static IActivityParticipationService CreateActivityParticipation()
         {
             var activityParticipationMock = new Mock<IActivityParticipationService>();
-            activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>())).Returns((int i) => GetByRelativeIndex(i));
+            activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>()))
+                .Returns((int i) => Task.FromResult(new List<ActivityParticipation>(GetByRelativeIndex(i)).AsEnumerable()));
+
             activityParticipationMock.Setup(ams => ams.Create(It.IsAny<ActivityParticipation>())).Returns((ActivityParticipation ap) =>
             {
                 ap.Common = CreateCommon();
@@ -79,10 +84,10 @@ namespace Wellness.Client.Services.Mock
             return activityParticipationMock.Object;
         }
 
-        private static Task<IEnumerable<ActivityParticipation>> GetByRelativeIndex(int relativeIndex)
+        private static IEnumerable<ActivityParticipation> GetByRelativeIndex(int relativeIndex)
         {
             var relativeDate = DateTimeOffset.UtcNow.AddMonths(relativeIndex);
-            return Task.FromResult(ActivityParticipations.Where(i => i.ParticipationDate.Year == relativeDate.Year && i.ParticipationDate.Month == relativeDate.Month));
+            return ActivityParticipations.Where(i => i.ParticipationDate.Year == relativeDate.Year && i.ParticipationDate.Month == relativeDate.Month);
         }
 
         private static List<ActivityParticipation> BootstrapUserActivities()
@@ -117,9 +122,7 @@ namespace Wellness.Client.Services.Mock
 
             return Activities.ElementAt(index);
         }
-
-
-
+               
         private static List<Activity> GetActivities()
         {
             var activities = new List<Activity>();

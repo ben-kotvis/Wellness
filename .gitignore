@@ -292,3 +292,6 @@ __pycache__/
 #Tools App Settings File
 .ionide/
 .metals/
+
+.fake
+.ionide
