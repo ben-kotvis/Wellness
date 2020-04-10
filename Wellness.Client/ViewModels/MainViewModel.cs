@@ -74,6 +74,7 @@ namespace Wellness.Client.ViewModels
         {
             SelectedRelativeIndex = args.Month.RelativeIndex;
             await SetActivityParticipations();
+            await SetEventParticipations();
         }
 
         private async Task SetActivityParticipations()
@@ -108,12 +109,12 @@ namespace Wellness.Client.ViewModels
             await _eventParticipationService.Create(new EventParticipation()
             {
                 Id = Guid.NewGuid(),
-                EventName = SelectedActivityName,
-                Points = NumberOfMinutes,
-                Date = SelectedActivityDate                
+                EventName = SelectedEventName,
+                Points = 12,
+                Date = SelectedEventDate
             });
 
-            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month);
+            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedEventDate.Month);
 
             await SetEventParticipations();
 
