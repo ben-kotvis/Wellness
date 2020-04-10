@@ -1,0 +1,44 @@
+﻿@using Wellness.Model
+@using System.Globalization
+@using Wellness.Client.Components.UserParticipation.Activities.Add
+
+@inherits Components.UserParticipation.Events.List.UserEventsComponent
+
+
+
+@if (!EventParticipations.Any())
+{ 
+    <span>No activities have been created for the selected month.</span>
+}
+else
+{
+    <MatTable Items="@EventParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
+        <MatTableHeader>
+            <th></th>
+            <th>Event</th>
+            <th>Uploaded Files</th>
+            <th>Points</th>
+            <th>Date</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>
+                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
+            </td>
+            <td>@context.EventName</td>
+            <td>@context.Attachment.Name</td>
+            <td>@context.Points</td>
+            <td>@context.Date.ToString("MM/dd/yyyy")</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>Delete Confirmation</MatDialogTitle>
+    <MatDialogContent>
+        <p>Are you sure you want to delete this Event?</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">Cancel</MatButton>
+        <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>

@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class EventParticipation : ModelBase, IParticipate
+    public class EventParticipation : ModelBase
     {
-        public Guid UserParticipationId { get; set; }
-        public UserParticipation UserParticipation { get; set; }
-
-        public Guid EventId { get; set; }
-        public Event Event { get; set; }
-
-        public Guid? EventAttachmentId { get; set; }
+        public string EventName { get; set; }
         public EventAttachment Attachment { get; set; }
 
         public DateTimeOffset Date { get; set; }

@@ -1,0 +1,25 @@
+﻿@using Wellness.Model
+@using System.Globalization
+@inherits Components.UserParticipation.Events.Add.NewEventComponent
+
+<div style="width: 100%; max-width: 360px; background-color: var(--theme-palette-background-paper);">
+    <p>
+        <MatSelect Label="Selected Activity" @bind-Value="ViewModel.SelectedEventName">
+            <MatOptionString Value="">None</MatOptionString>
+            @foreach (var context in Events)
+            {
+                <MatOptionString @bind-Value="@context.Name">@context.Name</MatOptionString>
+            }
+        </MatSelect>
+    </p>
+    <p>
+        <MatFileUpload OnChange="@FilesReady"></MatFileUpload>
+    </p>
+    <p>
+        <MatDatePicker Label="Event Date" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
+    </p>
+    <p>
+        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">Save</MatButton>
+    </p>
+</div>
+

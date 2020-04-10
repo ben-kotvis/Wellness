@@ -4,6 +4,8 @@
 @using Wellness.Client.Components.MonthsMenu
 @using Wellness.Client.Components.UserParticipation.Activities.List
 @using Wellness.Client.Components.UserParticipation.Activities.Add
+@using Wellness.Client.Components.UserParticipation.Events.List
+@using Wellness.Client.Components.UserParticipation.Events.Add
 @inherits Wellness.Client.Pages.IndexComponent
 
 
@@ -34,13 +36,14 @@ else
         </div>
 
         <div class="content">
-            <MatTabGroup ActiveIndex="@ViewModel.ActivityTabIndex">
+            <MatTabGroup ActiveIndex="@ViewModel.EventTabIndex">
                 <MatTab Label="Events">
-                    Event Table
+                    <UserEvents EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
                 </MatTab>
                 <MatTab Label="New">
-
-
+                    <NewEvent Events="@ViewModel.Events"
+                                 ViewModel="@ViewModel"
+                                 OnSaveSelected="@ViewModel.SaveEvent" />
                 </MatTab>
             </MatTabGroup>
 

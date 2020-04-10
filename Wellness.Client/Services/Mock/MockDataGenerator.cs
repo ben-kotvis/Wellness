@@ -11,12 +11,16 @@ namespace Wellness.Client.Services.Mock
     public class MockDataGenerator
     {
         static List<Activity> Activities;
+        static List<Event> Events;
         static List<ActivityParticipation> ActivityParticipations;
+        static List<EventParticipation> EventParticipations;
 
         static MockDataGenerator()
         {
             Activities = GetActivities();
             ActivityParticipations = BootstrapUserActivities();
+            Events = GetEvents();
+            EventParticipations = BootstrapUserEvents();
         }
 
         public static Guid CompanyId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f36");
@@ -63,6 +67,51 @@ namespace Wellness.Client.Services.Mock
             return activityManagementMock.Object;
         }
 
+        public static IEventManagementService CreateEventManagement()
+        {
+            var eventManagementMock = new Mock<IEventManagementService>();
+            eventManagementMock.Setup(ams => ams.GetAll())
+            .Returns(() => {
+                return Task.FromResult(new List<Event>(Events).AsEnumerable());
+            });
+
+            eventManagementMock.Setup(ams => ams.Create(It.IsAny<Event>())).Returns((Event a) =>
+            {
+                a.Common = CreateCommon();                               
+                Events.Add(a);                
+                return Task.FromResult(true);
+            });
+
+            eventManagementMock.Setup(ams => ams.Update(It.IsAny<Event>())).Returns((Event a) =>
+            {
+                Events.ForEach(ap =>
+                {
+                    if (ap.Id == a.Id)
+                    {
+                        ap.Active = a.Active;
+                        ap.Name = a.Name;
+                        ap.AnnualMaximum = a.AnnualMaximum;
+                        ap.Points = a.Points;                        
+                    }
+                });
+                return Task.FromResult(true);
+            });
+
+            eventManagementMock.Setup(ams => ams.Disable(It.IsAny<Guid>())).Returns((Guid id) =>
+            {
+                Activities.ForEach(ap =>
+                {
+                    if(ap.Id == id)
+                    {
+                        ap.Active = false;
+                    }
+                });
+                return Task.FromResult(true);
+            });
+
+            return eventManagementMock.Object;
+        }
+
         public static IActivityParticipationService CreateActivityParticipation()
         {
             var activityParticipationMock = new Mock<IActivityParticipationService>();
@@ -84,6 +133,31 @@ namespace Wellness.Client.Services.Mock
             return activityParticipationMock.Object;
         }
 
+        public static IEventParticipationService CreateEventParticipation()
+        {
+            var eventParticipationMock = new Mock<IEventParticipationService>();
+            eventParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>()))
+                .Returns((int i) => 
+                {                    
+                    var relativeDate = DateTimeOffset.UtcNow.AddMonths(i);
+                    var filtered = EventParticipations.Where(i => i.Date.Year == relativeDate.Year && i.Date.Month == relativeDate.Month);
+                    return Task.FromResult(new List<EventParticipation>(filtered).AsEnumerable());
+                });
+
+            eventParticipationMock.Setup(ams => ams.Create(It.IsAny<EventParticipation>())).Returns((EventParticipation ap) =>
+            {
+                ap.Common = CreateCommon();
+                EventParticipations.Add(ap);
+                return Task.FromResult(true);
+            });
+
+            eventParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
+            {
+                EventParticipations.RemoveAll(ap => ap.Id == id);
+                return Task.FromResult(true);
+            });
+            return eventParticipationMock.Object;
+        }
         private static IEnumerable<ActivityParticipation> GetByRelativeIndex(int relativeIndex)
         {
             var relativeDate = DateTimeOffset.UtcNow.AddMonths(relativeIndex);
@@ -118,11 +192,53 @@ namespace Wellness.Client.Services.Mock
         private static Activity GetActivity()
         {
             var random = new Random();
-            var index = random.Next(0, 7);
+            var index = random.Next(0, 9);
 
             return Activities.ElementAt(index);
         }
-               
+
+        private static List<EventParticipation> BootstrapUserEvents()
+        {
+            var userEvents = new List<EventParticipation>();
+
+            for (var i = 0; i < 22; i++)
+            {
+                userEvents.Add(CreateEvent());
+            }
+
+            return userEvents;
+        }
+        private static EventParticipation CreateEvent()
+        {
+            var random = new Random();
+            var eventObj = GetEvent();
+            return new EventParticipation()
+            {
+                Id = Guid.NewGuid(),
+                EventName = eventObj.Name,
+                Points = eventObj.Points,                
+                Date = DateTimeOffset.UtcNow.AddDays(random.Next(0, 60) * -1)
+            };
+        }
+                       
+        private static Event GetEvent()
+        {
+            var random = new Random();
+            var index = random.Next(0, 3);
+
+            return Events.ElementAt(index);
+        }
+
+        private static List<Event> GetEvents()
+        {
+            var events = new List<Event>();
+            events.Add(new Event() { Id = Guid.NewGuid(), Points = 10, AnnualMaximum = 100, Active = true, Name = "5K Run", Common = CreateCommon() });
+            events.Add(new Event() { Id = Guid.NewGuid(), Points = 50, AnnualMaximum = 100, Active = true, Name = "Annual Health Assessment", Common = CreateCommon() });
+            events.Add(new Event() { Id = Guid.NewGuid(), Points = 25, AnnualMaximum = 100, Active = true, Name = "Dental Cleaning", Common = CreateCommon() });
+            events.Add(new Event() { Id = Guid.NewGuid(), Points = 20, AnnualMaximum = 100, Active = true, Name = "10K Run", Common = CreateCommon() });
+            return events;
+        }
+
         private static List<Activity> GetActivities()
         {
             var activities = new List<Activity>();
@@ -132,8 +248,11 @@ namespace Wellness.Client.Services.Mock
             activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Golfing", Common = CreateCommon() });
             activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Basketball", Common = CreateCommon() });
             activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Resistance Training", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Hot Yoga", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Martial Arts", Common = CreateCommon() });
+            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Yoga/Pilates/Stretching", Common = CreateCommon() });
+            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Racquetball", Common = CreateCommon() });
+            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Rock Climbing", Common = CreateCommon() });
+            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Chopping/splitting wood", Common = CreateCommon() });
+            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Roller Blading/Roller Skating/Ice Skating", Common = CreateCommon() });
             return activities;
         }
         
