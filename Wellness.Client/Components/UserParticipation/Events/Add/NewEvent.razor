@@ -2,24 +2,24 @@
 @using System.Globalization
 @inherits Components.UserParticipation.Events.Add.NewEventComponent
 
-<div style="width: 100%; max-width: 360px; background-color: var(--theme-palette-background-paper);">
-    <p>
-        <MatSelect Label="Selected Activity" @bind-Value="ViewModel.SelectedEventName">
-            <MatOptionString Value="">None</MatOptionString>
-            @foreach (var context in Events)
-            {
-                <MatOptionString @bind-Value="@context.Name">@context.Name</MatOptionString>
-            }
-        </MatSelect>
-    </p>
-    <p>
+<div style="width: 50%; background-color: var(--theme-palette-background-paper);">
+    <div>
+        <MatAutocompleteList FullWidth="true" Items="@Events" TItem="Event" Label="Select Event" CustomStringSelector="@(i => i.Name)" @bind-Value="ViewModel.SelectedEvent">
+            <ItemTemplate>
+                <div>
+                    <span>@context.Name</span>
+                </div>
+            </ItemTemplate>
+        </MatAutocompleteList>
+    </div>
+    <div>
         <MatFileUpload OnChange="@FilesReady"></MatFileUpload>
-    </p>
-    <p>
-        <MatDatePicker Label="Event Date" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
-    </p>
-    <p>
+    </div>
+    <div>
+        <MatDatePicker FullWidth="true" Label="Event Date" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
+    </div>
+    <div class="text-right p-2" >
         <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">Save</MatButton>
-    </p>
+    </div>
 </div>
 

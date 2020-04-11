@@ -34,19 +34,19 @@ namespace Wellness.Client.ViewModels
             _eventManagementService = eventManagementService;
         }
 
-        public int ActivityTabIndex { get; set; }
-        public int EventTabIndex { get; set; }
+        public int ActivityTabIndex { get; set; } = 1;
+        public int EventTabIndex { get; set; } = 1;
 
         private IActivityManagementService ActivityManagement { get; set; }
 
         public string SelectedId { set; get; } = Guid.Empty.ToString();
 
         public int SelectedRelativeIndex { get; set; } = 0;
-        public string SelectedActivityName { get; set; }
+        public Activity SelectedActivity { get; set; }
         public int NumberOfMinutes { get; set; }
         public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
 
-        public string SelectedEventName { get; set; }
+        public Event SelectedEvent { get; set; }
         public string EventAttachmentId { get; set; }
         public DateTime SelectedEventDate { get; set; } 
 
@@ -67,7 +67,7 @@ namespace Wellness.Client.ViewModels
             await SetActivityParticipations();
             await SetEventParticipations();
             Activities = await _activityManagementService.GetAll();            
-            Events = await _eventManagementService.GetAll();
+            Events = await _eventManagementService.GetAll();            
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)
@@ -92,7 +92,7 @@ namespace Wellness.Client.ViewModels
             await _activityParticipationService.Create(new ActivityParticipation()
             {
                 Id = Guid.NewGuid(),
-                ActivityName = SelectedActivityName,
+                ActivityName = SelectedActivity.Name,
                 Minutes = NumberOfMinutes,
                 ParticipationDate = SelectedActivityDate
             });
@@ -101,7 +101,7 @@ namespace Wellness.Client.ViewModels
             
             await SetActivityParticipations();
 
-            ActivityTabIndex = 0;
+            ActivityTabIndex = 1;
         }
 
         public async Task SaveEvent()
@@ -109,7 +109,7 @@ namespace Wellness.Client.ViewModels
             await _eventParticipationService.Create(new EventParticipation()
             {
                 Id = Guid.NewGuid(),
-                EventName = SelectedEventName,
+                EventName = SelectedEvent.Name,
                 Points = 12,
                 Date = SelectedEventDate
             });
@@ -118,7 +118,7 @@ namespace Wellness.Client.ViewModels
 
             await SetEventParticipations();
 
-            EventTabIndex = 0;
+            EventTabIndex = 1;
         }
     }
 }

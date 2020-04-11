@@ -13,6 +13,11 @@ namespace Wellness.Client.Pages
 {
     public class IndexComponent : WellnessComponentBase<MainViewModel>
     {
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            return base.OnAfterRenderAsync(firstRender);
+        }
+
         [Inject] public override MainViewModel ViewModel { get; set; }
     }
 }

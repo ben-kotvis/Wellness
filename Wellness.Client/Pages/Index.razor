@@ -6,6 +6,7 @@
 @using Wellness.Client.Components.UserParticipation.Activities.Add
 @using Wellness.Client.Components.UserParticipation.Events.List
 @using Wellness.Client.Components.UserParticipation.Events.Add
+@using Wellness.Client.Components.Shared
 @inherits Wellness.Client.Pages.IndexComponent
 
 
@@ -23,29 +24,29 @@ else
         <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
         <div class="content">
 
-            <MatTabGroup ActiveIndex="@ViewModel.ActivityTabIndex">
-                <MatTab Label="Activities">
-                    <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
-                </MatTab>
+            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
                 <MatTab Label="New">
                     <NewActivity Activities="@ViewModel.Activities"
                                  ViewModel="@ViewModel"
                                  OnSaveSelected="@ViewModel.SaveActivity" />
                 </MatTab>
-            </MatTabGroup>
+                <MatTab Label="Activities">
+                    <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                </MatTab>
+            </WellnessMatTabGroup>
         </div>
 
         <div class="content">
-            <MatTabGroup ActiveIndex="@ViewModel.EventTabIndex">
+            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
+                <MatTab Label="New">
+                    <NewEvent Events="@ViewModel.Events"
+                              ViewModel="@ViewModel"
+                              OnSaveSelected="@ViewModel.SaveEvent" />
+                </MatTab>
                 <MatTab Label="Events">
                     <UserEvents EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
                 </MatTab>
-                <MatTab Label="New">
-                    <NewEvent Events="@ViewModel.Events"
-                                 ViewModel="@ViewModel"
-                                 OnSaveSelected="@ViewModel.SaveEvent" />
-                </MatTab>
-            </MatTabGroup>
+            </WellnessMatTabGroup>
 
         </div>
     </div>

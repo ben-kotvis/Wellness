@@ -2,24 +2,24 @@
 @using System.Globalization
 @inherits Components.UserParticipation.Activities.Add.NewActivityComponent
 
-<div style="width: 100%; max-width: 360px; background-color: var(--theme-palette-background-paper);">
-    <p>
-        <MatSelect Label="Selected Activity" @bind-Value="ViewModel.SelectedActivityName">
-            <MatOptionString Value="">None</MatOptionString>
-            @foreach (var activity in Activities)
-            {
-                <MatOptionString @bind-Value="@activity.Name">@activity.Name</MatOptionString>
-            }
-        </MatSelect>
-    </p>
-    <p>
-        <MatTextField @bind-Value="ViewModel.NumberOfMinutes" Label="Number of Minutes"></MatTextField>
-    </p>
-    <p>
-        <MatDatePicker Label="Activity Date" TValue="DateTime" @bind-Value="ViewModel.SelectedActivityDate"></MatDatePicker>
-    </p>
-    <p>
+<div style="width: 50%; background-color: var(--theme-palette-background-paper);">
+    <div>
+        <MatAutocompleteList FullWidth="true" Items="@Activities" TItem="Activity" Label="Select Activity" CustomStringSelector="@(i => i.Name)" @bind-Value="ViewModel.SelectedActivity">
+            <ItemTemplate>
+                <div>
+                    <span>@context.Name</span>
+                </div>
+            </ItemTemplate>
+        </MatAutocompleteList>
+    </div>
+    <div>
+        <MatTextField FullWidth="true" @bind-Value="ViewModel.NumberOfMinutes" Label="Number of Minutes"></MatTextField>
+    </div>
+    <div>
+        <MatDatePicker FullWidth="true"  Label="Activity Date" TValue="DateTime" @bind-Value="ViewModel.SelectedActivityDate"></MatDatePicker>
+    </div>
+    <div class="text-right p-2">
         <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">Save</MatButton>
-    </p>
+    </div>
 </div>
 

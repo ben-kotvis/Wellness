@@ -13,6 +13,7 @@ namespace Wellness.Client.Components
         {
             await ViewModel.OnInit();
         }
+
         public abstract T ViewModel { get; set; }
     }
 }
