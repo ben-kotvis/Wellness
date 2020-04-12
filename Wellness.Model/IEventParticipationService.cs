@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,5 +13,9 @@ namespace Wellness.Model
         Task<IEnumerable<EventParticipation>> GetByRelativeMonthIndex(int relativeMonthIndex);
 
         Task Delete(Guid id);
+
+        Task<Guid> UploadFile(Func<Stream, Task> streamTask);
+
+        Task<EventAttachment> GetAttachment(Guid fileId);
     }
 }

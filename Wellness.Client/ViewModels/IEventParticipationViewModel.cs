@@ -9,7 +9,8 @@ namespace Wellness.Client.ViewModels
     public interface IEventParticipationViewModel
     {
         Event SelectedEvent { get; set; }
-        string EventAttachmentId { get; set; }
-        DateTime SelectedEventDate { get; set; } 
+        Guid EventAttachmentId { get; set; }
+        DateTime SelectedEventDate { get; set; }
+        Task EventFileAttached(EventAttachmentArgs args);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
 using Moq;
-
+using System.IO;
 
 namespace Wellness.Client.Services.Mock
 {
@@ -14,6 +14,7 @@ namespace Wellness.Client.Services.Mock
         static List<Event> Events;
         static List<ActivityParticipation> ActivityParticipations;
         static List<EventParticipation> EventParticipations;
+        static List<EventAttachment> EventAttachments;
 
         static MockDataGenerator()
         {
@@ -21,6 +22,7 @@ namespace Wellness.Client.Services.Mock
             ActivityParticipations = BootstrapUserActivities();
             Events = GetEvents();
             EventParticipations = BootstrapUserEvents();
+            EventAttachments = new List<EventAttachment>();
         }
 
         public static Guid CompanyId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f36");
@@ -144,6 +146,12 @@ namespace Wellness.Client.Services.Mock
                     return Task.FromResult(new List<EventParticipation>(filtered).AsEnumerable());
                 });
 
+            eventParticipationMock.Setup(ams => ams.GetAttachment(It.IsAny<Guid>()))
+                .Returns((Guid id) =>
+                {
+                    return Task.FromResult(EventAttachments.FirstOrDefault(i => i.Id == id));
+                });
+
             eventParticipationMock.Setup(ams => ams.Create(It.IsAny<EventParticipation>())).Returns((EventParticipation ap) =>
             {
                 ap.Common = CreateCommon();
@@ -151,11 +159,41 @@ namespace Wellness.Client.Services.Mock
                 return Task.FromResult(true);
             });
 
+            eventParticipationMock.Setup(ams => ams.UploadFile(It.IsAny<Func<Stream, Task>>())).Returns(async (Func<Stream, Task> f) =>
+            {
+                Guid id = Guid.NewGuid();
+                var fileName = Path.GetTempFileName();
+                Console.WriteLine(fileName);
+
+                using (var file = File.Create(fileName))
+                {
+                    await f(file);
+                }
+
+                FileInfo info = new FileInfo(fileName);
+                Console.WriteLine(info.FullName);
+                Console.WriteLine(info.Length);
+
+                var fileText = await File.ReadAllTextAsync(fileName);
+                Console.WriteLine(fileText);
+
+                EventAttachments.Add(new EventAttachment()
+                {
+                    Id = id,
+                    FilePath = $"file://{info.FullName}",
+                    LocalPath = fileName,
+                    Name = id.ToString()
+                });
+
+                return id;
+            });
+
             eventParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
             {
                 EventParticipations.RemoveAll(ap => ap.Id == id);
                 return Task.FromResult(true);
             });
+
             return eventParticipationMock.Object;
         }
         private static IEnumerable<ActivityParticipation> GetByRelativeIndex(int relativeIndex)

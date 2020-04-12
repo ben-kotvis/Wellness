@@ -47,7 +47,7 @@ namespace Wellness.Client.ViewModels
         public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
 
         public Event SelectedEvent { get; set; }
-        public string EventAttachmentId { get; set; }
+        public Guid EventAttachmentId { get; set; }
         public DateTime SelectedEventDate { get; set; } 
 
         public async Task ActivityParticipationDeleted(Guid id)
@@ -68,6 +68,11 @@ namespace Wellness.Client.ViewModels
             await SetEventParticipations();
             Activities = await _activityManagementService.GetAll();            
             Events = await _eventManagementService.GetAll();            
+        }
+
+        public async Task EventFileAttached(EventAttachmentArgs args)
+        {
+            EventAttachmentId = await _eventParticipationService.UploadFile(args.WriteToStreamAsync);
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)
@@ -106,10 +111,12 @@ namespace Wellness.Client.ViewModels
 
         public async Task SaveEvent()
         {
+            var attachment = await _eventParticipationService.GetAttachment(EventAttachmentId);
             await _eventParticipationService.Create(new EventParticipation()
             {
                 Id = Guid.NewGuid(),
                 EventName = SelectedEvent.Name,
+                Attachment = attachment,
                 Points = 12,
                 Date = SelectedEventDate
             });

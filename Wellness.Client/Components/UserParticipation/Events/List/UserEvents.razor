@@ -25,7 +25,7 @@ else
                 <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
             </td>
             <td>@context.EventName</td>
-            <td>@context.Attachment?.Name</td>
+            <td><a href="@context.Attachment?.FilePath" target="_top">@context.Attachment?.Name</a></td>
             <td>@context.Points</td>
             <td>@context.Date.ToString("MM/dd/yyyy")</td>
         </MatTableRow>

@@ -41,6 +41,7 @@ else
                 <MatTab Label="New">
                     <NewEvent Events="@ViewModel.Events"
                               ViewModel="@ViewModel"
+                             OnFileAttached="@ViewModel.EventFileAttached"
                               OnSaveSelected="@ViewModel.SaveEvent" />
                 </MatTab>
                 <MatTab Label="Events">
