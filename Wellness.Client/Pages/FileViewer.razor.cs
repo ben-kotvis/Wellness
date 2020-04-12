@@ -15,6 +15,9 @@ namespace Wellness.Client.Pages
     {
         [Inject] public override FileViewerViewModel ViewModel { get; set; }
 
-
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+        }
     }
 }
