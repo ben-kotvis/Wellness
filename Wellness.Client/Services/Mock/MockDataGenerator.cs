@@ -159,7 +159,7 @@ namespace Wellness.Client.Services.Mock
                 return Task.FromResult(true);
             });
 
-            eventParticipationMock.Setup(ams => ams.UploadFile(It.IsAny<Func<Stream, Task>>())).Returns(async (Func<Stream, Task> f) =>
+            eventParticipationMock.Setup(ams => ams.UploadFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Func<Stream, Task>>())).Returns(async (string n, string ct, Func<Stream, Task> f) =>
             {
                 Guid id = Guid.NewGuid();
                 var fileName = Path.GetTempFileName();
@@ -170,19 +170,13 @@ namespace Wellness.Client.Services.Mock
                     await f(file);
                 }
 
-                FileInfo info = new FileInfo(fileName);
-                Console.WriteLine(info.FullName);
-                Console.WriteLine(info.Length);
-
-                var fileText = await File.ReadAllTextAsync(fileName);
-                Console.WriteLine(fileText);
-
                 EventAttachments.Add(new EventAttachment()
                 {
                     Id = id,
-                    FilePath = $"file://{info.FullName}",
+                    ContentType = ct,
+                    FilePath = $"file://{fileName}",
                     LocalPath = fileName,
-                    Name = id.ToString()
+                    Name = n
                 });
 
                 return id;

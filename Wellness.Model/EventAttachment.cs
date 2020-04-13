@@ -13,10 +13,7 @@ namespace Wellness.Model
         public string FilePath { get; set; }
         public long FileSize { get; set; }
 
-        public string LocalPath 
-        {
-            get { return string.Format("/wellnessFiles/{0}", this.Id); }
-            set { return; }
-        }
+        public string LocalPath { get; set; }
+        
     }
 }

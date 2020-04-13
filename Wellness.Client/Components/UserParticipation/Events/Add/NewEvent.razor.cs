@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using Wellness.Client.ViewModels;
 using Wellness.Model;
 
+
 namespace Wellness.Client.Components.UserParticipation.Events.Add
 {
     public class NewEventComponent : ComponentBase
     {
+
         [Parameter] public IEventParticipationViewModel ViewModel { get; set; }
         [Parameter] public EventCallback OnSaveSelected { get; set; }
         [Parameter] public IEnumerable<Event> Events { get; set; }
@@ -29,14 +31,8 @@ namespace Wellness.Client.Components.UserParticipation.Events.Add
                     Type = file.Type,
                     WriteToStreamAsync = (async (Stream s) =>
                     {
-                        try
-                        {
-                            await file.WriteToStreamAsync(s);
-                        }
-                        catch(Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
+                        Console.WriteLine(file.Type);
+                        await file.WriteToStreamAsync(s);
                     })
                 };
                 await OnFileAttached.InvokeAsync(args);

@@ -14,7 +14,7 @@ namespace Wellness.Model
 
         Task Delete(Guid id);
 
-        Task<Guid> UploadFile(Func<Stream, Task> streamTask);
+        Task<Guid> UploadFile(string name, string contentType, Func<Stream, Task> streamTask);
 
         Task<EventAttachment> GetAttachment(Guid fileId);
     }

@@ -72,7 +72,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task EventFileAttached(EventAttachmentArgs args)
         {
-            EventAttachmentId = await _eventParticipationService.UploadFile(args.WriteToStreamAsync);
+            EventAttachmentId = await _eventParticipationService.UploadFile(args.Name, args.Type, args.WriteToStreamAsync);
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)

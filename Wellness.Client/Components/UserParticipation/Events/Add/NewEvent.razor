@@ -2,6 +2,8 @@
 @using System.Globalization
 @inherits Components.UserParticipation.Events.Add.NewEventComponent
 
+
+
 <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
     <div>
         <MatAutocompleteList FullWidth="true" Items="@Events" TItem="Event" Label="Select Event" CustomStringSelector="@(i => i.Name)" @bind-Value="ViewModel.SelectedEvent">
@@ -13,7 +15,7 @@
         </MatAutocompleteList>
     </div>
     <div>
-        <MatFileUpload OnChange="@FilesReady"></MatFileUpload>
+        <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
     </div>
     <div>
         <MatDatePicker FullWidth="true" Label="Event Date" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
