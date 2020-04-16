@@ -45,7 +45,7 @@ else
                               OnSaveSelected="@ViewModel.SaveEvent" />
                 </MatTab>
                 <MatTab Label="Events">
-                    <UserEvents EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+                    <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
                 </MatTab>
             </WellnessMatTabGroup>
 

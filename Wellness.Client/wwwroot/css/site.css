@@ -1,4 +1,13 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+.mdc-dialog .mdc-dialog__container {
+    width: 100%;
+}
+
+.mdc-dialog .mdc-dialog__surface {
+    max-width: none;
+    width: 70%;
+}
+
 .demo-mat-card {
     max-width: 95%;
 }

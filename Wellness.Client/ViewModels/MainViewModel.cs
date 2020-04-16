@@ -1,7 +1,9 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
@@ -33,6 +35,11 @@ namespace Wellness.Client.ViewModels
             _eventParticipationService = eventParticipationService;
             _eventManagementService = eventManagementService;
         }
+
+
+        public string PreviewFileType { get; set; }
+        public string PreviewDataUrl { get; set; }
+        public bool PreviewDialogIsOpen { get; set; }
 
         public int ActivityTabIndex { get; set; } = 1;
         public int EventTabIndex { get; set; } = 1;
@@ -92,6 +99,16 @@ namespace Wellness.Client.ViewModels
             EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex);            
         }
 
+        public async Task PreviewAttachment(Guid id)
+        {
+            var eventParticipation = EventParticipations.FirstOrDefault(i => i.Id == id);
+
+            var bytes = await File.ReadAllBytesAsync(eventParticipation.Attachment.LocalPath);
+            PreviewDialogIsOpen = true; 
+            PreviewDataUrl = $"data:{eventParticipation.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}"; 
+            PreviewFileType = eventParticipation.Attachment?.ContentType;            
+        }
+
         public async Task SaveActivity()
         {
             await _activityParticipationService.Create(new ActivityParticipation()
@@ -101,6 +118,11 @@ namespace Wellness.Client.ViewModels
                 Minutes = NumberOfMinutes,
                 ParticipationDate = SelectedActivityDate
             });
+
+            //clear out UI
+            SelectedActivity = default;
+            SelectedActivityDate = default;
+            NumberOfMinutes = 0;
 
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month);
             
@@ -120,6 +142,10 @@ namespace Wellness.Client.ViewModels
                 Points = 12,
                 Date = SelectedEventDate
             });
+
+            //clear out UI
+            SelectedEvent = default;
+            SelectedEventDate = default;
 
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedEventDate.Month);
 

@@ -1,5 +1,6 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ namespace Wellness.Client.Components.UserParticipation.Events.Add
 {
     public class NewEventComponent : ComponentBase
     {
-
+        [Inject] IJSRuntime JSRuntime { get; set; }
         [Parameter] public IEventParticipationViewModel ViewModel { get; set; }
         [Parameter] public EventCallback OnSaveSelected { get; set; }
         [Parameter] public IEnumerable<Event> Events { get; set; }
@@ -31,7 +32,6 @@ namespace Wellness.Client.Components.UserParticipation.Events.Add
                     Type = file.Type,
                     WriteToStreamAsync = (async (Stream s) =>
                     {
-                        Console.WriteLine(file.Type);
                         await file.WriteToStreamAsync(s);
                     })
                 };

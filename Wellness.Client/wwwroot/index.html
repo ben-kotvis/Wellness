@@ -12,31 +12,6 @@
     <link href="css/site.css" rel="stylesheet" />
     <script src="_content/MatBlazor/dist/matBlazor.js"></script>
 
-    <script>
-        window.createUrlFromArray = (arrayOfBytes, fileType) => {
-            console.log(fileType);
-            var blob = new File([arrayOfBytes], "test.txt", { type: fileType });
-            return URL.createObjectURL(blob);
-        }
-
-        window.createUrl = (fileUploadElementId) => {
-
-            const file = document.querySelector('input[type=file]').files[0];
-            const reader = new FileReader();
-
-            reader.addEventListener("load", function () {
-                // convert image file to base64 string
-                preview.src = reader.result;
-            }, false);
-
-            if (file) {
-                return URL.createObjectURL(file);
-            }
-
-            return "";
-        }
-    </script>
-
 </head>
 
 <body>

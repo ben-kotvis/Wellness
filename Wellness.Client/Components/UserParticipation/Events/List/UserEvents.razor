@@ -7,7 +7,7 @@
 
 
 @if (!EventParticipations.Any())
-{ 
+{
     <span>No Events have been created for the selected month.</span>
 }
 else
@@ -25,7 +25,15 @@ else
                 <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
             </td>
             <td>@context.EventName</td>
-            <td><a href="@context.Attachment?.FilePath" target="_top">@context.Attachment?.Name</a></td>
+            <td>
+                @if (context.Attachment != null)
+                {
+                <span>
+                    @context.Attachment?.Name
+                                <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Id))"></MatIconButton>
+                            </span>
+                }
+            </td>
             <td>@context.Points</td>
             <td>@context.Date.ToString("MM/dd/yyyy")</td>
         </MatTableRow>
@@ -40,5 +48,15 @@ else
     <MatDialogActions>
         <MatButton OnClick="@(e => { dialogIsOpen = false; })">Cancel</MatButton>
         <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@ViewModel.PreviewDialogIsOpen">
+    <MatDialogTitle>Attachment View</MatDialogTitle>
+    <MatDialogContent Class="accordion">
+        <object data="@ViewModel.PreviewDataUrl" type="@ViewModel.PreviewFileType"></object>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { ViewModel.PreviewDialogIsOpen = false; })">Close</MatButton>
     </MatDialogActions>
 </MatDialog>
