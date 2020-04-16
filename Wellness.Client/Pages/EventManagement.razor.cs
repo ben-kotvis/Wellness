@@ -11,8 +11,9 @@ using Wellness.Model;
 
 namespace Wellness.Client.Pages
 {
-    public class ActivityManagementComponent : WellnessComponentBase<ActivityManagementViewModel>
+    public class EventManagementComponent : WellnessComponentBase<EventManagementViewModel>
     {
-        [Inject] public override ActivityManagementViewModel ViewModel { get; set; }
+        [Inject] public override EventManagementViewModel ViewModel { get; set; }
+
     }
 }
