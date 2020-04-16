@@ -119,16 +119,16 @@ namespace Wellness.Client.ViewModels
                 ParticipationDate = SelectedActivityDate
             });
 
-            //clear out UI
-            SelectedActivity = default;
-            SelectedActivityDate = default;
-            NumberOfMinutes = 0;
-
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month);
             
             await SetActivityParticipations();
 
             ActivityTabIndex = 1;
+
+            //clear out UI
+            SelectedActivity = default;
+            SelectedActivityDate = default;
+            NumberOfMinutes = 0;
         }
 
         public async Task SaveEvent()
@@ -142,16 +142,17 @@ namespace Wellness.Client.ViewModels
                 Points = 12,
                 Date = SelectedEventDate
             });
-
-            //clear out UI
-            SelectedEvent = default;
-            SelectedEventDate = default;
-
+                        
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedEventDate.Month);
 
             await SetEventParticipations();
 
             EventTabIndex = 1;
+
+            //clear out UI
+            SelectedEvent = default;
+            SelectedEventDate = default;
+            EventAttachmentId = default;
         }
     }
 }
