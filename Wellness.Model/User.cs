@@ -15,7 +15,5 @@ namespace Wellness.Model
         public decimal AnnualTotal { get; set; }
         public decimal AveragePointsPerMonth { get; set; }
 
-        public List<UserParticipation> Participations { get; set; }
-        
     }
 }

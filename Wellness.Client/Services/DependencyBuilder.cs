@@ -17,9 +17,11 @@ namespace Wellness.Client.Services
             services.AddSingleton<IActivityParticipationService>(MockDataGenerator.CreateActivityParticipation());
             services.AddSingleton<IEventManagementService>(MockDataGenerator.CreateEventManagement());
             services.AddSingleton<IEventParticipationService>(MockDataGenerator.CreateEventParticipation());
-            services.AddScoped<MainViewModel>();
+            services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
+            services.AddScoped<HomeViewModel>();
             services.AddScoped<ActivityManagementViewModel>();
             services.AddScoped<EventManagementViewModel>();
+            services.AddScoped<MainViewModel>();            
         }
     }
 }

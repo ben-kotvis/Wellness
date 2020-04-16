@@ -15,6 +15,7 @@ namespace Wellness.Client.Services.Mock
         static List<ActivityParticipation> ActivityParticipations;
         static List<EventParticipation> EventParticipations;
         static List<EventAttachment> EventAttachments;
+        static List<User> Users;
 
         static MockDataGenerator()
         {
@@ -23,9 +24,11 @@ namespace Wellness.Client.Services.Mock
             Events = GetEvents();
             EventParticipations = BootstrapUserEvents();
             EventAttachments = new List<EventAttachment>();
+            Users = BootstrapUsers();
         }
 
         public static Guid CompanyId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f36");
+        public static Guid CurrentUserId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f37");
         public static IActivityManagementService CreateActivityManagement()
         {
             var activityManagementMock = new Mock<IActivityManagementService>();
@@ -114,6 +117,18 @@ namespace Wellness.Client.Services.Mock
             return eventManagementMock.Object;
         }
 
+
+        public static IProfileService CreateProfile()
+        {
+            var profileServiceMock = new Mock<IProfileService>();
+            profileServiceMock.Setup(ams => ams.GetCurrent())
+                .Returns(() => Task.FromResult(Users.First(i => i.Id == CurrentUserId)));
+
+
+            return profileServiceMock.Object;
+        }
+
+
         public static IActivityParticipationService CreateActivityParticipation()
         {
             var activityParticipationMock = new Mock<IActivityParticipationService>();
@@ -196,6 +211,19 @@ namespace Wellness.Client.Services.Mock
             return ActivityParticipations.Where(i => i.ParticipationDate.Year == relativeDate.Year && i.ParticipationDate.Month == relativeDate.Month);
         }
 
+        private static List<User> BootstrapUsers()
+        {
+            var users = new List<User>();
+
+            users.Add(CreateUser(CurrentUserId, "Current", "User"));
+            users.Add(CreateUser(Guid.NewGuid(), "Test", "User1"));
+            users.Add(CreateUser(Guid.NewGuid(), "Test", "User2"));
+            users.Add(CreateUser(Guid.NewGuid(), "Test", "User3"));
+            users.Add(CreateUser(Guid.NewGuid(), "Test", "User4"));
+
+            return users;
+        }
+
         private static List<ActivityParticipation> BootstrapUserActivities()
         {
             var userActivities = new List<ActivityParticipation>();
@@ -207,6 +235,23 @@ namespace Wellness.Client.Services.Mock
 
             return userActivities;
         }
+
+        private static User CreateUser(Guid id, string firstName, string lastName)
+        {
+            var random = new Random();
+            var user =  new User()
+            {
+                Id = id,
+                Common = CreateCommon(),
+                FirstName = firstName,
+                LastName = lastName,
+                AnnualTotal = random.Next(30, 150)                
+            };
+
+            user.AveragePointsPerMonth = Math.Floor(user.AnnualTotal / DateTimeOffset.UtcNow.Month);
+            return user;
+        }
+
 
         private static ActivityParticipation CreateActivity()
         {

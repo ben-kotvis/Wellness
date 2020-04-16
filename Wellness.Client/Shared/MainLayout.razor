@@ -34,7 +34,12 @@
                         </MatHeadline6>
                     </div>
                     <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
-                        Visit ten places on our planet that are undergoing the biggest changes today.
+                        <b>Name</b><br />
+                        @ViewModel.CurrentUser.FirstName @ViewModel.CurrentUser.LastName<br />
+                        <b>Annual Total</b><br />
+                        @ViewModel.CurrentUser.AnnualTotal<br />
+                        <b>Points Per Month (Average)</b><br />
+                        @ViewModel.CurrentUser.AveragePointsPerMonth
                     </MatBody2>
                 </MatCardContent>
             </MatCard>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wellness.Client.ViewModels;
 
 namespace Wellness.Client.Shared
 {
@@ -13,6 +14,11 @@ namespace Wellness.Client.Shared
         public BaseMatIconButton MenuButton;
         public BaseMatMenu Menu;
 
+        [Inject] public MainViewModel ViewModel { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            await ViewModel.OnInit();
+        }
     }
 }
