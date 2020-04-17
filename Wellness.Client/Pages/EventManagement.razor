@@ -2,9 +2,10 @@
 
 @using Wellness.Model.ModelValidation
 @inject HttpClient Http
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
 @inherits Wellness.Client.Pages.EventManagementComponent
 
-<h2>Event Management</h2>
+<h2>@Loc["EventManagement"]</h2>
 
 <div class="float-right">
     <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
@@ -12,10 +13,10 @@
 <MatTable Items="@ViewModel.Events" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
     <MatTableHeader>
         <th></th>
-        <th>Name</th>
-        <th>Active</th>
-        <th>Created On</th>
-        <th>Created By</th>
+        <th>@Loc["Name"]</th>
+        <th>@Loc["Active"]</th>
+        <th>@Loc["CreatedOn"]</th>
+        <th>@Loc["CreatedBy"]</th>
     </MatTableHeader>
     <MatTableRow>
         <td>
@@ -34,18 +35,20 @@
     <FluentValidator></FluentValidator>
     <ValidationSummary />
     <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
-        <MatDialogTitle>Event</MatDialogTitle>
-        <MatDialogContent>
-            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name" Label="Name"></MatTextField>
-            <ValidationMessage For="() => ViewModel.NewOrEditEvent.Name"></ValidationMessage>
+        <MatDialogTitle>
+            @Loc["Event"]
+        </MatDialogTitle>
+                <MatDialogContent>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name" Label="@Loc["Name"]"></MatTextField>
+                    <ValidationMessage For="() => ViewModel.NewOrEditEvent.Name"></ValidationMessage>
 
-            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" Label="Points Per Event"></MatTextField>
-            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum " Label="Annual Max"></MatTextField>
-            <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="Active"></MatCheckbox>
-        </MatDialogContent>
-        <MatDialogActions>
-            <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">Cancel</MatButton>
-            <MatButton Type="submit">OK</MatButton>
-        </MatDialogActions>
-    </MatDialog>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" Label="@Loc["PointsPerEvent"]"></MatTextField>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum " Label="@Loc["AnnualMax"]"></MatTextField>
+                    <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="@Loc["Active"]"></MatCheckbox>
+                </MatDialogContent>
+                <MatDialogActions>
+                    <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">@Loc["Cancel"]</MatButton>
+                    <MatButton Type="submit">@Loc["OK"]</MatButton>
+                </MatDialogActions>
+</MatDialog>
 </EditForm>

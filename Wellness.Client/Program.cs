@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Wellness.Client.Services;
 using FluentValidation;
 using Wellness.Model.ModelValidation;
+using System.Globalization;
+using Microsoft.JSInterop;
 
 namespace Wellness.Client
 {
@@ -23,8 +25,20 @@ namespace Wellness.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
+            
+            builder.Services.AddLocalization();
 
-            await builder.Build().RunAsync();
+            var host = builder.Build();
+            var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
+            var result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
+            if (result != null)
+            {
+                var culture = new CultureInfo(result);
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+            }
+
+            await host.RunAsync();
         }
     }
 }

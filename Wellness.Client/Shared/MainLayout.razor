@@ -1,4 +1,5 @@
 ﻿@inherits MainLayoutComponent
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
 @using Wellness.Model
 @using Wellness.Client.Components.Shared
 
@@ -6,15 +7,15 @@
     <MatAppBar Fixed="true">
         <MatAppBarRow>
             <MatAppBarSection>
-                <MatNavItem Href="/"><MatAppBarTitle>Corporate Wellness Manager</MatAppBarTitle></MatNavItem>
+                <MatNavItem Href="/"><MatAppBarTitle>@Loc["Title"]</MatAppBarTitle></MatNavItem>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
                 <MatIconButton Icon="settings" @onclick="(async e => await Menu.OpenAsync(MenuButton.Ref))" @ref="MenuButton"></MatIconButton>
                 <MatMenu @ref="Menu">
                     <MatList>
-                        <MatListItem Href="/ActivityManagement">Manage Activities</MatListItem>
-                        <MatListItem Href="/EventManagement">Manage Events</MatListItem>
-                        <MatListItem Href="/FrequentlyAskedQuestionManagement">Manage FAQs</MatListItem>
+                        <MatListItem Href="/ActivityManagement">@Loc["ManageActivities"]</MatListItem>
+                        <MatListItem Href="/EventManagement">@Loc["ManageEvents"]</MatListItem>
+                        <MatListItem Href="/FrequentlyAskedQuestionManagement">@Loc["ManageFAQs"]</MatListItem>
                     </MatList>
                 </MatMenu>
             </MatAppBarSection>
@@ -30,20 +31,20 @@
                 <MatCardContent>
                     <div class="demo-mat-card-content">
                         <MatHeadline6 class="demo-mat-card-clean-margin">
-                            Totals
+                            @Loc["Totals"]
                         </MatHeadline6>
                     </div>
                     <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
                         <p>
-                            <b>Name</b><br />
+                            <b>@Loc["Name"]</b><br />
                             @ViewModel.CurrentUser.FirstName @ViewModel.CurrentUser.LastName
                         </p>
                         <p>
-                            <b>Annual Total</b><br />
+                            <b>@Loc["AnnualTotal"]</b><br />
                             @ViewModel.CurrentUser.AnnualTotal
                         </p>
                         <p>
-                            <b>Points Per Month (Average)</b><br />
+                            <b>@Loc["PointsPerMonthAverage"]</b><br />
                             @ViewModel.CurrentUser.AveragePointsPerMonth
                         </p>
                     </MatBody2>
@@ -54,14 +55,14 @@
                 <MatCardContent>
                     <div class="demo-mat-card-content">
                         <MatHeadline6 class="demo-mat-card-clean-margin">
-                            Search
+                            @Loc["Search"]
                         </MatHeadline6>
                     </div>
                     <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
                         <div class="mat-layout-grid p-0">
                             <div class="mat-layout-grid-inner">
                                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-10">
-                                    <MatTextField Class="w-100" @bind-Value="@ViewModel.SearchTerm" Label="Standard"></MatTextField>
+                                    <MatTextField Class="w-100" @bind-Value="@ViewModel.SearchTerm" Label="@Loc["Standard"]"></MatTextField>
                                 </div>
                                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2" style="padding-top: 5px;">
                                     <MatIconButton Icon="search" @onclick="ViewModel.Search"></MatIconButton>
@@ -72,21 +73,21 @@
                         <div class="p-2">
                             @if (ViewModel.SearchResults.Any())
                             {
-                                <b>Search Results</b>
-                                <MatList SingleSelection="true" TwoLine="true">
-                                    @foreach (var user in ViewModel.SearchResults)
+                            <b>Search Results</b>
+                            <MatList SingleSelection="true" TwoLine="true">
+                                @foreach (var user in ViewModel.SearchResults)
                                     {
-                                        <MatListItem Href="@user.Id.ToString()">
-                                            <MatListItemText>
-                                                <MatListItemPrimaryText>@user.FirstName @user.LastName</MatListItemPrimaryText>
-                                                <MatListItemSecondaryText>Annual Total: @user.AnnualTotal</MatListItemSecondaryText>
-                                            </MatListItemText>
-                                        </MatListItem>
+                                <MatListItem Href="@user.Id.ToString()">
+                                    <MatListItemText>
+                                        <MatListItemPrimaryText>@user.FirstName @user.LastName</MatListItemPrimaryText>
+                                        <MatListItemSecondaryText>Annual Total: @user.AnnualTotal</MatListItemSecondaryText>
+                                    </MatListItemText>
+                                </MatListItem>
                                     }
-                                </MatList>
+                            </MatList>
                             }
                         </div>
-                    </MatBody2>                        
+                    </MatBody2>
                 </MatCardContent>
             </MatCard>
 

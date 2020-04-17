@@ -1,9 +1,10 @@
 ﻿@page "/ActivityManagement"
 
 @inject HttpClient Http
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
 @inherits Wellness.Client.Pages.ActivityManagementComponent
 
-<h2>Activity Management</h2>
+<h2>@Loc["ActivityManagement"]</h2>
 
 <div class="float-right">
     <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
@@ -11,10 +12,10 @@
 <MatTable Items="@ViewModel.Activities" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
     <MatTableHeader>
         <th></th>
-        <th>Name</th>
-        <th>Active</th>
-        <th>Created On</th>
-        <th>Created By</th>
+        <th>@Loc["Name"]</th>
+        <th>@Loc["Active"]</th>
+        <th>@Loc["CreatedOn"]</th>
+        <th>@Loc["CreatedBy"]</th>
     </MatTableHeader>
     <MatTableRow>
         <td>
@@ -29,13 +30,19 @@
 </MatTable>
 
 <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
-    <MatDialogTitle>Activity</MatDialogTitle>
+    <MatDialogTitle>
+        @Loc["Activity"]
+    </MatDialogTitle>
     <MatDialogContent>
-        <MatTextField @bind-Value="ViewModel.ActivityName" Label="Name"></MatTextField>
-        <MatCheckbox @bind-Value="ViewModel.Active" Label="Active"></MatCheckbox>
+        <MatTextField @bind-Value="ViewModel.ActivityName" Label="@Loc["Name"]"></MatTextField>
+        <MatCheckbox @bind-Value="ViewModel.Active" Label="@Loc["Active"]"></MatCheckbox>
     </MatDialogContent>
     <MatDialogActions>
-        <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">Cancel</MatButton>
-        <MatButton OnClick="@ViewModel.Save">OK</MatButton>
-    </MatDialogActions>
+        <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">
+            @Loc["Cancel"]
+        </MatButton>
+        <MatButton OnClick="@ViewModel.Save">
+            @Loc["OK"]
+        </MatButton>
+</MatDialogActions>
 </MatDialog>
