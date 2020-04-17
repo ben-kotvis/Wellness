@@ -20,11 +20,14 @@ namespace Wellness.Client.ViewModels
 
         public IEnumerable<Event> Events { get; private set; }
 
+        public Event NewOrEditEvent { get; set; }
+
         private IEventManagementService _eventManagementService;
         
         public EventManagementViewModel(IEventManagementService eventManagementService)
         {
             _eventManagementService = eventManagementService;
+            NewOrEditEvent = new Event();
         }
 
         public async Task OnInit()
@@ -48,8 +51,11 @@ namespace Wellness.Client.ViewModels
         {
             DialogId = id;
             var existingItem = Events.FirstOrDefault(i => i.Id == id);
-            EventName = existingItem.Name;
-            Active = existingItem.Active;
+
+            NewOrEditEvent.Id = id;
+            NewOrEditEvent.Name = existingItem.Name;
+            NewOrEditEvent.Active = existingItem.Active;
+            NewOrEditEvent.AnnualMaximum = existingItem.AnnualMaximum;
 
             EditModalOpen = true;
         }
@@ -57,25 +63,14 @@ namespace Wellness.Client.ViewModels
         public async Task Save()
         {
             var eventObj = Events.FirstOrDefault(i => i.Id == DialogId);
-
-            Action<Event> action = (ac) =>
-            {
-                ac.Active = Active;
-                ac.Name = EventName;
-                ac.AnnualMaximum = AnnualMaximumPoints;
-                ac.Points = Points;
-            };
-
+            
             if(eventObj == default)
             {
-                eventObj = new Event();                
-                eventObj.Id = DialogId;
-                action.Invoke(eventObj);
-                await _eventManagementService.Create(eventObj);
+                NewOrEditEvent.Id = DialogId;
+                await _eventManagementService.Create(NewOrEditEvent);
             }
             else
             {
-                action.Invoke(eventObj);
                 await _eventManagementService.Update(eventObj);
             }
             

@@ -12,6 +12,7 @@ namespace Wellness.Client.ViewModels
 {    
     public class HomeViewModel : IViewModelBase, IActivityParticipationViewModel, IEventParticipationViewModel
     {
+        public Guid Id { get; set; }
         public IEnumerable<Activity> Activities { get; private set; }
         public IEnumerable<Event> Events { get; private set; }
 
@@ -70,9 +71,10 @@ namespace Wellness.Client.ViewModels
         }
 
         public async Task OnInit()
-        {
+        {            
             await SetActivityParticipations();
             await SetEventParticipations();
+
             Activities = await _activityManagementService.GetAll();            
             Events = await _eventManagementService.GetAll();            
         }
@@ -91,12 +93,12 @@ namespace Wellness.Client.ViewModels
 
         private async Task SetActivityParticipations()
         {
-            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex);            
+            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);            
         }
 
         private async Task SetEventParticipations()
         {
-            EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex);            
+            EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);            
         }
 
         public async Task PreviewAttachment(Guid id)
@@ -109,6 +111,14 @@ namespace Wellness.Client.ViewModels
             PreviewFileType = eventParticipation.Attachment?.ContentType;            
         }
 
+        public async Task SetUser(Guid id)
+        {
+            Console.WriteLine(id);
+            Id = id;
+            await SetActivityParticipations();
+            await SetEventParticipations();
+        }
+
         public async Task SaveActivity()
         {
             await _activityParticipationService.Create(new ActivityParticipation()
@@ -116,7 +126,8 @@ namespace Wellness.Client.ViewModels
                 Id = Guid.NewGuid(),
                 ActivityName = SelectedActivity.Name,
                 Minutes = NumberOfMinutes,
-                ParticipationDate = SelectedActivityDate
+                ParticipationDate = SelectedActivityDate,
+                UserId = Id
             });
 
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month);
@@ -140,7 +151,8 @@ namespace Wellness.Client.ViewModels
                 EventName = SelectedEvent.Name,
                 Attachment = attachment,
                 Points = 12,
-                Date = SelectedEventDate
+                Date = SelectedEventDate,
+                UserId = Id
             });
                         
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedEventDate.Month);

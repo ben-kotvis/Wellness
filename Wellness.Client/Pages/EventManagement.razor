@@ -1,9 +1,10 @@
 ﻿@page "/EventManagement"
 
+@using Wellness.Model.ModelValidation
 @inject HttpClient Http
 @inherits Wellness.Client.Pages.EventManagementComponent
 
-<h2>Activity Management</h2>
+<h2>Event Management</h2>
 
 <div class="float-right">
     <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
@@ -28,16 +29,23 @@
     </MatTableRow>
 </MatTable>
 
-<MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
-    <MatDialogTitle>Activity</MatDialogTitle>
-    <MatDialogContent>
-        <MatTextField @bind-Value="ViewModel.EventName" Label="Name"></MatTextField>
-        <MatTextField @bind-Value="ViewModel.Points" Label="Points Per Event"></MatTextField>
-        <MatTextField @bind-Value="ViewModel.AnnualMaximumPoints" Label="Annual Max"></MatTextField>
-        <MatCheckbox @bind-Value="ViewModel.Active" Label="Active"></MatCheckbox>
-    </MatDialogContent>
-    <MatDialogActions>
-        <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">Cancel</MatButton>
-        <MatButton OnClick="@ViewModel.Save">OK</MatButton>
-    </MatDialogActions>
-</MatDialog>
+
+<EditForm Model="@ViewModel.NewOrEditEvent" OnValidSubmit="@ViewModel.Save">
+    <FluentValidator></FluentValidator>
+    <ValidationSummary />
+    <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
+        <MatDialogTitle>Event</MatDialogTitle>
+        <MatDialogContent>
+            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name" Label="Name"></MatTextField>
+            <ValidationMessage For="() => ViewModel.NewOrEditEvent.Name"></ValidationMessage>
+
+            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" Label="Points Per Event"></MatTextField>
+            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum " Label="Annual Max"></MatTextField>
+            <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="Active"></MatCheckbox>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">Cancel</MatButton>
+            <MatButton Type="submit">OK</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</EditForm>

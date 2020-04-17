@@ -124,6 +124,11 @@ namespace Wellness.Client.Services.Mock
             profileServiceMock.Setup(ams => ams.GetCurrent())
                 .Returns(() => Task.FromResult(Users.First(i => i.Id == CurrentUserId)));
 
+            profileServiceMock.Setup(ams => ams.Get(It.IsAny<Guid>()))
+                .Returns((Guid id) => Task.FromResult(Users.First(i => i.Id == id)));
+
+            profileServiceMock.Setup(ams => ams.Find(It.IsAny<string>()))
+                .Returns((string searchText) => Task.FromResult(Users.Where(i => i.FirstName.ToLower().Contains(searchText.ToLower()) || i.LastName.ToLower().Contains(searchText.ToLower()))));
 
             return profileServiceMock.Object;
         }
@@ -132,8 +137,8 @@ namespace Wellness.Client.Services.Mock
         public static IActivityParticipationService CreateActivityParticipation()
         {
             var activityParticipationMock = new Mock<IActivityParticipationService>();
-            activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>()))
-                .Returns((int i) => Task.FromResult(new List<ActivityParticipation>(GetByRelativeIndex(i)).AsEnumerable()));
+            activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>(), It.IsAny<Guid>()))
+                .Returns((int i, Guid id) => Task.FromResult(new List<ActivityParticipation>(GetByRelativeIndex(i)).AsEnumerable()));
 
             activityParticipationMock.Setup(ams => ams.Create(It.IsAny<ActivityParticipation>())).Returns((ActivityParticipation ap) =>
             {
@@ -153,8 +158,8 @@ namespace Wellness.Client.Services.Mock
         public static IEventParticipationService CreateEventParticipation()
         {
             var eventParticipationMock = new Mock<IEventParticipationService>();
-            eventParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>()))
-                .Returns((int i) => 
+            eventParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>(), It.IsAny<Guid>()))
+                .Returns((int i, Guid id) => 
                 {                    
                     var relativeDate = DateTimeOffset.UtcNow.AddMonths(i);
                     var filtered = EventParticipations.Where(i => i.Date.Year == relativeDate.Year && i.Date.Month == relativeDate.Month);

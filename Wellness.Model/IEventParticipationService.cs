@@ -10,7 +10,7 @@ namespace Wellness.Model
     {
         Task Create(EventParticipation activityParticipation);
 
-        Task<IEnumerable<EventParticipation>> GetByRelativeMonthIndex(int relativeMonthIndex);
+        Task<IEnumerable<EventParticipation>> GetByRelativeMonthIndex(int relativeMonthIndex, Guid userId);
 
         Task Delete(Guid id);
 

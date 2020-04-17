@@ -18,7 +18,7 @@ namespace Wellness.Client.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            await ViewModel.OnInit();
+            await ViewModel.OnInit();            
         }
     }
 }

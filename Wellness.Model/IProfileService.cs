@@ -8,8 +8,7 @@ namespace Wellness.Model
     public interface IProfileService
     {
         Task<User> GetCurrent();
-        //Task<User> Get(Guid id);    
-
-        //Task<IEnumerable<User>> GetAll();
+        Task<User> Get(Guid id);    
+        Task<IEnumerable<User>> Find(string searchText);
     }
 }

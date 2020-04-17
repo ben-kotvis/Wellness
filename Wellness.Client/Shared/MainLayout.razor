@@ -34,16 +34,22 @@
                         </MatHeadline6>
                     </div>
                     <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
-                        <b>Name</b><br />
-                        @ViewModel.CurrentUser.FirstName @ViewModel.CurrentUser.LastName<br />
-                        <b>Annual Total</b><br />
-                        @ViewModel.CurrentUser.AnnualTotal<br />
-                        <b>Points Per Month (Average)</b><br />
-                        @ViewModel.CurrentUser.AveragePointsPerMonth
+                        <p>
+                            <b>Name</b><br />
+                            @ViewModel.CurrentUser.FirstName @ViewModel.CurrentUser.LastName
+                        </p>
+                        <p>
+                            <b>Annual Total</b><br />
+                            @ViewModel.CurrentUser.AnnualTotal
+                        </p>
+                        <p>
+                            <b>Points Per Month (Average)</b><br />
+                            @ViewModel.CurrentUser.AveragePointsPerMonth
+                        </p>
                     </MatBody2>
                 </MatCardContent>
             </MatCard>
-
+            <div class="m-3"></div>
             <MatCard class="demo-mat-card">
                 <MatCardContent>
                     <div class="demo-mat-card-content">
@@ -52,8 +58,35 @@
                         </MatHeadline6>
                     </div>
                     <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
-                        Visit ten places on our planet that are undergoing the biggest changes today.
-                    </MatBody2>
+                        <div class="mat-layout-grid p-0">
+                            <div class="mat-layout-grid-inner">
+                                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-10">
+                                    <MatTextField Class="w-100" @bind-Value="@ViewModel.SearchTerm" Label="Standard"></MatTextField>
+                                </div>
+                                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2" style="padding-top: 5px;">
+                                    <MatIconButton Icon="search" @onclick="ViewModel.Search"></MatIconButton>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-2">
+                            @if (ViewModel.SearchResults.Any())
+                            {
+                                <b>Search Results</b>
+                                <MatList SingleSelection="true" TwoLine="true">
+                                    @foreach (var user in ViewModel.SearchResults)
+                                    {
+                                        <MatListItem Href="@user.Id.ToString()">
+                                            <MatListItemText>
+                                                <MatListItemPrimaryText>@user.FirstName @user.LastName</MatListItemPrimaryText>
+                                                <MatListItemSecondaryText>Annual Total: @user.AnnualTotal</MatListItemSecondaryText>
+                                            </MatListItemText>
+                                        </MatListItem>
+                                    }
+                                </MatList>
+                            }
+                        </div>
+                    </MatBody2>                        
                 </MatCardContent>
             </MatCard>
 

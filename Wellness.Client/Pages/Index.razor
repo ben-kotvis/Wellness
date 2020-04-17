@@ -1,57 +1,58 @@
 ﻿@page "/"
+@page  "/{SelectedUserId:guid}"
 
-@inject HttpClient Http
-@using Wellness.Client.Components.MonthsMenu
-@using Wellness.Client.Components.UserParticipation.Activities.List
-@using Wellness.Client.Components.UserParticipation.Activities.Add
-@using Wellness.Client.Components.UserParticipation.Events.List
-@using Wellness.Client.Components.UserParticipation.Events.Add
-@using Wellness.Client.Components.Shared
-@inherits Wellness.Client.Pages.IndexComponent
+    @inject HttpClient Http
+    @using Wellness.Client.Components.MonthsMenu
+    @using Wellness.Client.Components.UserParticipation.Activities.List
+    @using Wellness.Client.Components.UserParticipation.Activities.Add
+    @using Wellness.Client.Components.UserParticipation.Events.List
+    @using Wellness.Client.Components.UserParticipation.Events.Add
+    @using Wellness.Client.Components.Shared
+    @inherits Wellness.Client.Pages.IndexComponent
 
 
-@if (ViewModel.ActivityParticipations == null)
-{
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-}
-else
-{
+    @if (ViewModel.ActivityParticipations == null)
+    {
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    }
+    else
+    {
 
-    <div class="mat-elevation-z2">
+        <div class="mat-elevation-z2">
 
-        <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
-        <div class="content">
+            <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
+            <div class="content">
 
-            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
-                <MatTab Label="New">
-                    <NewActivity Activities="@ViewModel.Activities"
-                                 ViewModel="@ViewModel"
-                                 OnSaveSelected="@ViewModel.SaveActivity" />
-                </MatTab>
-                <MatTab Label="Activities">
-                    <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
-                </MatTab>
-            </WellnessMatTabGroup>
+                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
+                    <MatTab Label="New">
+                        <NewActivity Activities="@ViewModel.Activities"
+                                     ViewModel="@ViewModel"
+                                     OnSaveSelected="@ViewModel.SaveActivity" />
+                    </MatTab>
+                    <MatTab Label="Activities">
+                        <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                    </MatTab>
+                </WellnessMatTabGroup>
+            </div>
+
+            <div class="content">
+                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
+                    <MatTab Label="New">
+                        <NewEvent Events="@ViewModel.Events"
+                                  ViewModel="@ViewModel"
+                                  OnFileAttached="@ViewModel.EventFileAttached"
+                                  OnSaveSelected="@ViewModel.SaveEvent" />
+                    </MatTab>
+                    <MatTab Label="Events">
+                        <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+                    </MatTab>
+                </WellnessMatTabGroup>
+
+            </div>
         </div>
 
-        <div class="content">
-            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
-                <MatTab Label="New">
-                    <NewEvent Events="@ViewModel.Events"
-                              ViewModel="@ViewModel"
-                             OnFileAttached="@ViewModel.EventFileAttached"
-                              OnSaveSelected="@ViewModel.SaveEvent" />
-                </MatTab>
-                <MatTab Label="Events">
-                    <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
-                </MatTab>
-            </WellnessMatTabGroup>
-
-        </div>
-    </div>
 
 
-
-}
+    }

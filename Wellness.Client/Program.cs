@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Wellness.Client.Services;
+using FluentValidation;
+using Wellness.Model.ModelValidation;
 
 namespace Wellness.Client
 {
@@ -15,7 +17,7 @@ namespace Wellness.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             builder.Services.AddSingleton<AppState>();
-            
+            builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
             builder.Services.BuildWellness(true);
             
             builder.RootComponents.Add<App>("app");
