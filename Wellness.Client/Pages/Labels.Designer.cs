@@ -322,6 +322,15 @@ namespace Wellness.Client.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Require Attachment.
+        /// </summary>
+        internal static string RequireAttachment {
+            get {
+                return ResourceManager.GetString("RequireAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string Save {

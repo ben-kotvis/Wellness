@@ -9,7 +9,7 @@ namespace Wellness.Model
     public class Event : ModelBase
     {
         public string Name { get; set; }
-        public decimal Points { get; set; }
+        public int Points { get; set; }
         public int AnnualMaximum { get; set; }
         public bool Active { get; set; }
         public bool RequireAttachment { get; set; }

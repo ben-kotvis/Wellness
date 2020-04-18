@@ -1,4 +1,9 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+.mat-checkbox > label {
+    margin-bottom: 0px;
+}
+
 .mdc-dialog .mdc-dialog__container {
     width: 100%;
 }

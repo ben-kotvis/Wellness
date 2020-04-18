@@ -56,6 +56,7 @@ namespace Wellness.Client.ViewModels
             NewOrEditEvent.Name = existingItem.Name;
             NewOrEditEvent.Active = existingItem.Active;
             NewOrEditEvent.AnnualMaximum = existingItem.AnnualMaximum;
+            NewOrEditEvent.RequireAttachment = existingItem.RequireAttachment;
 
             EditModalOpen = true;
         }

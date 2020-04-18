@@ -104,7 +104,7 @@ namespace Wellness.Client.Services.Mock
 
             eventManagementMock.Setup(ams => ams.Disable(It.IsAny<Guid>())).Returns((Guid id) =>
             {
-                Activities.ForEach(ap =>
+                Events.ForEach(ap =>
                 {
                     if(ap.Id == id)
                     {

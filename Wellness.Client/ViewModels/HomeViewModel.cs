@@ -75,8 +75,8 @@ namespace Wellness.Client.ViewModels
             await SetActivityParticipations();
             await SetEventParticipations();
 
-            Activities = await _activityManagementService.GetAll();            
-            Events = await _eventManagementService.GetAll();            
+            Activities = (await _activityManagementService.GetAll()).Where(i => i.Active);            
+            Events = (await _eventManagementService.GetAll()).Where(i => i.Active);            
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)

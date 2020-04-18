@@ -204,6 +204,9 @@
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
+  <data name="RequireAttachment" xml:space="preserve">
+    <value>Require Attachment</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
