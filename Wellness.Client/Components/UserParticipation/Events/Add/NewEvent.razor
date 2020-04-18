@@ -1,5 +1,6 @@
 ﻿@using Wellness.Model
 @using System.Globalization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
 @inherits Components.UserParticipation.Events.Add.NewEventComponent
 
 
@@ -18,10 +19,10 @@
         <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
     </div>
     <div>
-        <MatDatePicker FullWidth="true" Label="Event Date" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
+        <MatDatePicker FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
     </div>
-    <div class="text-right p-2" >
-        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">Save</MatButton>
+    <div class="text-right p-2">
+        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">@Loc["Save"]</MatButton>
     </div>
 </div>
 

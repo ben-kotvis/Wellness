@@ -132,6 +132,9 @@
   <data name="AnnualTotal" xml:space="preserve">
     <value>Annual Total</value>
   </data>
+  <data name="AttachmentView" xml:space="preserve">
+    <value>Attachment View</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -147,8 +150,17 @@
   <data name="DeleteConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to delete this Activity?</value>
   </data>
+  <data name="DeleteEventConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this Event?</value>
+  </data>
+  <data name="EmptyEventsMessage" xml:space="preserve">
+    <value>No Events have been created for the selected month.</value>
+  </data>
   <data name="Event" xml:space="preserve">
     <value>Event</value>
+  </data>
+  <data name="EventDate" xml:space="preserve">
+    <value>Event Date</value>
   </data>
   <data name="EventManagement" xml:space="preserve">
     <value>Event Management</value>
@@ -192,6 +204,9 @@
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -206,5 +221,8 @@
   </data>
   <data name="Totals" xml:space="preserve">
     <value>Totals</value>
+  </data>
+  <data name="UploadedFiles" xml:space="preserve">
+    <value>Uploaded Files</value>
   </data>
 </root>

@@ -1,24 +1,24 @@
 ﻿@using Wellness.Model
 @using System.Globalization
 @using Wellness.Client.Components.UserParticipation.Activities.Add
-
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
 @inherits Components.UserParticipation.Events.List.UserEventsComponent
 
 
 
 @if (!EventParticipations.Any())
 {
-    <span>No Events have been created for the selected month.</span>
+    <span>@Loc["EmptyEventsMessage"]</span>
 }
 else
 {
     <MatTable Items="@EventParticipations" class="wellness-table" PageSize="30" ShowPaging="false" ShowFooter="false">
         <MatTableHeader>
             <th></th>
-            <th>Event</th>
-            <th>Uploaded Files</th>
-            <th>Points</th>
-            <th>Date</th>
+            <th>@Loc["Event"]</th>
+            <th>@Loc["UploadedFiles"]</th>
+            <th>@Loc["Points"]</th>
+            <th>@Loc["EventDate"]</th>
         </MatTableHeader>
         <MatTableRow>
             <td>
@@ -27,12 +27,12 @@ else
             <td>@context.EventName</td>
             <td>
                 @if (context.Attachment != null)
-                {
-                <span>
-                    @context.Attachment?.Name
-                                <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Id))"></MatIconButton>
-                            </span>
-                }
+                    {
+                    <span>
+                        @context.Attachment?.Name
+                        <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Id))"></MatIconButton>
+                    </span>
+                    }
             </td>
             <td>@context.Points</td>
             <td>@context.Date.ToString("MM/dd/yyyy")</td>
@@ -41,22 +41,22 @@ else
 }
 
 <MatDialog @bind-IsOpen="@dialogIsOpen">
-    <MatDialogTitle>Delete Confirmation</MatDialogTitle>
+    <MatDialogTitle>@Loc["DeleteConfirmationLabel"]</MatDialogTitle>
     <MatDialogContent>
-        <p>Are you sure you want to delete this Event?</p>
+        <p>@Loc["DeleteEventConfirmationMessage"]</p>
     </MatDialogContent>
     <MatDialogActions>
-        <MatButton OnClick="@(e => { dialogIsOpen = false; })">Cancel</MatButton>
-        <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">OK</MatButton>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">@Loc["Cancel"]</MatButton>
+        <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">@Loc["OK"]</MatButton>
     </MatDialogActions>
 </MatDialog>
 
 <MatDialog @bind-IsOpen="@ViewModel.PreviewDialogIsOpen">
-    <MatDialogTitle>Attachment View</MatDialogTitle>
+    <MatDialogTitle>@Loc["AttachmentView"]</MatDialogTitle>
     <MatDialogContent Class="accordion">
         <object data="@ViewModel.PreviewDataUrl" type="@ViewModel.PreviewFileType"></object>
     </MatDialogContent>
     <MatDialogActions>
-        <MatButton OnClick="@(e => { ViewModel.PreviewDialogIsOpen = false; })">Close</MatButton>
+        <MatButton OnClick="@(e => { ViewModel.PreviewDialogIsOpen = false; })">@Loc["Close"]</MatButton>
     </MatDialogActions>
 </MatDialog>

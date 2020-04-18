@@ -106,6 +106,15 @@ namespace Wellness.Client.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attachment View.
+        /// </summary>
+        internal static string AttachmentView {
+            get {
+                return ResourceManager.GetString("AttachmentView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -151,11 +160,38 @@ namespace Wellness.Client.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this Event?.
+        /// </summary>
+        internal static string DeleteEventConfirmationMessage {
+            get {
+                return ResourceManager.GetString("DeleteEventConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Events have been created for the selected month..
+        /// </summary>
+        internal static string EmptyEventsMessage {
+            get {
+                return ResourceManager.GetString("EmptyEventsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event.
         /// </summary>
         internal static string Event {
             get {
                 return ResourceManager.GetString("Event", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Date.
+        /// </summary>
+        internal static string EventDate {
+            get {
+                return ResourceManager.GetString("EventDate", resourceCulture);
             }
         }
         
@@ -286,6 +322,15 @@ namespace Wellness.Client.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string Search {
@@ -327,6 +372,15 @@ namespace Wellness.Client.Pages {
         internal static string Totals {
             get {
                 return ResourceManager.GetString("Totals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded Files.
+        /// </summary>
+        internal static string UploadedFiles {
+            get {
+                return ResourceManager.GetString("UploadedFiles", resourceCulture);
             }
         }
     }

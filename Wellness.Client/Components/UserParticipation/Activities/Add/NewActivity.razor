@@ -20,7 +20,7 @@
         <MatDatePicker FullWidth="true" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.SelectedActivityDate"></MatDatePicker>
     </div>
     <div class="text-right p-2">
-        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">Save</MatButton>
+        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">@Loc["Save"]</MatButton>
     </div>
 </div>
 
