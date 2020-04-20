@@ -9,6 +9,8 @@ using FluentValidation;
 using Wellness.Model.ModelValidation;
 using System.Globalization;
 using Microsoft.JSInterop;
+using AutoMapper;
+using Wellness.Model;
 
 namespace Wellness.Client
 {
@@ -16,9 +18,16 @@ namespace Wellness.Client
     {
         public static async Task Main(string[] args)
         {
+            IConfigurationProvider config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<EventParticipation, EventParticipationDataModel>();
+                cfg.CreateMap<EventParticipationDataModel, EventParticipation>();
+            });
+
+
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             builder.Services.AddSingleton<AppState>();
+            builder.Services.AddSingleton<IConfigurationProvider>(config);
             builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
             builder.Services.BuildWellness(true);
             
@@ -29,6 +38,7 @@ namespace Wellness.Client
             builder.Services.AddLocalization();
 
             var host = builder.Build();
+                        
             var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
             var result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
             if (result != null)

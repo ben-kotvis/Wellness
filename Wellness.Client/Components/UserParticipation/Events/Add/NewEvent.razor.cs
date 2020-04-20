@@ -16,7 +16,6 @@ namespace Wellness.Client.Components.UserParticipation.Events.Add
     {
         [Inject] IJSRuntime JSRuntime { get; set; }
         [Parameter] public IEventParticipationViewModel ViewModel { get; set; }
-        [Parameter] public EventCallback OnSaveSelected { get; set; }
         [Parameter] public IEnumerable<Event> Events { get; set; }
         [Parameter] public EventCallback<EventAttachmentArgs> OnFileAttached { get; set; }
 

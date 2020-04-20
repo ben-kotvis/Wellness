@@ -6,7 +6,7 @@
 
 
 
-<div class="mat-layout-grid">
+<div class="mat-layout-grid p-1">
     <div class="mat-layout-grid-inner">
         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">
         </div>
@@ -16,12 +16,13 @@
 
                 @foreach (var month in Months)
                 {
-                    <MatListItem Class="month-menu-item" OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatListItem>
+                    <MatListItem Class="@(month.RelativeIndex == SelectedIndex ? "month-menu-item mdc-list-item--selected":"month-menu-item")" 
+                                 OnClick="@((args) => MonthChanged(args, month.RelativeIndex))">@month.Name, @month.Year.ToString().Substring(2)</MatListItem>
                 }
 
             <MatListItem Class="month-menu-item" OnClick="@Next">@Loc["Next"]</MatListItem>
             </MatList>
-            <hr />
+            <hr class="h-rule" />
         </div>
         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">
         </div>

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class Event : ModelBase
+    public class Event : EventBase, IHaveCommon, IIdentifiable
     {
-        public string Name { get; set; }
-        public int Points { get; set; }
-        public int AnnualMaximum { get; set; }
+        public decimal Points { get; set; }
+        public decimal AnnualMaximum { get; set; }
         public bool Active { get; set; }
         public bool RequireAttachment { get; set; }
+        public Common Common { get; set; }
     }
 }

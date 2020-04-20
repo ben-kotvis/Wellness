@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using Wellness.Model;
 using Moq;
 using System.IO;
+using AutoMapper;
 
 namespace Wellness.Client.Services.Mock
 {
-    public class MockDataGenerator
+    public static class MockDataGenerator
     {
-        static List<Activity> Activities;
-        static List<Event> Events;
-        static List<ActivityParticipation> ActivityParticipations;
-        static List<EventParticipation> EventParticipations;
-        static List<EventAttachment> EventAttachments;
-        static List<User> Users;
+        public static List<Activity> Activities;
+        public static List<Event> Events;
+        public static List<ActivityParticipation> ActivityParticipations;
+        public static List<EventParticipationDataModel> EventParticipations;
+        public static List<EventAttachment> EventAttachments;
+        public static List<User> Users;
 
         static MockDataGenerator()
         {
@@ -29,94 +30,6 @@ namespace Wellness.Client.Services.Mock
 
         public static Guid CompanyId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f36");
         public static Guid CurrentUserId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f37");
-        public static IActivityManagementService CreateActivityManagement()
-        {
-            var activityManagementMock = new Mock<IActivityManagementService>();
-            activityManagementMock.Setup(ams => ams.GetAll())
-            .Returns(() => {
-                return Task.FromResult(new List<Activity>(Activities).AsEnumerable());
-            });
-
-            activityManagementMock.Setup(ams => ams.Create(It.IsAny<Activity>())).Returns((Activity a) =>
-            {
-                a.Common = CreateCommon();                               
-                Activities.Add(a);                
-                return Task.FromResult(true);
-            });
-
-            activityManagementMock.Setup(ams => ams.Update(It.IsAny<Activity>())).Returns((Activity a) =>
-            {
-                Activities.ForEach(ap =>
-                {
-                    if (ap.Id == a.Id)
-                    {
-                        ap.Active = a.Active;
-                        ap.Name = a.Name;
-                    }
-                });
-                return Task.FromResult(true);
-            });
-
-            activityManagementMock.Setup(ams => ams.Disable(It.IsAny<Guid>())).Returns((Guid id) =>
-            {
-                Activities.ForEach(ap =>
-                {
-                    if(ap.Id == id)
-                    {
-                        ap.Active = false;
-                    }
-                });
-                return Task.FromResult(true);
-            });
-
-            return activityManagementMock.Object;
-        }
-
-        public static IEventManagementService CreateEventManagement()
-        {
-            var eventManagementMock = new Mock<IEventManagementService>();
-            eventManagementMock.Setup(ams => ams.GetAll())
-            .Returns(() => {
-                return Task.FromResult(new List<Event>(Events).AsEnumerable());
-            });
-
-            eventManagementMock.Setup(ams => ams.Create(It.IsAny<Event>())).Returns((Event a) =>
-            {
-                a.Common = CreateCommon();                               
-                Events.Add(a);                
-                return Task.FromResult(true);
-            });
-
-            eventManagementMock.Setup(ams => ams.Update(It.IsAny<Event>())).Returns((Event a) =>
-            {
-                Events.ForEach(ap =>
-                {
-                    if (ap.Id == a.Id)
-                    {
-                        ap.Active = a.Active;
-                        ap.Name = a.Name;
-                        ap.AnnualMaximum = a.AnnualMaximum;
-                        ap.Points = a.Points;                        
-                    }
-                });
-                return Task.FromResult(true);
-            });
-
-            eventManagementMock.Setup(ams => ams.Disable(It.IsAny<Guid>())).Returns((Guid id) =>
-            {
-                Events.ForEach(ap =>
-                {
-                    if(ap.Id == id)
-                    {
-                        ap.Active = false;
-                    }
-                });
-                return Task.FromResult(true);
-            });
-
-            return eventManagementMock.Object;
-        }
-
 
         public static IProfileService CreateProfile()
         {
@@ -131,89 +44,6 @@ namespace Wellness.Client.Services.Mock
                 .Returns((string searchText) => Task.FromResult(Users.Where(i => i.FirstName.ToLower().Contains(searchText.ToLower()) || i.LastName.ToLower().Contains(searchText.ToLower()))));
 
             return profileServiceMock.Object;
-        }
-
-
-        public static IActivityParticipationService CreateActivityParticipation()
-        {
-            var activityParticipationMock = new Mock<IActivityParticipationService>();
-            activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>(), It.IsAny<Guid>()))
-                .Returns((int i, Guid id) => Task.FromResult(new List<ActivityParticipation>(GetByRelativeIndex(i)).AsEnumerable()));
-
-            activityParticipationMock.Setup(ams => ams.Create(It.IsAny<ActivityParticipation>())).Returns((ActivityParticipation ap) =>
-            {
-                ap.Common = CreateCommon();
-                ActivityParticipations.Add(ap);
-                return Task.FromResult(true);
-            });
-
-            activityParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
-            {
-                ActivityParticipations.RemoveAll(ap => ap.Id == id);
-                return Task.FromResult(true);
-            });
-            return activityParticipationMock.Object;
-        }
-
-        public static IEventParticipationService CreateEventParticipation()
-        {
-            var eventParticipationMock = new Mock<IEventParticipationService>();
-            eventParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>(), It.IsAny<Guid>()))
-                .Returns((int i, Guid id) => 
-                {                    
-                    var relativeDate = DateTimeOffset.UtcNow.AddMonths(i);
-                    var filtered = EventParticipations.Where(i => i.Date.Year == relativeDate.Year && i.Date.Month == relativeDate.Month);
-                    return Task.FromResult(new List<EventParticipation>(filtered).AsEnumerable());
-                });
-
-            eventParticipationMock.Setup(ams => ams.GetAttachment(It.IsAny<Guid>()))
-                .Returns((Guid id) =>
-                {
-                    return Task.FromResult(EventAttachments.FirstOrDefault(i => i.Id == id));
-                });
-
-            eventParticipationMock.Setup(ams => ams.Create(It.IsAny<EventParticipation>())).Returns((EventParticipation ap) =>
-            {
-                ap.Common = CreateCommon();
-                EventParticipations.Add(ap);
-                return Task.FromResult(true);
-            });
-
-            eventParticipationMock.Setup(ams => ams.UploadFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Func<Stream, Task>>())).Returns(async (string n, string ct, Func<Stream, Task> f) =>
-            {
-                Guid id = Guid.NewGuid();
-                var fileName = Path.GetTempFileName();
-                Console.WriteLine(fileName);
-
-                using (var file = File.Create(fileName))
-                {
-                    await f(file);
-                }
-
-                EventAttachments.Add(new EventAttachment()
-                {
-                    Id = id,
-                    ContentType = ct,
-                    FilePath = $"file://{fileName}",
-                    LocalPath = fileName,
-                    Name = n
-                });
-
-                return id;
-            });
-
-            eventParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
-            {
-                EventParticipations.RemoveAll(ap => ap.Id == id);
-                return Task.FromResult(true);
-            });
-
-            return eventParticipationMock.Object;
-        }
-        private static IEnumerable<ActivityParticipation> GetByRelativeIndex(int relativeIndex)
-        {
-            var relativeDate = DateTimeOffset.UtcNow.AddMonths(relativeIndex);
-            return ActivityParticipations.Where(i => i.ParticipationDate.Year == relativeDate.Year && i.ParticipationDate.Month == relativeDate.Month);
         }
 
         private static List<User> BootstrapUsers()
@@ -241,7 +71,7 @@ namespace Wellness.Client.Services.Mock
             return userActivities;
         }
 
-        private static User CreateUser(Guid id, string firstName, string lastName)
+        public static User CreateUser(Guid id, string firstName, string lastName)
         {
             var random = new Random();
             var user =  new User()
@@ -258,7 +88,7 @@ namespace Wellness.Client.Services.Mock
         }
 
 
-        private static ActivityParticipation CreateActivity()
+        public static ActivityParticipation CreateActivity()
         {
             var random = new Random();
             return new ActivityParticipation()
@@ -271,7 +101,7 @@ namespace Wellness.Client.Services.Mock
             };
         }
 
-        private static Activity GetActivity()
+        public static Activity GetActivity()
         {
             var random = new Random();
             var index = random.Next(0, 9);
@@ -279,9 +109,9 @@ namespace Wellness.Client.Services.Mock
             return Activities.ElementAt(index);
         }
 
-        private static List<EventParticipation> BootstrapUserEvents()
+        public static List<EventParticipationDataModel> BootstrapUserEvents()
         {
-            var userEvents = new List<EventParticipation>();
+            var userEvents = new List<EventParticipationDataModel>();
 
             for (var i = 0; i < 22; i++)
             {
@@ -290,20 +120,22 @@ namespace Wellness.Client.Services.Mock
 
             return userEvents;
         }
-        private static EventParticipation CreateEvent()
+        public static EventParticipationDataModel CreateEvent()
         {
             var random = new Random();
             var eventObj = GetEvent();
-            return new EventParticipation()
+            return new EventParticipationDataModel()
             {
                 Id = Guid.NewGuid(),
-                EventName = eventObj.Name,
-                Points = eventObj.Points,                
-                Date = DateTimeOffset.UtcNow.AddDays(random.Next(0, 60) * -1)
+                Common = CreateCommon(),
+                Event = eventObj,
+                PointsEarned = eventObj.Points,
+                SubmissionDate = DateTimeOffset.UtcNow.AddDays(random.Next(0, 60) * -1),
+                UserId = CurrentUserId
             };
         }
-                       
-        private static Event GetEvent()
+
+        public static Event GetEvent()
         {
             var random = new Random();
             var index = random.Next(0, 3);
@@ -311,7 +143,7 @@ namespace Wellness.Client.Services.Mock
             return Events.ElementAt(index);
         }
 
-        private static List<Event> GetEvents()
+        public static List<Event> GetEvents()
         {
             var events = new List<Event>();
             events.Add(new Event() { Id = Guid.NewGuid(), Points = 10, AnnualMaximum = 100, Active = true, Name = "5K Run", Common = CreateCommon() });
@@ -321,7 +153,7 @@ namespace Wellness.Client.Services.Mock
             return events;
         }
 
-        private static List<Activity> GetActivities()
+        public static List<Activity> GetActivities()
         {
             var activities = new List<Activity>();
             activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Walking", Common = CreateCommon() });
@@ -337,8 +169,8 @@ namespace Wellness.Client.Services.Mock
             activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Roller Blading/Roller Skating/Ice Skating", Common = CreateCommon() });
             return activities;
         }
-        
-        private static Common CreateCommon()
+
+        public static Common CreateCommon()
         {
             return new Common()
             {

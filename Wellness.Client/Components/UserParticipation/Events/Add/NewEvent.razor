@@ -1,28 +1,29 @@
 ﻿@using Wellness.Model
 @using System.Globalization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
+@using Wellness.Model.ModelValidation
 @inherits Components.UserParticipation.Events.Add.NewEventComponent
 
 
 
-<div style="width: 50%; background-color: var(--theme-palette-background-paper);">
-    <div>
-        <MatAutocompleteList FullWidth="true" Items="@Events" TItem="Event" Label="Select Event" CustomStringSelector="@(i => i.Name)" @bind-Value="ViewModel.SelectedEvent">
-            <ItemTemplate>
-                <div>
-                    <span>@context.Name</span>
-                </div>
-            </ItemTemplate>
-        </MatAutocompleteList>
-    </div>
-    <div>
-        <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
-    </div>
-    <div>
-        <MatDatePicker FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.SelectedEventDate"></MatDatePicker>
-    </div>
-    <div class="text-right p-2">
-        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">@Loc["Save"]</MatButton>
-    </div>
-</div>
+    <EditForm Model="@ViewModel.NewEventParticipation" OnValidSubmit="@ViewModel.SaveEvent">
+        <FluentValidator></FluentValidator>
+        <ValidationSummary />
 
+        <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
+            <div>
+                <MatAutocompleteList ShowClearButton="true" FullWidth="true" Items="@Events" TItem="Event" Label="Select Event" CustomStringSelector="@(i => i.Name)"
+                                     @bind-StringValue="ViewModel.NewEventParticipation.Event.Name" @bind-Value="ViewModel.SelectedEvent">
+                </MatAutocompleteList>
+            </div>
+            <div>
+                <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
+            </div>
+            <div>
+                <MatDatePicker FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTimeOffset" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
+            </div>
+            <div class="text-right p-2">
+                <MatButton Type="submit" Raised="true" >@Loc["Save"]</MatButton>
+            </div>
+        </div>
+    </EditForm>

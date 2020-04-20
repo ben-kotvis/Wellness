@@ -35,8 +35,10 @@ namespace Wellness.Client.ViewModels
             _activityManagementService = activityManagementService;
             _eventParticipationService = eventParticipationService;
             _eventManagementService = eventManagementService;
+            NewEventParticipation = new EventParticipation();
         }
 
+        public EventParticipation NewEventParticipation { get; private set; }
 
         public string PreviewFileType { get; set; }
         public string PreviewDataUrl { get; set; }
@@ -55,7 +57,7 @@ namespace Wellness.Client.ViewModels
         public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
 
         public Event SelectedEvent { get; set; }
-        public Guid EventAttachmentId { get; set; }
+        public string EventAttachmentFileLocation { get; set; }
         public DateTime SelectedEventDate { get; set; } 
 
         public async Task ActivityParticipationDeleted(Guid id)
@@ -81,7 +83,14 @@ namespace Wellness.Client.ViewModels
 
         public async Task EventFileAttached(EventAttachmentArgs args)
         {
-            EventAttachmentId = await _eventParticipationService.UploadFile(args.Name, args.Type, args.WriteToStreamAsync);
+            EventAttachmentFileLocation = await _eventParticipationService.UploadFile(args.Name, args.Type, args.WriteToStreamAsync);
+            NewEventParticipation.Attachment = new EventAttachment()
+            {
+                ContentType = args.Type,
+                FilePath = EventAttachmentFileLocation,
+                FileSize = args.Size,
+                Name = args.Name
+            };
         }
 
         public async Task MonthChanged(MonthChangedEventArgs args)
@@ -105,7 +114,7 @@ namespace Wellness.Client.ViewModels
         {
             var eventParticipation = EventParticipations.FirstOrDefault(i => i.Id == id);
 
-            var bytes = await File.ReadAllBytesAsync(eventParticipation.Attachment.LocalPath);
+            var bytes = await File.ReadAllBytesAsync(eventParticipation.Attachment.FilePath);
             PreviewDialogIsOpen = true; 
             PreviewDataUrl = $"data:{eventParticipation.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}"; 
             PreviewFileType = eventParticipation.Attachment?.ContentType;            
@@ -144,16 +153,10 @@ namespace Wellness.Client.ViewModels
 
         public async Task SaveEvent()
         {
-            var attachment = await _eventParticipationService.GetAttachment(EventAttachmentId);
-            await _eventParticipationService.Create(new EventParticipation()
-            {
-                Id = Guid.NewGuid(),
-                EventName = SelectedEvent.Name,
-                Attachment = attachment,
-                Points = 12,
-                Date = SelectedEventDate,
-                UserId = Id
-            });
+            NewEventParticipation.PointsEarned = SelectedEvent.Points;
+            NewEventParticipation.UserId = Id;
+
+            await _eventParticipationService.Create(NewEventParticipation);                
                         
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedEventDate.Month);
 
@@ -163,8 +166,7 @@ namespace Wellness.Client.ViewModels
 
             //clear out UI
             SelectedEvent = default;
-            SelectedEventDate = default;
-            EventAttachmentId = default;
+            SelectedEventDate = default;            
         }
     }
 }

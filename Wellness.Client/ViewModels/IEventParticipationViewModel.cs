@@ -10,11 +10,12 @@ namespace Wellness.Client.ViewModels
     {
         string PreviewFileType { get; set; }
         string PreviewDataUrl { get; set; }
+        EventParticipation NewEventParticipation { get; }
         bool PreviewDialogIsOpen { get; set; }
         Event SelectedEvent { get; set; }
-        Guid EventAttachmentId { get; set; }
         DateTime SelectedEventDate { get; set; }
         Task EventFileAttached(EventAttachmentArgs args);
         Task PreviewAttachment(Guid id);
+        Task SaveEvent();
     }
 }

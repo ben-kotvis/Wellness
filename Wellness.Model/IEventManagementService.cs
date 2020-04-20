@@ -8,8 +8,8 @@ namespace Wellness.Model
 {
     public interface IEventManagementService
     {
-        Task Create(Event activity);
-        Task Update(Event activity);
+        Task Create(Event eventObj);
+        Task Update(Event eventObj);
 
         Task<IEnumerable<Event>> GetAll();
 

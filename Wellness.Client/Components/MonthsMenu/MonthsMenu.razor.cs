@@ -16,7 +16,7 @@ namespace Wellness.Client.Components.MonthsMenu
         private int previousRelativeIndex = -5;
         private int nextRelativeIndex = 5;
 
-        private int SelectedIndex { get; set; } = 0;
+        public int SelectedIndex { get; set; }
 
         [Parameter]
         public EventCallback<MonthChangedEventArgs> OnMonthChanged { get; set; }
@@ -64,6 +64,8 @@ namespace Wellness.Client.Components.MonthsMenu
                 Months.Add(createMonth(current.Month, (-2 + i), current.Year));
             }
 
+            SelectedIndex = 0;
+
             await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(today.Month, 0, today.Year)));
         }
 
@@ -83,6 +85,8 @@ namespace Wellness.Client.Components.MonthsMenu
             nextRelativeIndex = relatveIndex + 5;
 
             var selectedMonth = today.AddMonths(relatveIndex);
+
+            SelectedIndex = relatveIndex;
 
             await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, relatveIndex, selectedMonth.Year)));
        }

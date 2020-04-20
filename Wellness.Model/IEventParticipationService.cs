@@ -8,14 +8,13 @@ namespace Wellness.Model
 {
     public interface IEventParticipationService
     {
-        Task Create(EventParticipation activityParticipation);
+        Task Create(EventParticipation eventParticipation);
 
         Task<IEnumerable<EventParticipation>> GetByRelativeMonthIndex(int relativeMonthIndex, Guid userId);
 
         Task Delete(Guid id);
 
-        Task<Guid> UploadFile(string name, string contentType, Func<Stream, Task> streamTask);
+        Task<string> UploadFile(string name, string contentType, Func<Stream, Task> streamTask);
 
-        Task<EventAttachment> GetAttachment(Guid fileId);
     }
 }

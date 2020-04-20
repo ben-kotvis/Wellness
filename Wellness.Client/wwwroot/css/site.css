@@ -1,5 +1,10 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.h-rule {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .mat-checkbox > label {
     margin-bottom: 0px;
 }
@@ -25,8 +30,21 @@
     margin: 0px;
 }
 
-.wellness-table thead th  {
-    white-space:nowrap;
+.wellness-table-row {
+}
+
+.mdc-table th {
+    padding: 9px 18px;
+    font-size: 0.9em;
+}
+
+.mdc-table td {
+    padding: 9px 18px;
+    font-size: 0.9em;
+}
+
+.wellness-table thead th {
+    white-space: nowrap;
 }
 
 .wellness-table tbody td {

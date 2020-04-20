@@ -13,15 +13,18 @@ namespace Wellness.Client.Services
     {
         public static void BuildWellness(this IServiceCollection services, bool useMock = true)
         {
-            services.AddSingleton<IActivityManagementService>(MockDataGenerator.CreateActivityManagement());
-            services.AddSingleton<IActivityParticipationService>(MockDataGenerator.CreateActivityParticipation());
-            services.AddSingleton<IEventManagementService>(MockDataGenerator.CreateEventManagement());
-            services.AddSingleton<IEventParticipationService>(MockDataGenerator.CreateEventParticipation());
-            services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
-            services.AddScoped<HomeViewModel>();
-            services.AddScoped<ActivityManagementViewModel>();
-            services.AddScoped<EventManagementViewModel>();
-            services.AddScoped<MainViewModel>();            
+            if (useMock)
+            {                
+                services.AddSingleton<IActivityManagementService,ActivityManagementMock>();
+                services.AddSingleton<IActivityParticipationService, ActivityParticipationMock>();
+                services.AddSingleton<IEventManagementService, EventManagmentMock>();
+                services.AddSingleton<IEventParticipationService, EventParticipationMock>();
+                services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
+                services.AddScoped<HomeViewModel>();
+                services.AddScoped<ActivityManagementViewModel>();
+                services.AddScoped<EventManagementViewModel>();
+                services.AddScoped<MainViewModel>();
+            }
         }
     }
 }
