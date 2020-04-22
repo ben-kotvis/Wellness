@@ -57,6 +57,7 @@ namespace Wellness.Client.ViewModels
             NewOrEditEvent.Active = existingItem.Active;
             NewOrEditEvent.AnnualMaximum = existingItem.AnnualMaximum;
             NewOrEditEvent.RequireAttachment = existingItem.RequireAttachment;
+            NewOrEditEvent.Points = existingItem.Points;            
 
             EditModalOpen = true;
         }
@@ -72,7 +73,7 @@ namespace Wellness.Client.ViewModels
             }
             else
             {
-                await _eventManagementService.Update(eventObj);
+                await _eventManagementService.Update(NewOrEditEvent);
             }
             
             EditModalOpen = false;

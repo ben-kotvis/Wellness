@@ -9,29 +9,22 @@ namespace Wellness.Model.ModelValidation
 {
     public class EventParticipationValidation : AbstractValidator<EventParticipation>
     {
-        public EventParticipationValidation()
-        {
-            RuleFor(e => e.UserId).NotEmpty();
-            RuleFor(e => e.Event).NotEmpty();
-            RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
-        }
-    }
-
-    public class ServerEventParticipationValidation : EventParticipationValidation
-    {
         private IEventManagementService _eventManagementService;
 
-        public ServerEventParticipationValidation(IEventManagementService eventManagementService)
+        public EventParticipationValidation(IEventManagementService eventManagementService)
         {
             _eventManagementService = eventManagementService;
-            RuleFor(e => e).MustAsync((f, token) => AttachmentIsMissing(f));
+
+            //RuleFor(e => e.UserId).NotEmpty();
+            RuleFor(e => e.Event).NotNull();
+            RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
+            RuleFor(e => e.Attachment).Must((f, a, token) => AttachmentIsMissing(f, a));
         }
 
-        private async Task<bool> AttachmentIsMissing(EventParticipation eventParticipation)
+        private bool AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment)
         {
-            var events = await _eventManagementService.GetAll();
-            var selectedEvent = events.First(e => e.Id == eventParticipation.Event.Id);
-            return !(selectedEvent.RequireAttachment && eventParticipation.Attachment == default);
+            return !(eventParticipation.Event.RequireAttachment && attachment == default);
         }
     }
+
 }

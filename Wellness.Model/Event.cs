@@ -10,8 +10,7 @@ namespace Wellness.Model
     {
         public decimal Points { get; set; }
         public decimal AnnualMaximum { get; set; }
-        public bool Active { get; set; }
-        public bool RequireAttachment { get; set; }
+        public bool Active { get; set; }        
         public Common Common { get; set; }
     }
 }

@@ -61,6 +61,8 @@ namespace Wellness.Client.Services.Mock
                         ap.Name = a.Name;
                         ap.AnnualMaximum = a.AnnualMaximum;
                         ap.Points = a.Points;
+                        ap.RequireAttachment = a.RequireAttachment;
+                        
                     }
                 });
                 return Task.FromResult(true);

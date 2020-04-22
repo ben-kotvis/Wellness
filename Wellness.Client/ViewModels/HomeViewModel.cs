@@ -35,15 +35,7 @@ namespace Wellness.Client.ViewModels
             _activityManagementService = activityManagementService;
             _eventParticipationService = eventParticipationService;
             _eventManagementService = eventManagementService;
-            NewEventParticipation = new EventParticipation()
-            {
-                Attachment = new EventAttachment(),
-                Event = new EventBase()
-                {
-                    Name = string.Empty
-                },
-                SubmissionDate = DateTime.MinValue
-            };
+            NewEventParticipation = new EventParticipation();
         }
 
         public EventParticipation NewEventParticipation { get; set; }
