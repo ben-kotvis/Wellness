@@ -358,6 +358,15 @@ namespace Wellness.Client.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Event.
+        /// </summary>
+        internal static string SelectEvent {
+            get {
+                return ResourceManager.GetString("SelectEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard.
         /// </summary>
         internal static string Standard {

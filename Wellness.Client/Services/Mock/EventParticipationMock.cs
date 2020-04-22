@@ -22,7 +22,6 @@ namespace Wellness.Client.Services.Mock
             _proxy = CreateEventParticipation();
         }
 
-
         public Task Create(EventParticipation eventParticipation)
         {
             return _proxy.Create(eventParticipation);
@@ -53,9 +52,10 @@ namespace Wellness.Client.Services.Mock
 
             eventParticipationMock.Setup(ams => ams.Create(It.IsAny<EventParticipation>())).Returns((EventParticipation ap) =>
             {
-                var eventObj = MockDataGenerator.Events.FirstOrDefault(i => i.Id == ap.Event.Id);
-                var model = _mapper.Map<EventParticipationDataModel>(ap);
+                var model = _mapper.Map<EventParticipation, EventParticipationDataModel>(ap);
 
+                Console.WriteLine(model.Id);
+                Console.WriteLine(model.Event.Name);
                 model.Common = MockDataGenerator.CreateCommon();
                 MockDataGenerator.EventParticipations.Add(model);
                 return Task.FromResult(true);

@@ -20,7 +20,7 @@ namespace Wellness.Client
         {
             IConfigurationProvider config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<EventParticipation, EventParticipationDataModel>();
-                cfg.CreateMap<EventParticipationDataModel, EventParticipation>();
+                //cfg.CreateMap<EventParticipationDataModel, EventParticipation>();
             });
 
 

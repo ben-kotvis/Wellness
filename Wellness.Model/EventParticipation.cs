@@ -13,7 +13,7 @@ namespace Wellness.Model
         public EventBase Event { get; set; }
         public EventAttachment Attachment { get; set; }
         public decimal PointsEarned { get; set; }
-        public DateTimeOffset SubmissionDate { get; set; }
+        public DateTime SubmissionDate { get; set; }
     }
 
     public class EventParticipationDataModel : EventParticipation, IHaveCommon, IIdentifiable 

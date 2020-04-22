@@ -13,8 +13,8 @@ namespace Wellness.Client.ViewModels
     public class HomeViewModel : IViewModelBase, IActivityParticipationViewModel, IEventParticipationViewModel
     {
         public Guid Id { get; set; }
-        public IEnumerable<Activity> Activities { get; private set; }
-        public IEnumerable<Event> Events { get; private set; }
+        public IEnumerable<Activity> Activities { get; set; }
+        public IEnumerable<Event> Events { get; set; }
 
         public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
         public IEnumerable<EventParticipation> EventParticipations { get; set; }
@@ -35,11 +35,18 @@ namespace Wellness.Client.ViewModels
             _activityManagementService = activityManagementService;
             _eventParticipationService = eventParticipationService;
             _eventManagementService = eventManagementService;
-            NewEventParticipation = new EventParticipation();
+            NewEventParticipation = new EventParticipation()
+            {
+                Attachment = new EventAttachment(),
+                Event = new EventBase()
+                {
+                    Name = string.Empty
+                },
+                SubmissionDate = DateTime.MinValue
+            };
         }
 
-        public EventParticipation NewEventParticipation { get; private set; }
-
+        public EventParticipation NewEventParticipation { get; set; }
         public string PreviewFileType { get; set; }
         public string PreviewDataUrl { get; set; }
         public bool PreviewDialogIsOpen { get; set; }
@@ -58,7 +65,7 @@ namespace Wellness.Client.ViewModels
 
         public Event SelectedEvent { get; set; }
         public string EventAttachmentFileLocation { get; set; }
-        public DateTime SelectedEventDate { get; set; } 
+        public DateTime SelectedEventDate { get; set; } = DateTime.MinValue;
 
         public async Task ActivityParticipationDeleted(Guid id)
         {
@@ -153,7 +160,10 @@ namespace Wellness.Client.ViewModels
 
         public async Task SaveEvent()
         {
-            NewEventParticipation.PointsEarned = SelectedEvent.Points;
+            var selectedEvent = Events.FirstOrDefault(i => i.Id == NewEventParticipation.Event.Id);
+
+            NewEventParticipation.Id = Guid.NewGuid();            
+            NewEventParticipation.PointsEarned = selectedEvent.Points;
             NewEventParticipation.UserId = Id;
 
             await _eventParticipationService.Create(NewEventParticipation);                

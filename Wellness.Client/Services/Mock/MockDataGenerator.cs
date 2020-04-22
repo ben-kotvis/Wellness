@@ -130,7 +130,7 @@ namespace Wellness.Client.Services.Mock
                 Common = CreateCommon(),
                 Event = eventObj,
                 PointsEarned = eventObj.Points,
-                SubmissionDate = DateTimeOffset.UtcNow.AddDays(random.Next(0, 60) * -1),
+                SubmissionDate = DateTime.UtcNow.AddDays(random.Next(0, 60) * -1),
                 UserId = CurrentUserId
             };
         }

@@ -8,9 +8,10 @@ namespace Wellness.Client.ViewModels
 {
     public interface IEventParticipationViewModel
     {
+        IEnumerable<Event> Events { get; set; }
         string PreviewFileType { get; set; }
         string PreviewDataUrl { get; set; }
-        EventParticipation NewEventParticipation { get; }
+        EventParticipation NewEventParticipation { get; set; }
         bool PreviewDialogIsOpen { get; set; }
         Event SelectedEvent { get; set; }
         DateTime SelectedEventDate { get; set; }

@@ -40,9 +40,9 @@
             <div class="content">
                 <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
                     <MatTab Label="New">
-                        <NewEvent Events="@ViewModel.Events"
-                                  ViewModel="@ViewModel"
-                                  OnFileAttached="@ViewModel.EventFileAttached" />
+                        <NewEvent ViewModel="@ViewModel"
+                                  OnFileAttached="@ViewModel.EventFileAttached" 
+                                  OnSaveSelected="@ViewModel.SaveEvent" />
                     </MatTab>
                     <MatTab Label="Events">
                         <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />

@@ -216,6 +216,9 @@
   <data name="SelectActivity" xml:space="preserve">
     <value>Select Activity</value>
   </data>
+  <data name="SelectEvent" xml:space="preserve">
+    <value>Select Event</value>
+  </data>
   <data name="Standard" xml:space="preserve">
     <value>Standard</value>
   </data>
