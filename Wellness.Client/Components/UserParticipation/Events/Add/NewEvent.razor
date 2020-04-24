@@ -6,7 +6,7 @@
 
 
 
-    <EditForm Model="@ViewModel.NewEventParticipation" OnValidSubmit="@(async e => { await OnSaveSelected.InvokeAsync(null); this.StateHasChanged(); })">
+    <EditForm Model="@ViewModel.NewEventParticipation" OnValidSubmit="@ViewModel.SaveEvent">
         <FluentValidator Validator="@ViewModel.EventValidation" ></FluentValidator>
 
         <div style="width: 50%; background-color: var(--theme-palette-background-paper);">

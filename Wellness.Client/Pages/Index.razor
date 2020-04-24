@@ -25,7 +25,7 @@
             <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
             <div class="content">
 
-                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
+                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="ViewModel.ActivityTabIndex">
                     <MatTab Label="New">
                         <NewActivity Activities="@ViewModel.Activities"
                                      ViewModel="@ViewModel"
@@ -38,13 +38,13 @@
             </div>
 
             <div class="content">
-                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
+                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="ViewModel.EventTabIndex">
                     <MatTab Label="New">
                         <NewEvent ViewModel="@ViewModel"
-                                  OnFileAttached="@ViewModel.EventFileAttached" 
-                                  OnSaveSelected="@ViewModel.SaveEvent" />
+                                  OnFileAttached="@ViewModel.EventFileAttached" />
                     </MatTab>
                     <MatTab Label="Events">
+                        <p>@ViewModel.EventParticipations.Count()</p>
                         <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
                     </MatTab>
                 </WellnessMatTabGroup>

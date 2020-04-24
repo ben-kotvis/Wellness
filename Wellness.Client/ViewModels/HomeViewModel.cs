@@ -30,14 +30,12 @@ namespace Wellness.Client.ViewModels
             IActivityParticipationService activityParticipationService,
             IActivityManagementService activityManagementService,
             IEventParticipationService eventParticipationService,
-            IEventManagementService eventManagementService,
-            EventParticipationValidation eventParticipationValidation)
+            IEventManagementService eventManagementService)
         {
             _activityParticipationService = activityParticipationService;
             _activityManagementService = activityManagementService;
             _eventParticipationService = eventParticipationService;
-            _eventManagementService = eventManagementService;
-            EventValidation = eventParticipationValidation;
+            _eventManagementService = eventManagementService;            ;
             NewEventParticipation = new EventParticipation();
         }
 
@@ -81,7 +79,8 @@ namespace Wellness.Client.ViewModels
             await SetEventParticipations();
 
             Activities = (await _activityManagementService.GetAll()).Where(i => i.Active);            
-            Events = (await _eventManagementService.GetAll()).Where(i => i.Active);            
+            Events = (await _eventManagementService.GetAll()).Where(i => i.Active);
+            EventValidation = new EventParticipationValidation(Events);
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)
@@ -110,7 +109,7 @@ namespace Wellness.Client.ViewModels
 
         private async Task SetEventParticipations()
         {
-            EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);            
+            EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);                        
         }
 
         public async Task PreviewAttachment(Guid id)
@@ -164,15 +163,14 @@ namespace Wellness.Client.ViewModels
 
             await _eventParticipationService.Create(NewEventParticipation);                
                         
-            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedEventDate.Month);
+            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewEventParticipation.SubmissionDate.Month);
 
             await SetEventParticipations();
 
-            EventTabIndex = 1;
-
             //clear out UI
-            SelectedEvent = default;
-            SelectedEventDate = default;            
+            NewEventParticipation = new EventParticipation();
+
+            EventTabIndex = 1;
         }
     }
 }
