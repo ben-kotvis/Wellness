@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
+using Wellness.Model.ModelValidation;
 
 namespace Wellness.Client.ViewModels
 {
     public interface IEventParticipationViewModel
     {
+        EventParticipationValidation EventValidation { get; set; }
         IEnumerable<Event> Events { get; set; }
         string PreviewFileType { get; set; }
         string PreviewDataUrl { get; set; }

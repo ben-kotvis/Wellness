@@ -6,39 +6,29 @@
 
 
 
-<EditForm Model="@ViewModel.NewEventParticipation" OnValidSubmit="@(async e => { await OnSaveSelected.InvokeAsync(null); this.StateHasChanged(); })">
-    <FluentValidator></FluentValidator>
-    <ValidationSummary />
+    <EditForm Model="@ViewModel.NewEventParticipation" OnValidSubmit="@(async e => { await OnSaveSelected.InvokeAsync(null); this.StateHasChanged(); })">
+        <FluentValidator Validator="@ViewModel.EventValidation" ></FluentValidator>
 
-    <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
-        <div>
-            <MatSelectItem FullWidth="true" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.Select(i => (EventBase)i).ToList()"
-                           Label="@Loc["SelectEvent"]" Context="selectContext">
-                <ItemTemplate>
-                    <span>@selectContext.Name</span>
-                </ItemTemplate>
-            </MatSelectItem>
-            <ValidationMessage For="() => ViewModel.NewEventParticipation.Event"></ValidationMessage>
-
-            @*<MatAutocompleteList ShowClearButton="true" FullWidth="true" Items="@ViewModel.Events.Select(i => (EventBase)i).ToList()" Label="@Loc["SelectEvent"]"
-                             Context="autoContext" @bind-Value="ViewModel.NewEventParticipation.Event">
-            <ItemTemplate>
-                <div>
-                    <span>@autoContext.Name</span>
-                </div>
-            </ItemTemplate>
-        </MatAutocompleteList>*@
+        <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
+            <div>
+                <MatSelectItem FullWidth="true" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
+                               Label="@Loc["SelectEvent"]" Context="selectContext">
+                    <ItemTemplate>
+                        <span>@selectContext.Name</span>
+                    </ItemTemplate>
+                </MatSelectItem>
+                <ValidationMessage For="() => ViewModel.NewEventParticipation.Event"></ValidationMessage>
+            </div>
+            <div>
+                <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
+                <ValidationMessage For="() => ViewModel.NewEventParticipation.Attachment"></ValidationMessage>
+            </div>
+            <div>
+                <MatDatePicker FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
+                <ValidationMessage For="() => ViewModel.NewEventParticipation.SubmissionDate"></ValidationMessage>
+            </div>
+            <div class="text-right p-2">
+                <MatButton Type="submit" Raised="true">@Loc["Save"]</MatButton>
+            </div>
         </div>
-        <div>
-            <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
-            <ValidationMessage For="() => ViewModel.NewEventParticipation.Attachment"></ValidationMessage>
-        </div>
-        <div>
-            <MatDatePicker FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
-            <ValidationMessage For="() => ViewModel.NewEventParticipation.SubmissionDate"></ValidationMessage>
-        </div>
-        <div class="text-right p-2">
-            <MatButton Type="submit" Raised="true">@Loc["Save"]</MatButton>
-        </div>
-    </div>
-</EditForm>
+    </EditForm>

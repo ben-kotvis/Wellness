@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
+using Wellness.Model.ModelValidation;
 
 namespace Wellness.Client.ViewModels
 {    
@@ -26,18 +27,21 @@ namespace Wellness.Client.ViewModels
         private IEventManagementService _eventManagementService;
 
         public HomeViewModel(
-            IActivityParticipationService activityParticipationService, 
+            IActivityParticipationService activityParticipationService,
             IActivityManagementService activityManagementService,
             IEventParticipationService eventParticipationService,
-            IEventManagementService eventManagementService)
+            IEventManagementService eventManagementService,
+            EventParticipationValidation eventParticipationValidation)
         {
             _activityParticipationService = activityParticipationService;
             _activityManagementService = activityManagementService;
             _eventParticipationService = eventParticipationService;
             _eventManagementService = eventManagementService;
+            EventValidation = eventParticipationValidation;
             NewEventParticipation = new EventParticipation();
         }
 
+        public EventParticipationValidation EventValidation { get; set; }
         public EventParticipation NewEventParticipation { get; set; }
         public string PreviewFileType { get; set; }
         public string PreviewDataUrl { get; set; }

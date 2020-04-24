@@ -28,9 +28,10 @@ namespace Wellness.Client
 
             builder.Services.AddSingleton<AppState>();
             builder.Services.AddSingleton<IConfigurationProvider>(config);
-            builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
             builder.Services.BuildWellness(true);
-            
+            builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
+            builder.Services.AddValidatorsFromAssemblyContaining<EventParticipationValidation>();
+
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
