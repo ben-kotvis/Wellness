@@ -15,12 +15,4 @@ namespace Wellness.Model
         public decimal PointsEarned { get; set; }
         public DateTime SubmissionDate { get; set; }
     }
-
-    public class PersistenceWrapper<T> : IHaveCommon
-        where T : IIdentifiable 
-    {
-        public T Model { get; set; }
-        public Common Common { get; set; }
-    }
-
 }

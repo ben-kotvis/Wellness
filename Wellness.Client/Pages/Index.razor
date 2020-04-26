@@ -27,9 +27,8 @@
 
                 <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
                     <MatTab Label="New">
-                        <NewActivity Activities="@ViewModel.Activities"
-                                     ViewModel="@ViewModel"
-                                     OnSaveSelected="@ViewModel.SaveActivity" />
+                        <NewActivity ViewModel="@ViewModel"
+                                     OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })"  />
                     </MatTab>
                     <MatTab Label="Activities">
                         <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />

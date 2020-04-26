@@ -12,7 +12,7 @@ namespace Wellness.Client.Components.UserParticipation.Activities.List
 {
     public class UserActivitiesComponent : ComponentBase
     {
-        [Parameter] public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
+        [Parameter] public IEnumerable<PersistenceWrapper<ActivityParticipation>> ActivityParticipations { get; set; }
 
         [Parameter] public EventCallback<Guid> OnConfirmDelete { get; set; }
 

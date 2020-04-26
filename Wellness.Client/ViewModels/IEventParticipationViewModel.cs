@@ -15,8 +15,6 @@ namespace Wellness.Client.ViewModels
         string PreviewDataUrl { get; set; }
         EventParticipation NewEventParticipation { get; set; }
         bool PreviewDialogIsOpen { get; set; }
-        Event SelectedEvent { get; set; }
-        DateTime SelectedEventDate { get; set; }
         Task EventFileAttached(EventAttachmentArgs args);
         Task PreviewAttachment(Guid id);
         Task SaveEvent();

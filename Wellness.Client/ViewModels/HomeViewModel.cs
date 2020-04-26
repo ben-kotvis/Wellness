@@ -17,7 +17,7 @@ namespace Wellness.Client.ViewModels
         public IEnumerable<Activity> Activities { get; set; }
         public IEnumerable<Event> Events { get; set; }
 
-        public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
+        public IEnumerable<PersistenceWrapper<ActivityParticipation>> ActivityParticipations { get; set; }
         public IEnumerable<PersistenceWrapper<EventParticipation>> EventParticipations { get; set; }
 
         private IActivityParticipationService _activityParticipationService;
@@ -37,13 +37,17 @@ namespace Wellness.Client.ViewModels
             _eventParticipationService = eventParticipationService;
             _eventManagementService = eventManagementService;            ;
             NewEventParticipation = new EventParticipation();
+            NewActivityParticipation = new ActivityParticipation();
         }
 
         public EventParticipationValidation EventValidation { get; set; }
         public EventParticipation NewEventParticipation { get; set; }
+        public ActivityParticipationValidation ActivityValidation { get; set; }
+        public ActivityParticipation NewActivityParticipation { get; set; }
         public string PreviewFileType { get; set; }
         public string PreviewDataUrl { get; set; }
         public bool PreviewDialogIsOpen { get; set; }
+        public string EventAttachmentFileLocation { get; set; }
 
         public int ActivityTabIndex { get; set; } = 1;
         public int EventTabIndex { get; set; } = 1;
@@ -53,13 +57,6 @@ namespace Wellness.Client.ViewModels
         public string SelectedId { set; get; } = Guid.Empty.ToString();
 
         public int SelectedRelativeIndex { get; set; } = 0;
-        public Activity SelectedActivity { get; set; }
-        public int NumberOfMinutes { get; set; }
-        public DateTime SelectedActivityDate { get; set; } = DateTime.MinValue;
-
-        public Event SelectedEvent { get; set; }
-        public string EventAttachmentFileLocation { get; set; }
-        public DateTime SelectedEventDate { get; set; } = DateTime.MinValue;
 
         public async Task ActivityParticipationDeleted(Guid id)
         {
@@ -81,6 +78,7 @@ namespace Wellness.Client.ViewModels
             Activities = (await _activityManagementService.GetAll()).Where(i => i.Active);            
             Events = (await _eventManagementService.GetAll()).Where(i => i.Active);
             EventValidation = new EventParticipationValidation(Events);
+            ActivityValidation = new ActivityParticipationValidation(Activities);
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)
@@ -132,25 +130,20 @@ namespace Wellness.Client.ViewModels
 
         public async Task SaveActivity()
         {
-            await _activityParticipationService.Create(new ActivityParticipation()
-            {
-                Id = Guid.NewGuid(),
-                ActivityName = SelectedActivity.Name,
-                Minutes = NumberOfMinutes,
-                ParticipationDate = SelectedActivityDate,
-                UserId = Id
-            });
+            Console.WriteLine("Save Activity Started");
+            NewActivityParticipation.Id = Guid.NewGuid();
+            NewEventParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
+            NewActivityParticipation.UserId = Id;
 
-            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - SelectedActivityDate.Month);
+            await _activityParticipationService.Create(NewActivityParticipation);
+
+            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewActivityParticipation.SubmissionDate.Month);
             
             await SetActivityParticipations();
-
-            ActivityTabIndex = 1;
-
             //clear out UI
-            SelectedActivity = default;
-            SelectedActivityDate = default;
-            NumberOfMinutes = 0;
+            NewActivityParticipation = new ActivityParticipation();
+
+            Console.WriteLine("Save Activity Completed");        
         }
 
         public async Task SaveEvent()
@@ -169,7 +162,6 @@ namespace Wellness.Client.ViewModels
 
             //clear out UI
             NewEventParticipation = new EventParticipation();
-            EventTabIndex = 1;
         }
     }
 }

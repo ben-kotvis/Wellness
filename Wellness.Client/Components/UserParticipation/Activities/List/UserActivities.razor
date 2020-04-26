@@ -24,12 +24,12 @@ else
             </MatTableHeader>
             <MatTableRow>
                 <td>
-                    <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
+                    <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
                 </td>
-                <td>@context.ActivityName</td>
-                <td>@context.Minutes</td>
-                <td>@context.Points</td>
-                <td>@context.ParticipationDate.ToString("MM/dd/yyyy")</td>
+                <td>@context.Model.Activity.Name</td>
+                <td>@context.Model.Minutes</td>
+                <td>@context.Model.PointsEarned</td>
+                <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
             </MatTableRow>
         </MatTable>
         }

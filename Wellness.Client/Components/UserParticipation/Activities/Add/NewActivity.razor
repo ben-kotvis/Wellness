@@ -3,24 +3,32 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
 @inherits Components.UserParticipation.Activities.Add.NewActivityComponent
 
-<div style="width: 50%; background-color: var(--theme-palette-background-paper);">
-    <div>
-        <MatAutocompleteList FullWidth="true" Items="@Activities" TItem="Activity" Label="@Loc["SelectActivity"]" CustomStringSelector="@(i => i.Name)" @bind-Value="ViewModel.SelectedActivity">
-            <ItemTemplate>
-                <div>
-                    <span>@context.Name</span>
-                </div>
-            </ItemTemplate>
-        </MatAutocompleteList>
-    </div>
-    <div>
-        <MatTextField FullWidth="true" @bind-Value="ViewModel.NumberOfMinutes" Label="@Loc["NumberofMinutes"]"></MatTextField>
-    </div>
-    <div>
-        <MatDatePicker FullWidth="true" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.SelectedActivityDate"></MatDatePicker>
-    </div>
-    <div class="text-right p-2">
-        <MatButton Raised="true" @onclick="@(async e => await OnSaveSelected.InvokeAsync(null))">@Loc["Save"]</MatButton>
-    </div>
-</div>
 
+<EditForm Model="@ViewModel.NewActivityParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
+    <FluentValidator Validator="@ViewModel.ActivityValidation"></FluentValidator>
+    <ValidationSummary />
+    <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
+        <div>
+            <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
+                           Label="@Loc["SelectActivity"]" Context="selectContext">
+                <ItemTemplate>
+                    <span>@selectContext.Name</span>
+                </ItemTemplate>
+            </MatSelectItem>
+            <ValidationMessage For="() => ViewModel.NewActivityParticipation.Activity"></ValidationMessage>
+
+        </div>
+        <div>
+            <MatTextField FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatTextField>
+            <ValidationMessage For="() => ViewModel.NewActivityParticipation.Minutes"></ValidationMessage>
+        </div>
+        <div>
+            <MatDatePicker FullWidth="true" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.NewActivityParticipation.SubmissionDate"></MatDatePicker>
+            <ValidationMessage For="() => ViewModel.NewActivityParticipation.SubmissionDate"></ValidationMessage>
+        </div>
+        <div class="text-right p-2">
+            <MatButton Type="submit" Raised="true">@Loc["Save"]</MatButton>
+        </div>
+    </div>
+
+</EditForm>

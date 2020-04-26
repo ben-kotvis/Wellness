@@ -11,7 +11,7 @@ namespace Wellness.Client.Components.UserParticipation.Activities.Add
     public class NewActivityComponent : ComponentBase
     {
         [Parameter] public IActivityParticipationViewModel ViewModel { get; set; }
-        [Parameter] public EventCallback OnSaveSelected { get; set; }
         [Parameter] public IEnumerable<Activity> Activities { get; set; }
+        [Parameter] public EventCallback OnActivitySubmissionCompleted { get; set; }
     }
 }

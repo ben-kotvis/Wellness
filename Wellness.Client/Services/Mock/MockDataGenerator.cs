@@ -13,7 +13,7 @@ namespace Wellness.Client.Services.Mock
     {
         public static List<Activity> Activities;
         public static List<Event> Events;
-        public static List<ActivityParticipation> ActivityParticipations;
+        public static List<PersistenceWrapper<ActivityParticipation>> ActivityParticipations;
         public static List<PersistenceWrapper<EventParticipation>> EventParticipations;
         public static List<EventAttachment> EventAttachments;
         public static List<User> Users;
@@ -59,9 +59,9 @@ namespace Wellness.Client.Services.Mock
             return users;
         }
 
-        private static List<ActivityParticipation> BootstrapUserActivities()
+        private static List<PersistenceWrapper<ActivityParticipation>> BootstrapUserActivities()
         {
-            var userActivities = new List<ActivityParticipation>();
+            var userActivities = new List<PersistenceWrapper<ActivityParticipation>>();
 
             for (var i = 0; i < 50; i++)
             {
@@ -88,16 +88,20 @@ namespace Wellness.Client.Services.Mock
         }
 
 
-        public static ActivityParticipation CreateActivity()
+        public static PersistenceWrapper<ActivityParticipation> CreateActivity()
         {
             var random = new Random();
-            return new ActivityParticipation()
+            return new PersistenceWrapper<ActivityParticipation>()
             {
-                Id = Guid.NewGuid(),
-                ActivityName = GetActivity().Name,
-                Points = random.Next(1, 12),
-                Minutes = random.Next(15, 120),
-                ParticipationDate = DateTimeOffset.UtcNow.AddDays(random.Next(0, 150) * -1)
+                Model = new ActivityParticipation()
+                {
+                    Id = Guid.NewGuid(),
+                    Activity = GetActivity(),
+                    PointsEarned = random.Next(1, 12),
+                    Minutes = random.Next(15, 120),
+                    SubmissionDate = DateTime.UtcNow.AddDays(random.Next(0, 150) * -1)
+                },
+                Common = CreateCommon()
             };
         }
 

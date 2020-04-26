@@ -53,9 +53,6 @@ namespace Wellness.Client.Services.Mock
             eventParticipationMock.Setup(ams => ams.Create(It.IsAny<EventParticipation>())).Returns((EventParticipation ap) =>
             {
                 var model = _mapper.Map<EventParticipation, PersistenceWrapper<EventParticipation>>(ap);
-
-                Console.WriteLine(model.Model.Id);
-                Console.WriteLine(model.Model.Event.Name);
                 model.Common = MockDataGenerator.CreateCommon();
                 MockDataGenerator.EventParticipations.Add(model);
                 return Task.FromResult(true);

@@ -32,7 +32,7 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Delete(id);
         }
 
-        public Task<IEnumerable<ActivityParticipation>> GetByRelativeMonthIndex(int relativeMonthIndex, Guid userId)
+        public Task<IEnumerable<PersistenceWrapper<ActivityParticipation>>> GetByRelativeMonthIndex(int relativeMonthIndex, Guid userId)
         {
             return _proxy.GetByRelativeMonthIndex(relativeMonthIndex, userId);
         }
@@ -41,27 +41,28 @@ namespace Wellness.Client.Services.Mock
         {
             var activityParticipationMock = new Mock<IActivityParticipationService>();
             activityParticipationMock.Setup(ams => ams.GetByRelativeMonthIndex(It.IsAny<int>(), It.IsAny<Guid>()))
-                .Returns((int i, Guid id) => Task.FromResult(new List<ActivityParticipation>(GetByRelativeIndex(i)).AsEnumerable()));
+                .Returns((int i, Guid id) => Task.FromResult(new List<PersistenceWrapper<ActivityParticipation>>(GetByRelativeIndex(i)).AsEnumerable()));
 
             activityParticipationMock.Setup(ams => ams.Create(It.IsAny<ActivityParticipation>())).Returns((ActivityParticipation ap) =>
             {
-                ap.Common = MockDataGenerator.CreateCommon();
-                MockDataGenerator.ActivityParticipations.Add(ap);
+                var model = _mapper.Map<ActivityParticipation, PersistenceWrapper<ActivityParticipation>>(ap);
+                model.Common = MockDataGenerator.CreateCommon();
+                MockDataGenerator.ActivityParticipations.Add(model);
                 return Task.FromResult(true);
             });
 
             activityParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
             {
-                MockDataGenerator.ActivityParticipations.RemoveAll(ap => ap.Id == id);
+                MockDataGenerator.ActivityParticipations.RemoveAll(ap => ap.Model.Id == id);
                 return Task.FromResult(true);
             });
             return activityParticipationMock.Object;
         }
 
-        private IEnumerable<ActivityParticipation> GetByRelativeIndex(int relativeIndex)
+        private IEnumerable<PersistenceWrapper<ActivityParticipation>> GetByRelativeIndex(int relativeIndex)
         {
             var relativeDate = DateTimeOffset.UtcNow.AddMonths(relativeIndex);
-            return MockDataGenerator.ActivityParticipations.Where(i => i.ParticipationDate.Year == relativeDate.Year && i.ParticipationDate.Month == relativeDate.Month);
+            return MockDataGenerator.ActivityParticipations.Where(i => i.Model.SubmissionDate.Year == relativeDate.Year && i.Model.SubmissionDate.Month == relativeDate.Month);
         }
 
 

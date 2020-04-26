@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class Activity : NamedEntity, IHaveCommon, IIdentifiable
-    {        
-        public bool Active { get; set; }
+    public class PersistenceWrapper<T> : IHaveCommon
+        where T : IIdentifiable 
+    {
+        public T Model { get; set; }
         public Common Common { get; set; }
     }
+
 }
