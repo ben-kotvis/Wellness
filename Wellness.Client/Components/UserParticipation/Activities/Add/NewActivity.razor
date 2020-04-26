@@ -6,7 +6,6 @@
 
 <EditForm Model="@ViewModel.NewActivityParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
     <FluentValidator Validator="@ViewModel.ActivityValidation"></FluentValidator>
-    <ValidationSummary />
     <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
         <div>
             <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
@@ -19,7 +18,7 @@
 
         </div>
         <div>
-            <MatTextField FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatTextField>
+            <MatNumericUpDownField Step="15" Maximum="450" FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatNumericUpDownField>
             <ValidationMessage For="() => ViewModel.NewActivityParticipation.Minutes"></ValidationMessage>
         </div>
         <div>

@@ -130,7 +130,6 @@ namespace Wellness.Client.ViewModels
 
         public async Task SaveActivity()
         {
-            Console.WriteLine("Save Activity Started");
             NewActivityParticipation.Id = Guid.NewGuid();
             NewEventParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
             NewActivityParticipation.UserId = Id;
@@ -142,8 +141,6 @@ namespace Wellness.Client.ViewModels
             await SetActivityParticipations();
             //clear out UI
             NewActivityParticipation = new ActivityParticipation();
-
-            Console.WriteLine("Save Activity Completed");        
         }
 
         public async Task SaveEvent()
