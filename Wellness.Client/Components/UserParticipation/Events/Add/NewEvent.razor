@@ -13,12 +13,10 @@
             <div>
                 <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
                        Label="@Loc["SelectEvent"]" Context="selectContext">
-            <ItemTemplate>
-                <span>@selectContext.Name</span>
-            </ItemTemplate>
-
-        </MatSelectItem>
-
+                    <ItemTemplate>
+                        <span>@selectContext.Name</span>
+                    </ItemTemplate>
+                </MatSelectItem>
 
                 <ValidationMessage For="() => ViewModel.NewEventParticipation.Event" ></ValidationMessage>
             </div>

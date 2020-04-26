@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class Event : EventBase, IHaveCommon, IIdentifiable
+    public class Event : NamedEntity, IHaveCommon, IIdentifiable
     {
         public decimal Points { get; set; }
         public decimal AnnualMaximum { get; set; }

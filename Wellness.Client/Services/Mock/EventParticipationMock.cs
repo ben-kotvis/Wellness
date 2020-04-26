@@ -26,7 +26,7 @@ namespace Wellness.Client.Services.Mock
         {
             return _proxy.Create(eventParticipation);
         }
-        public Task<IEnumerable<EventParticipation>> GetByRelativeMonthIndex(int relativeMonthIndex, Guid userId)
+        public Task<IEnumerable<PersistenceWrapper<EventParticipation>>> GetByRelativeMonthIndex(int relativeMonthIndex, Guid userId)
         {
             return _proxy.GetByRelativeMonthIndex(relativeMonthIndex, userId);
         }
@@ -46,16 +46,16 @@ namespace Wellness.Client.Services.Mock
                 .Returns((int i, Guid id) =>
                 {
                     var relativeDate = DateTimeOffset.UtcNow.AddMonths(i);
-                    var filtered = MockDataGenerator.EventParticipations.Where(i => i.SubmissionDate.Year == relativeDate.Year && i.SubmissionDate.Month == relativeDate.Month);
-                    return Task.FromResult(new List<EventParticipation>(filtered).AsEnumerable());
+                    var filtered = MockDataGenerator.EventParticipations.Where(i => i.Model.SubmissionDate.Year == relativeDate.Year && i.Model.SubmissionDate.Month == relativeDate.Month);
+                    return Task.FromResult(new List<PersistenceWrapper<EventParticipation>>(filtered).AsEnumerable());
                 });
 
             eventParticipationMock.Setup(ams => ams.Create(It.IsAny<EventParticipation>())).Returns((EventParticipation ap) =>
             {
-                var model = _mapper.Map<EventParticipation, EventParticipationDataModel>(ap);
+                var model = _mapper.Map<EventParticipation, PersistenceWrapper<EventParticipation>>(ap);
 
-                Console.WriteLine(model.Id);
-                Console.WriteLine(model.Event.Name);
+                Console.WriteLine(model.Model.Id);
+                Console.WriteLine(model.Model.Event.Name);
                 model.Common = MockDataGenerator.CreateCommon();
                 MockDataGenerator.EventParticipations.Add(model);
                 return Task.FromResult(true);
@@ -76,7 +76,7 @@ namespace Wellness.Client.Services.Mock
 
             eventParticipationMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>
             {
-                MockDataGenerator.EventParticipations.RemoveAll(ap => ap.Id == id);
+                MockDataGenerator.EventParticipations.RemoveAll(ap => ap.Model.Id == id);
                 return Task.FromResult(true);
             });
 

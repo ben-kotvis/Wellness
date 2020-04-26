@@ -6,24 +6,21 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class EventParticipation
+    public class EventParticipation : IIdentifiable
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public EventBase Event { get; set; }
+        public NamedEntity Event { get; set; }
         public EventAttachment Attachment { get; set; }
         public decimal PointsEarned { get; set; }
         public DateTime SubmissionDate { get; set; }
     }
 
-    public class EventParticipationDataModel : EventParticipation, IHaveCommon, IIdentifiable 
+    public class PersistenceWrapper<T> : IHaveCommon
+        where T : IIdentifiable 
     {
+        public T Model { get; set; }
         public Common Common { get; set; }
     }
 
-    public class EventBase
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
 }

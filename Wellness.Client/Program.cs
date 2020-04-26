@@ -19,8 +19,8 @@ namespace Wellness.Client
         public static async Task Main(string[] args)
         {
             IConfigurationProvider config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<EventParticipation, EventParticipationDataModel>();
-                //cfg.CreateMap<EventParticipationDataModel, EventParticipation>();
+                cfg.CreateMap<EventParticipation, PersistenceWrapper<EventParticipation>>();
+                cfg.CreateMap<PersistenceWrapper<EventParticipation>, EventParticipation>();
             });
 
 

@@ -22,20 +22,20 @@ else
         </MatTableHeader>
         <MatTableRow>
             <td>
-                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Id; })"></MatIconButton>
+                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
             </td>
-            <td>@context.Event.Name</td>
+            <td>@context.Model.Event.Name</td>
             <td>
-                @if (context.Attachment != null)
+                @if (context.Model.Attachment != null)
                     {
                     <span>
-                        @context.Attachment?.Name
-                        <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Id))"></MatIconButton>
+                        @context.Model.Attachment?.Name
+                        <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Model.Id))"></MatIconButton>
                     </span>
                     }
             </td>
-            <td>@context.PointsEarned</td>
-            <td>@context.SubmissionDate.ToString("MM/dd/yyyy")</td>
+            <td>@context.Model.PointsEarned</td>
+            <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
         </MatTableRow>
     </MatTable>
 }

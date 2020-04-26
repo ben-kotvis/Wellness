@@ -18,7 +18,7 @@ namespace Wellness.Client.ViewModels
         public IEnumerable<Event> Events { get; set; }
 
         public IEnumerable<ActivityParticipation> ActivityParticipations { get; set; }
-        public IEnumerable<EventParticipation> EventParticipations { get; set; }
+        public IEnumerable<PersistenceWrapper<EventParticipation>> EventParticipations { get; set; }
 
         private IActivityParticipationService _activityParticipationService;
         private IActivityManagementService _activityManagementService;
@@ -114,12 +114,12 @@ namespace Wellness.Client.ViewModels
 
         public async Task PreviewAttachment(Guid id)
         {
-            var eventParticipation = EventParticipations.FirstOrDefault(i => i.Id == id);
+            var eventParticipation = EventParticipations.FirstOrDefault(i => i.Model.Id == id);
 
-            var bytes = await File.ReadAllBytesAsync(eventParticipation.Attachment.FilePath);
+            var bytes = await File.ReadAllBytesAsync(eventParticipation.Model.Attachment.FilePath);
             PreviewDialogIsOpen = true; 
-            PreviewDataUrl = $"data:{eventParticipation.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}"; 
-            PreviewFileType = eventParticipation.Attachment?.ContentType;            
+            PreviewDataUrl = $"data:{eventParticipation.Model.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}"; 
+            PreviewFileType = eventParticipation.Model.Attachment?.ContentType;            
         }
 
         public async Task SetUser(Guid id)
@@ -154,15 +154,7 @@ namespace Wellness.Client.ViewModels
         }
 
         public async Task SaveEvent()
-        {            
-            
-            var validationResult = await EventValidation.ValidateAsync(NewEventParticipation);
-            
-            if(!validationResult.IsValid)
-            {
-                return;
-            }
-
+        {    
             var selectedEvent = Events.FirstOrDefault(i => i.Id == NewEventParticipation.Event.Id);
 
             NewEventParticipation.Id = Guid.NewGuid();            

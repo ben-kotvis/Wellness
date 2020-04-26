@@ -14,7 +14,7 @@ namespace Wellness.Client.Services.Mock
         public static List<Activity> Activities;
         public static List<Event> Events;
         public static List<ActivityParticipation> ActivityParticipations;
-        public static List<EventParticipationDataModel> EventParticipations;
+        public static List<PersistenceWrapper<EventParticipation>> EventParticipations;
         public static List<EventAttachment> EventAttachments;
         public static List<User> Users;
 
@@ -109,9 +109,9 @@ namespace Wellness.Client.Services.Mock
             return Activities.ElementAt(index);
         }
 
-        public static List<EventParticipationDataModel> BootstrapUserEvents()
+        public static List<PersistenceWrapper<EventParticipation>> BootstrapUserEvents()
         {
-            var userEvents = new List<EventParticipationDataModel>();
+            var userEvents = new List<PersistenceWrapper<EventParticipation>>();
 
             for (var i = 0; i < 22; i++)
             {
@@ -120,18 +120,21 @@ namespace Wellness.Client.Services.Mock
 
             return userEvents;
         }
-        public static EventParticipationDataModel CreateEvent()
+        public static PersistenceWrapper<EventParticipation> CreateEvent()
         {
             var random = new Random();
             var eventObj = GetEvent();
-            return new EventParticipationDataModel()
+            return new PersistenceWrapper<EventParticipation>()
             {
-                Id = Guid.NewGuid(),
-                Common = CreateCommon(),
-                Event = eventObj,
-                PointsEarned = eventObj.Points,
-                SubmissionDate = DateTime.UtcNow.AddDays(random.Next(0, 60) * -1),
-                UserId = CurrentUserId
+                Model = new EventParticipation()
+                {
+                    Id = Guid.NewGuid(),
+                    Event = eventObj,
+                    PointsEarned = eventObj.Points,
+                    SubmissionDate = DateTime.UtcNow.AddDays(random.Next(0, 60) * -1),
+                    UserId = CurrentUserId
+                },
+                Common = CreateCommon()
             };
         }
 
