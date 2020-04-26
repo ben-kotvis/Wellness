@@ -1,5 +1,9 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.tab-form-select, .tab-form-select .mdc-select__anchor {
+    width: 100%;
+}
+
 .h-rule {
     margin-top: 0;
     margin-bottom: 0;

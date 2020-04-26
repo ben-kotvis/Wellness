@@ -11,13 +11,16 @@
 
         <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
             <div>
-                <MatSelectItem FullWidth="true" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
-                               Label="@Loc["SelectEvent"]" Context="selectContext">
-                    <ItemTemplate>
-                        <span>@selectContext.Name</span>
-                    </ItemTemplate>
-                </MatSelectItem>
-                <ValidationMessage For="() => ViewModel.NewEventParticipation.Event"></ValidationMessage>
+                <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
+                       Label="@Loc["SelectEvent"]" Context="selectContext">
+            <ItemTemplate>
+                <span>@selectContext.Name</span>
+            </ItemTemplate>
+
+        </MatSelectItem>
+
+
+                <ValidationMessage For="() => ViewModel.NewEventParticipation.Event" ></ValidationMessage>
             </div>
             <div>
                 <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
