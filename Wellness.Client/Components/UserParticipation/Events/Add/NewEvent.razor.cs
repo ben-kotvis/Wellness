@@ -1,5 +1,6 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace Wellness.Client.Components.UserParticipation.Events.Add
         [Inject] IJSRuntime JSRuntime { get; set; }
         [Parameter] public IEventParticipationViewModel ViewModel { get; set; }        
         [Parameter] public EventCallback<EventAttachmentArgs> OnFileAttached { get; set; }
-        
+        [Parameter] public EventCallback OnEventSubmissionCompleted { get; set; }
+
         public async Task FilesReady(IMatFileUploadEntry[] files)
         {
             foreach (var file in files)

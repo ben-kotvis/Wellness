@@ -38,20 +38,13 @@ namespace Wellness.Client.Components.Shared
 
                 _activeIndex = value;
 
-                Console.WriteLine($"Is it the first time: {_firstTime}");
                 if (_firstTime && _activeIndex != DefaultIndex)
                 {
                     _firstTime = false;
                     _activeIndex = DefaultIndex;
-                    this.ActiveIndexChanged.InvokeAsync(DefaultIndex);
-                    Console.WriteLine($"Active Index: {_activeIndex}");
-                }
-                else
-                {
-                    this.ActiveIndexChanged.InvokeAsync(_activeIndex);
                 }
 
-                
+                this.ActiveIndexChanged.InvokeAsync(_activeIndex).GetAwaiter().GetResult();
             }
         }
         [Parameter]

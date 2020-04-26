@@ -19,6 +19,8 @@ namespace Wellness.Model.ModelValidation
             RuleFor(e => e.Attachment).Must((f, a, token) => AttachmentIsMissing(f, a));
         }
 
+        
+
         private bool AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment)
         {
             if(eventParticipation.Event == default)

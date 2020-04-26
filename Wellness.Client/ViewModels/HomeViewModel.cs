@@ -154,7 +154,15 @@ namespace Wellness.Client.ViewModels
         }
 
         public async Task SaveEvent()
-        {
+        {            
+            
+            var validationResult = await EventValidation.ValidateAsync(NewEventParticipation);
+            
+            if(!validationResult.IsValid)
+            {
+                return;
+            }
+
             var selectedEvent = Events.FirstOrDefault(i => i.Id == NewEventParticipation.Event.Id);
 
             NewEventParticipation.Id = Guid.NewGuid();            
@@ -164,12 +172,11 @@ namespace Wellness.Client.ViewModels
             await _eventParticipationService.Create(NewEventParticipation);                
                         
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewEventParticipation.SubmissionDate.Month);
-
+            
             await SetEventParticipations();
 
             //clear out UI
             NewEventParticipation = new EventParticipation();
-
             EventTabIndex = 1;
         }
     }
