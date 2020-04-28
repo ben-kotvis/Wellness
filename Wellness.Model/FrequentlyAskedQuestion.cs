@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class FrequentlyAskedQuestion :ModelBase
+    public class FrequentlyAskedQuestion : IIdentifiable
     {
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Answer { get; set; }
         public bool Active { get; set; } 

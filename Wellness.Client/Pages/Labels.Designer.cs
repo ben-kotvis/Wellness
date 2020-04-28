@@ -205,6 +205,15 @@ namespace Wellness.Client.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frequently Asked Question Management.
+        /// </summary>
+        internal static string FAQManagement {
+            get {
+                return ResourceManager.GetString("FAQManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Activities.
         /// </summary>
         internal static string ManageActivities {
@@ -381,6 +390,15 @@ namespace Wellness.Client.Pages {
         internal static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        internal static string TitleLabel {
+            get {
+                return ResourceManager.GetString("TitleLabel", resourceCulture);
             }
         }
         

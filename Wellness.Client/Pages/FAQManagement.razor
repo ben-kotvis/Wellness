@@ -1,0 +1,52 @@
+﻿@page "/FrequentlyAskedQuestionManagement"
+
+@using Markdig
+@inject HttpClient Http
+@inherits Wellness.Client.Pages.FAQManagementComponent
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
+
+<h2>@Loc["FAQManagement"]</h2>
+
+<div class="float-right">
+    <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
+</div>
+
+@foreach (var item in ViewModel.FAQs)
+{
+<MatCard class="demo-mat-card">
+    <MatCardContent>
+        <div class="demo-mat-card-content">
+            <MatHeadline6 class="demo-mat-card-clean-margin">
+                @item.Model.Title
+            </MatHeadline6>
+        </div>
+        <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+            @((MarkupString)Markdown.ToHtml(item.Model.Answer, Pipeline))        
+        </MatBody2>
+    </MatCardContent>
+</MatCard>
+}
+
+<EditForm Model="@ViewModel.NewOrEditFAQ" OnValidSubmit="@ViewModel.Save">
+    <FluentValidator></FluentValidator>
+    <ValidationSummary />
+    <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
+        <MatDialogTitle>
+            @Loc["FAQ"]
+        </MatDialogTitle>
+        <MatDialogContent>
+            <MatTextField @bind-Value="ViewModel.NewOrEditFAQ.Title" Label="@Loc["TitleLabel"]"></MatTextField>
+            <ValidationMessage For="() => ViewModel.NewOrEditFAQ.Title"></ValidationMessage>
+
+            <MatTextField @bind-Value="ViewModel.NewOrEditFAQ.Answer" TextArea="true" FullWidth="true" Label="@Loc["Answer"]"></MatTextField>
+            <ValidationMessage For="() => ViewModel.NewOrEditFAQ.Answer"></ValidationMessage>
+            <div>
+                <MatCheckbox @bind-Value="ViewModel.NewOrEditFAQ.Active" Label="@Loc["Active"]"></MatCheckbox>
+            </div>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">@Loc["Cancel"]</MatButton>
+            <MatButton Type="submit">@Loc["OK"]</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</EditForm>

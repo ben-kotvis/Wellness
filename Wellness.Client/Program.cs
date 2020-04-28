@@ -11,6 +11,7 @@ using System.Globalization;
 using Microsoft.JSInterop;
 using AutoMapper;
 using Wellness.Model;
+using Markdig;
 
 namespace Wellness.Client
 {
@@ -25,6 +26,10 @@ namespace Wellness.Client
                 cfg.CreateMap<ActivityParticipation, PersistenceWrapper<ActivityParticipation>>()
                     .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
                 cfg.CreateMap<PersistenceWrapper<ActivityParticipation>, ActivityParticipation>();
+
+
+                cfg.CreateMap<FrequentlyAskedQuestion, PersistenceWrapper<FrequentlyAskedQuestion>>()
+                    .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
             });
 
 
@@ -32,6 +37,7 @@ namespace Wellness.Client
 
             builder.Services.AddSingleton<AppState>();
             builder.Services.AddSingleton<IConfigurationProvider>(config);
+            builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             builder.Services.BuildWellness(true);
             builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
             builder.Services.AddValidatorsFromAssemblyContaining<EventParticipationValidation>();

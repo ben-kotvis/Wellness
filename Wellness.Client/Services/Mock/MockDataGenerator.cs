@@ -17,6 +17,7 @@ namespace Wellness.Client.Services.Mock
         public static List<PersistenceWrapper<EventParticipation>> EventParticipations;
         public static List<EventAttachment> EventAttachments;
         public static List<User> Users;
+        public static List<PersistenceWrapper<FrequentlyAskedQuestion>> FrequentlyAskedQuestions;
 
         static MockDataGenerator()
         {
@@ -26,6 +27,7 @@ namespace Wellness.Client.Services.Mock
             EventParticipations = BootstrapUserEvents();
             EventAttachments = new List<EventAttachment>();
             Users = BootstrapUsers();
+            FrequentlyAskedQuestions = new List<PersistenceWrapper<FrequentlyAskedQuestion>>();
         }
 
         public static Guid CompanyId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f36");

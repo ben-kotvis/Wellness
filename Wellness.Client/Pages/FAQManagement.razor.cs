@@ -1,4 +1,5 @@
-﻿using MatBlazor;
+﻿using Markdig;
+using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
@@ -11,13 +12,10 @@ using Wellness.Model;
 
 namespace Wellness.Client.Pages
 {
-    public class FileViewerComponent : WellnessComponentBase<FileViewerViewModel>
+    public class FAQManagementComponent : WellnessComponentBase<FAQManagementViewModel>
     {
-        [Inject] public override FileViewerViewModel ViewModel { get; set; }
+        [Inject] public override FAQManagementViewModel ViewModel { get; set; }
+        [Inject] public MarkdownPipeline Pipeline { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-        }
     }
 }
