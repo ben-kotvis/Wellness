@@ -12,6 +12,11 @@ using Microsoft.JSInterop;
 using AutoMapper;
 using Wellness.Model;
 using Markdig;
+using Microsoft.Extensions.Localization;
+using Wellness.Client.Pages;
+using Microsoft.AspNetCore.Builder;
+using System.Net.Http;
+using System.Linq;
 
 namespace Wellness.Client
 {
@@ -32,7 +37,7 @@ namespace Wellness.Client
                     .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
             });
 
-
+            
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             builder.Services.AddSingleton<AppState>();
@@ -42,24 +47,36 @@ namespace Wellness.Client
             builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
             builder.Services.AddValidatorsFromAssemblyContaining<EventParticipationValidation>();
 
-            builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddBaseAddressHttpClient();
-            
+            builder.RootComponents.Add<App>("app");
+            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.Services.AddLocalization();
 
             var host = builder.Build();
-                        
-            var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
-            var result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
-            if (result != null)
+            
+            var supportedCulteres = new List<CultureInfo>() { new CultureInfo("en") };
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
-                var culture = new CultureInfo(result);
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-            }
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
+                options.SupportedUICultures = supportedCulteres;
+            });
+
 
             await host.RunAsync();
+            
+
+
+            //CreateHostBuilder(args).Build().Run();
         }
+
+        /*
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+        });
+        */
     }
 }

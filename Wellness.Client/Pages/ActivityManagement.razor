@@ -1,7 +1,7 @@
 ﻿@page "/ActivityManagement"
 
-@inject HttpClient Http
-@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Wellness.Client.Pages.ActivityManagementComponent
 
 <h2>@Loc["ActivityManagement"]</h2>
@@ -44,5 +44,5 @@
         <MatButton OnClick="@ViewModel.Save">
             @Loc["OK"]
         </MatButton>
-</MatDialogActions>
+    </MatDialogActions>
 </MatDialog>

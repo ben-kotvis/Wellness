@@ -1,7 +1,7 @@
 ﻿@using Wellness.Model
 @using System.Globalization
 @using Wellness.Client.Components.UserParticipation.Activities.Add
-@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Components.UserParticipation.Activities.List.UserActivitiesComponent
 
 
@@ -14,7 +14,8 @@
 }
 else
 {
-        <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" Striped="true" HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
+        <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" Striped="true"
+                   HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
             <MatTableHeader>
                 <th></th>
                 <th>@Loc["Activity"]</th>

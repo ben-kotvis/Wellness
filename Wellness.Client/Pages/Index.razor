@@ -1,14 +1,13 @@
 ﻿@page "/"
 @page  "/{SelectedUserId:guid}"
 
-@inject HttpClient Http
 @using Wellness.Client.Components.MonthsMenu
 @using Wellness.Client.Components.UserParticipation.Activities.List
 @using Wellness.Client.Components.UserParticipation.Activities.Add
 @using Wellness.Client.Components.UserParticipation.Events.List
 @using Wellness.Client.Components.UserParticipation.Events.Add
 @using Wellness.Client.Components.Shared
-@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Wellness.Client.Pages.IndexComponent
 
 

@@ -1,10 +1,10 @@
 ﻿@using Wellness.Model
 @using System.Globalization
-@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Pages.Labels> Loc
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Components.UserParticipation.Activities.Add.NewActivityComponent
 
 
-<EditForm Model="@ViewModel.NewActivityParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
+<EditForm Model="@ViewModel.NewActivityParticipation" OnSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
     <FluentValidator Validator="@ViewModel.ActivityValidation"></FluentValidator>
     <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
         <div>
