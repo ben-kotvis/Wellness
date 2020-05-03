@@ -32,12 +32,38 @@ namespace Wellness.Client.ViewModels
             EditModalOpen = true;
         }
 
+        public async Task Edit(FrequentlyAskedQuestion faq)
+        {
+            NewOrEditFAQ = faq;
+            EditModalOpen = true;
+        }
+
         public async Task Save()
         {
             await _frequentlyAskedQuestionService.Create(NewOrEditFAQ);
             FAQs = await _frequentlyAskedQuestionService.GetAll();
             NewOrEditFAQ = new FrequentlyAskedQuestion();
             EditModalOpen = false;
+        }
+
+        public async Task FileAttached(List<EventAttachmentArgs> args)
+        {
+            if(NewOrEditFAQ.Images == default)
+            {
+                NewOrEditFAQ.Images = new List<EventAttachment>();
+            }
+
+            foreach (var arg in args)
+            {
+                var eventAttachmentFileLocation = await _frequentlyAskedQuestionService.UploadFile(arg.Name, arg.Type, arg.WriteToStreamAsync);
+                NewOrEditFAQ.Images.Add(new EventAttachment()
+                {
+                    ContentType = arg.Type,
+                    FilePath = eventAttachmentFileLocation,
+                    FileSize = arg.Size,
+                    Name = arg.Name
+                });
+            }
         }
 
     }

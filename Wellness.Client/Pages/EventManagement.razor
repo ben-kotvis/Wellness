@@ -41,21 +41,25 @@
             @Loc["Event"]
         </MatDialogTitle>
         <MatDialogContent>
-            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name" Label="@Loc["Name"]"></MatTextField>
-            <ValidationMessage For="() => ViewModel.NewOrEditEvent.Name"></ValidationMessage>
+            <p>
+                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name" Label="@Loc["Name"]"></MatTextField>
+                <ValidationMessage For="() => ViewModel.NewOrEditEvent.Name"></ValidationMessage>
+            </p>
+            <p>
 
-            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" Label="@Loc["PointsPerEvent"]"></MatTextField>
-            <ValidationMessage For="() => ViewModel.NewOrEditEvent.Points"></ValidationMessage>
-
-            <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum" Label="@Loc["AnnualMax"]"></MatTextField>
-            <ValidationMessage For="() => ViewModel.NewOrEditEvent.AnnualMaximum"></ValidationMessage>
-
-            <div>
-                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" Label="@Loc["RequireAttachment"]"></MatCheckbox>
-            </div>
-            <div>
-                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="@Loc["Active"]"></MatCheckbox>
-            </div>
+                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" Label="@Loc["PointsPerEvent"]"></MatTextField>
+                <ValidationMessage For="() => ViewModel.NewOrEditEvent.Points"></ValidationMessage>
+            </p>
+            <p>
+                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum" Label="@Loc["AnnualMax"]"></MatTextField>
+                <ValidationMessage For="() => ViewModel.NewOrEditEvent.AnnualMaximum"></ValidationMessage>
+            </p>
+                <div>
+                    <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" Label="@Loc["RequireAttachment"]"></MatCheckbox>
+                </div>
+                <div>
+                    <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="@Loc["Active"]"></MatCheckbox>
+                </div>
         </MatDialogContent>
         <MatDialogActions>
             <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">@Loc["Cancel"]</MatButton>

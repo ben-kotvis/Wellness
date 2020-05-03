@@ -40,7 +40,10 @@ namespace Wellness.Client.Services.Mock
         {
             return _proxy.Delete(id);
         }
-
+        public Task<string> UploadFile(string name, string contentType, Func<Stream, Task> streamTask)
+        {
+            return _proxy.UploadFile(name, contentType, streamTask);
+        }
 
         public IFrequentlyAskedQuestionService CreateEventManagement()
         {
@@ -69,6 +72,19 @@ namespace Wellness.Client.Services.Mock
                     }
                 });
                 return Task.FromResult(true);
+            });
+
+            eventManagementMock.Setup(ams => ams.UploadFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Func<Stream, Task>>())).Returns(async (string n, string ct, Func<Stream, Task> f) =>
+            {
+                Guid id = Guid.NewGuid();
+                var fileName = Path.GetTempFileName();
+                Console.WriteLine(fileName);
+
+                using (var file = File.Create(fileName))
+                {
+                    await f(file);
+                }
+                return fileName;
             });
 
             eventManagementMock.Setup(ams => ams.Delete(It.IsAny<Guid>())).Returns((Guid id) =>

@@ -21,6 +21,10 @@
             </MatHeadline6>
         </div>
         <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+            <div class="float-right">
+
+                <MatIconButton Icon="edit" @onclick="@((e) => ViewModel.Edit(item.Model))"></MatIconButton>
+            </div>
             @((MarkupString)Markdown.ToHtml(item.Model.Answer, Pipeline))        
         </MatBody2>
     </MatCardContent>
@@ -40,6 +44,23 @@
 
             <MatTextField @bind-Value="ViewModel.NewOrEditFAQ.Answer" TextArea="true" FullWidth="true" Label="@Loc["Answer"]"></MatTextField>
             <ValidationMessage For="() => ViewModel.NewOrEditFAQ.Answer"></ValidationMessage>
+
+            <div>
+                <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
+            </div>
+
+            @if (ViewModel.NewOrEditFAQ.Images != default)
+            {
+            <MatList>
+                @foreach (var image in ViewModel.NewOrEditFAQ.Images)
+                {
+                    <MatListItem>
+
+                        @image.Name
+                    </MatListItem>
+                }
+            </MatList>
+            }
             <div>
                 <MatCheckbox @bind-Value="ViewModel.NewOrEditFAQ.Active" Label="@Loc["Active"]"></MatCheckbox>
             </div>
