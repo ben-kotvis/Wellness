@@ -134,12 +134,6 @@ namespace Wellness.Client.ViewModels
             NewActivityParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
             NewActivityParticipation.UserId = Id;
 
-            var result = ActivityValidation.Validate(NewActivityParticipation);
-            if(!result.IsValid)
-            {
-                return;
-            }
-
             await _activityParticipationService.Create(NewActivityParticipation);
 
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewActivityParticipation.SubmissionDate.Month);
@@ -157,12 +151,6 @@ namespace Wellness.Client.ViewModels
             NewEventParticipation.Id = Guid.NewGuid();            
             NewEventParticipation.PointsEarned = selectedEvent.Points;
             NewEventParticipation.UserId = Id;
-
-            var result = EventValidation.Validate(NewEventParticipation);
-            if (!result.IsValid)
-            {
-                return;
-            }
 
             await _eventParticipationService.Create(NewEventParticipation);                
                         

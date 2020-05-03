@@ -17,17 +17,8 @@ namespace Wellness.Model.ModelValidation
             RuleFor(e => e.Activity).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
             RuleFor(e => e.Minutes).GreaterThanOrEqualTo(15);
-            RuleFor(e => e.PointsEarned).Must((f, a, token) => PointsAreCorrect(f, a));
         }
 
-        private bool PointsAreCorrect(ActivityParticipation activityParticipation, decimal points)
-        {
-            if (activityParticipation.Activity == default)
-            {
-                return true;
-            }
-            return points == Math.Round(activityParticipation.Minutes * 0.166666666667m);
-        }
     }
 
 }
