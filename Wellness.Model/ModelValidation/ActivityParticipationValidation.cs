@@ -26,9 +26,6 @@ namespace Wellness.Model.ModelValidation
             {
                 return true;
             }
-
-            var eventObj = _events.FirstOrDefault(i => i.Id == activityParticipation.Activity.Id);
-
             return points == Math.Round(activityParticipation.Minutes * 0.166666666667m);
         }
     }

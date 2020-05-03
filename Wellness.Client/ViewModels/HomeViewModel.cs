@@ -131,7 +131,7 @@ namespace Wellness.Client.ViewModels
         public async Task SaveActivity()
         {
             NewActivityParticipation.Id = Guid.NewGuid();
-            NewEventParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
+            NewActivityParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
             NewActivityParticipation.UserId = Id;
 
             var result = ActivityValidation.Validate(NewActivityParticipation);

@@ -20,7 +20,7 @@
         <div>
             <MatNumericUpDownField Step="15" Maximum="450" FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatNumericUpDownField>
             <ValidationMessage For="() => ViewModel.NewActivityParticipation.Minutes"></ValidationMessage>
-        </div>
+         </div>
         <div>
             <MatDatePicker FullWidth="true" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.NewActivityParticipation.SubmissionDate"></MatDatePicker>
             <ValidationMessage For="() => ViewModel.NewActivityParticipation.SubmissionDate"></ValidationMessage>
