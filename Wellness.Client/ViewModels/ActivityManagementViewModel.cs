@@ -12,7 +12,7 @@ namespace Wellness.Client.ViewModels
     {
         public bool EditModalOpen { get; set; } = false;
         public string ActivityName { get; set; }
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
 
         public Guid DialogId { get; set; } = Guid.Empty;
 

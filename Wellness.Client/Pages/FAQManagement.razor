@@ -7,29 +7,29 @@
 
 <h2>@Loc["FAQManagement"]</h2>
 
-<div class="float-right">
-    <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
-</div>
+    <div class="float-right">
+        <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
+    </div>
 
-@foreach (var item in ViewModel.FAQs)
-{
-<MatCard class="demo-mat-card">
-    <MatCardContent>
-        <div class="demo-mat-card-content">
-            <MatHeadline6 class="demo-mat-card-clean-margin">
-                @item.Model.Title
-            </MatHeadline6>
-        </div>
-        <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
-            <div class="float-right">
+    <div>
+        <MatAccordion Multi="true">
+            @foreach (var item in ViewModel.FAQs)
+            {
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>@item.Model.Title</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <div class="float-right">
 
-                <MatIconButton Icon="edit" @onclick="@((e) => ViewModel.Edit(item.Model))"></MatIconButton>
-            </div>
-            @((MarkupString)Markdown.ToHtml(item.Model.Answer, Pipeline))        
-        </MatBody2>
-    </MatCardContent>
-</MatCard>
-}
+                            <MatIconButton Icon="edit" @onclick="@((e) => ViewModel.Edit(item.Model))"></MatIconButton>
+                        </div>
+                        @((MarkupString)Markdown.ToHtml(item.Model.Answer, Pipeline))
+                    </MatExpansionPanelDetails>
+                </MatExpansionPanel>
+            }
+        </MatAccordion>
+    </div>
 
 <EditForm Model="@ViewModel.NewOrEditFAQ" OnValidSubmit="@ViewModel.Save">
     <FluentValidator></FluentValidator>
@@ -51,22 +51,22 @@
 
             @if (ViewModel.NewOrEditFAQ.Images != default)
             {
-            <MatList>
-                @foreach (var image in ViewModel.NewOrEditFAQ.Images)
-                {
-                    <MatListItem>
+                <MatList>
+                    @foreach (var image in ViewModel.NewOrEditFAQ.Images)
+                    {
+                        <MatListItem>
 
-                        @image.Name
-                    </MatListItem>
-                }
-            </MatList>
+                            @image.Name
+                        </MatListItem>
+                    }
+                </MatList>
             }
             <div>
                 <MatCheckbox @bind-Value="ViewModel.NewOrEditFAQ.Active" Label="@Loc["Active"]"></MatCheckbox>
             </div>
         </MatDialogContent>
         <MatDialogActions>
-            <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">@Loc["Cancel"]</MatButton>
+            <MatButton Type="button" OnClick="@ViewModel.Cancel">@Loc["Cancel"]</MatButton>
             <MatButton Type="submit">@Loc["OK"]</MatButton>
         </MatDialogActions>
     </MatDialog>

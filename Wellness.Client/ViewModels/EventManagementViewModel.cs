@@ -27,7 +27,10 @@ namespace Wellness.Client.ViewModels
         public EventManagementViewModel(IEventManagementService eventManagementService)
         {
             _eventManagementService = eventManagementService;
-            NewOrEditEvent = new Event();
+            NewOrEditEvent = new Event()
+            {
+                Active = true
+            };
         }
 
         public async Task OnInit()
@@ -78,6 +81,8 @@ namespace Wellness.Client.ViewModels
             
             EditModalOpen = false;
             Events = await _eventManagementService.GetAll();
+
+            NewOrEditEvent = new Event();
         }
     }
 }

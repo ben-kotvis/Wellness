@@ -20,11 +20,15 @@ namespace Wellness.Client.ViewModels
         public IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>> FAQs { get; set; }
         public FrequentlyAskedQuestion NewOrEditFAQ { get; set; }
         public bool EditModalOpen { get; set; }
+        public Guid DialogId { get; set; } = Guid.Empty;
 
         public async Task OnInit()
         {
             FAQs = await _frequentlyAskedQuestionService.GetAll();
-            NewOrEditFAQ = new FrequentlyAskedQuestion();
+            NewOrEditFAQ = new FrequentlyAskedQuestion()
+            {
+                Active = true
+            };
         }
 
         public async Task New()
@@ -34,13 +38,29 @@ namespace Wellness.Client.ViewModels
 
         public async Task Edit(FrequentlyAskedQuestion faq)
         {
+            DialogId = faq.Id;
             NewOrEditFAQ = faq;
             EditModalOpen = true;
         }
 
+        public async Task Cancel()
+        {
+            NewOrEditFAQ = new FrequentlyAskedQuestion();
+            EditModalOpen = false;
+        }
+
         public async Task Save()
         {
-            await _frequentlyAskedQuestionService.Create(NewOrEditFAQ);
+            if(DialogId == default)
+            {
+                NewOrEditFAQ.Id = Guid.NewGuid();
+                await _frequentlyAskedQuestionService.Create(NewOrEditFAQ);
+            }
+            else
+            {
+                await _frequentlyAskedQuestionService.Update(NewOrEditFAQ);
+            }
+            
             FAQs = await _frequentlyAskedQuestionService.GetAll();
             NewOrEditFAQ = new FrequentlyAskedQuestion();
             EditModalOpen = false;

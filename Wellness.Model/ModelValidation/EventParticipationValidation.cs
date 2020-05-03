@@ -17,20 +17,8 @@ namespace Wellness.Model.ModelValidation
             RuleFor(e => e.Event).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
             RuleFor(e => e.Attachment).Must((f, a, token) => AttachmentIsMissing(f, a));
-            RuleFor(e => e.PointsEarned).Must((f, a, token) => PointsAreCorrect(f, a));
         }
 
-        private bool PointsAreCorrect(EventParticipation eventParticipation, decimal points)
-        {
-            if (eventParticipation.Event == default)
-            {
-                return true;
-            }
-
-            var eventObj = _events.FirstOrDefault(i => i.Id == eventParticipation.Event.Id);
-
-            return points == eventObj.Points;
-        }
 
         private bool AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment)
         {
