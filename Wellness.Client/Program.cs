@@ -31,8 +31,6 @@ namespace Wellness.Client
                 cfg.CreateMap<ActivityParticipation, PersistenceWrapper<ActivityParticipation>>()
                     .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
                 cfg.CreateMap<PersistenceWrapper<ActivityParticipation>, ActivityParticipation>();
-
-
                 cfg.CreateMap<FrequentlyAskedQuestion, PersistenceWrapper<FrequentlyAskedQuestion>>()
                     .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
             });
@@ -40,7 +38,6 @@ namespace Wellness.Client
             
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            builder.Services.AddSingleton<AppState>();
             builder.Services.AddSingleton<IConfigurationProvider>(config);
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             builder.Services.BuildWellness(true);
@@ -49,7 +46,8 @@ namespace Wellness.Client
 
 
             builder.RootComponents.Add<App>("app");
-            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44354") });
+
 
             builder.Services.AddLocalization();
 
@@ -62,21 +60,7 @@ namespace Wellness.Client
                 options.SupportedUICultures = supportedCulteres;
             });
 
-
-            await host.RunAsync();
-            
-
-
-            //CreateHostBuilder(args).Build().Run();
+            await host.RunAsync();            
         }
-
-        /*
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder.UseStartup<Startup>();
-        });
-        */
     }
 }

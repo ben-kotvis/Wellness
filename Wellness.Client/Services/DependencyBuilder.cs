@@ -15,7 +15,7 @@ namespace Wellness.Client.Services
         {
             if (useMock)
             {                
-                services.AddSingleton<IActivityManagementService,ActivityManagementMock>();
+                services.AddTransient<IActivityManagementService, Wellness.Client.Services.ActivityManagment>();
                 services.AddSingleton<IActivityParticipationService, ActivityParticipationMock>();
                 services.AddSingleton<IEventManagementService, EventManagmentMock>();
                 services.AddSingleton<IEventParticipationService, EventParticipationMock>();
