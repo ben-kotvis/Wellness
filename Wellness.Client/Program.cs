@@ -33,6 +33,8 @@ namespace Wellness.Client
                 cfg.CreateMap<PersistenceWrapper<ActivityParticipation>, ActivityParticipation>();
                 cfg.CreateMap<FrequentlyAskedQuestion, PersistenceWrapper<FrequentlyAskedQuestion>>()
                     .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
+                cfg.CreateMap<Activity, PersistenceWrapper<Activity>>()
+                    .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
             });
 
             

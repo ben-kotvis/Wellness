@@ -1,49 +1,88 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
 
 namespace Wellness.Persistance.Mongo
 {
-    public class MongoPersistanceService : IPersistanceService
+    public class MongoPersistanceService<T> : IPersistanceService<T> where T : IIdentifiable
     {
         private readonly MongoClient _mongoClient;
         private readonly string _database;
         private readonly string _collectionName;
-        public MongoPersistanceService(string connectionString, string database, string collectionName)
+
+        private readonly DatabaseSettings _databaseSettings;
+        public MongoPersistanceService(IOptions<DatabaseSettings> databaseSettings)
         {
-            _mongoClient = new MongoClient(connectionString);
-            _database = database;
-            _collectionName = collectionName;
+            _databaseSettings = databaseSettings.Value;
+            _mongoClient = new MongoClient(_databaseSettings.ConnectionString);
+            _database = _databaseSettings.DatabaseName;
+            _collectionName = typeof(T).Name;
+            Initialize();
         }
-        public async Task Create<T>(PersistenceWrapper<T> wrapped)
-            where T : IIdentifiable
+
+        private void Initialize()
         {
-            if(!BsonClassMap.IsClassMapRegistered(typeof(T)))
+            if (!BsonClassMap.IsClassMapRegistered(typeof(PersistenceWrapper<T>)))
             {
-                BsonClassMap.RegisterClassMap<T>();
+                BsonClassMap.RegisterClassMap<PersistenceWrapper<T>>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.MapIdMember(c => c.Id);
+                });
             }
-            
+        }
+
+        public async Task Create(PersistenceWrapper<T> wrapped, CancellationToken cancellationToken)
+        {            
             var database = _mongoClient.GetDatabase(_database);                        
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            await collection.InsertOneAsync(wrapped);
+            var options = new InsertOneOptions();
+            await collection.InsertOneAsync(wrapped, options, cancellationToken);
         }
 
-        private BsonDocument CreateDocument<T>(PersistenceWrapper<T> wrapped)
-            where T : IIdentifiable
+        public async Task<IEnumerable<PersistenceWrapper<T>>> GetAll(CancellationToken cancellationToken)
         {
-            var document = new BsonDocument();
-            document.Add("name", "MongoDB");
-            document.Add("type", "Database");
-            document.Add("count", 1);
-            document.Add("CommonInfo", BsonValue.Create(wrapped.Common));
-            document.Add("Model", BsonValue.Create(wrapped.Model));
-
-            return document;
+            var database = _mongoClient.GetDatabase(_database);
+            var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
+            return await collection.AsQueryable().ToListAsync(cancellationToken);
         }
 
+        public async Task Update(PersistenceWrapper<T> wrapped, CancellationToken cancellationToken)
+        {
+            var database = _mongoClient.GetDatabase(_database);
+            var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
 
+            var updateDefinitionBuilder = new UpdateDefinitionBuilder<PersistenceWrapper<T>>();
+            var updateDefinition = updateDefinitionBuilder
+                .Set(i => i.Model, wrapped.Model)
+                .Set(i => i.Common, wrapped.Common);
+
+            var filter = new FilterDefinitionBuilder<PersistenceWrapper<T>>();
+            await collection.UpdateOneAsync(filter.Eq(i => i.Model.Id, wrapped.Model.Id), updateDefinition, cancellationToken: cancellationToken);
+        }
+
+        public async Task<PersistenceWrapper<T>> Get(Guid id, CancellationToken cancellationToken)
+        {
+            var database = _mongoClient.GetDatabase(_database);
+            var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
+            var filter = new FilterDefinitionBuilder<PersistenceWrapper<T>>();
+            return await collection.Find(filter.Eq(i => i.Model.Id, id)).SingleAsync(cancellationToken);
+        }
+
+        public async Task Delete(Guid id, CancellationToken cancellationToken)
+        {
+            var database = _mongoClient.GetDatabase(_database);
+            var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
+            var filter = new FilterDefinitionBuilder<PersistenceWrapper<T>>();
+            await collection.DeleteOneAsync(filter.Eq(i => i.Model.Id, id), cancellationToken);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Wellness.Model
         Task Create(Activity activity);
         Task Update(Activity activity);
 
-        Task<IEnumerable<Activity>> GetAll();
+        Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll();
 
         Task Disable(Guid activityId);
     }

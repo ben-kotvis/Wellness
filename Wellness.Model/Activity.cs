@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class Activity : NamedEntity, IHaveCommon, IIdentifiable
+    public class Activity : NamedEntity, IIdentifiable
     {        
         public bool Active { get; set; }
-        public Common Common { get; set; }
     }
 }

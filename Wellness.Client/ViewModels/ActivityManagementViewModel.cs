@@ -16,7 +16,7 @@ namespace Wellness.Client.ViewModels
 
         public Guid DialogId { get; set; } = Guid.Empty;
 
-        public IEnumerable<Activity> Activities { get; private set; }
+        public IEnumerable<PersistenceWrapper<Activity>> Activities { get; private set; }
 
         private IActivityManagementService _activityManagementService;
         
@@ -45,16 +45,16 @@ namespace Wellness.Client.ViewModels
         public async Task Edit(Guid id)
         {
             DialogId = id;
-            var existingItem = Activities.FirstOrDefault(i => i.Id == id);
-            ActivityName = existingItem.Name;
-            Active = existingItem.Active;
+            var existingItem = Activities.FirstOrDefault(i => i.Model.Id == id);
+            ActivityName = existingItem.Model.Name;
+            Active = existingItem.Model.Active;
 
             EditModalOpen = true;
         }
 
         public async Task Save()
         {
-            var activity = Activities.FirstOrDefault(i => i.Id == DialogId);
+            var activity = Activities.FirstOrDefault(i => i.Model.Id == DialogId)?.Model;
 
             Action<Activity> action = (ac) =>
             {

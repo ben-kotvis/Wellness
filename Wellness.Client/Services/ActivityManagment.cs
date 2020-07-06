@@ -30,9 +30,9 @@ namespace Wellness.Client.Services
             await _httpClient.DeleteAsync($"api/activities/{activityId}");
         }
 
-        public async Task<IEnumerable<Activity>> GetAll()
+        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll()
         {
-            return await _httpClient.GetJsonAsync<List<Activity>>("api/activities");
+            return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
         }
 
         public Task Update(Activity activity)

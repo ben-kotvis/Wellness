@@ -28,7 +28,11 @@ namespace Wellness.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IPersistanceService>(i => new MongoPersistanceService("mongodb://localhost:27017", "wellness", "activities"));
+
+            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
+            services.AddOptions();
+
+            services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddCors(options =>
             {
                 options.AddPolicy(name: CorsPolicyName,

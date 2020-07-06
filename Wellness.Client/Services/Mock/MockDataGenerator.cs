@@ -11,7 +11,7 @@ namespace Wellness.Client.Services.Mock
 {
     public static class MockDataGenerator
     {
-        public static List<Activity> Activities;
+        public static List<PersistenceWrapper<Activity>> Activities;
         public static List<Event> Events;
         public static List<PersistenceWrapper<ActivityParticipation>> ActivityParticipations;
         public static List<PersistenceWrapper<EventParticipation>> EventParticipations;
@@ -211,7 +211,7 @@ doc](#an-h2-header). Here's a footnote [^1].
             var random = new Random();
             var index = random.Next(0, 9);
 
-            return Activities.ElementAt(index);
+            return Activities.Select(i =>i.Model).ElementAt(index);
         }
 
         public static List<PersistenceWrapper<EventParticipation>> BootstrapUserEvents()
@@ -261,20 +261,20 @@ doc](#an-h2-header). Here's a footnote [^1].
             return events;
         }
 
-        public static List<Activity> GetActivities()
+        public static List<PersistenceWrapper<Activity>> GetActivities()
         {
-            var activities = new List<Activity>();
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Walking", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Running", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Biking", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Golfing", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Basketball", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Resistance Training", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Yoga/Pilates/Stretching", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Racquetball", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Rock Climbing", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Chopping/splitting wood", Common = CreateCommon() });
-            activities.Add(new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Roller Blading/Roller Skating/Ice Skating", Common = CreateCommon() });
+            var activities = new List<PersistenceWrapper<Activity>>();
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Walking" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Running" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Biking" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Golfing" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Basketball" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Resistance Training" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Yoga/Pilates/Stretching" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Racquetball" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Rock Climbing" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Chopping/splitting wood" }, Common = CreateCommon() });
+            activities.Add(new PersistenceWrapper<Activity>() { Model = new Activity() { Id = Guid.NewGuid(), Active = true, Name = "Roller Blading/Roller Skating/Ice Skating" }, Common = CreateCommon() });
             return activities;
         }
 

@@ -12,8 +12,12 @@ namespace Wellness.Client.Services.Mock
     public class ActivityManagementMock : IActivityManagementService
     {
         private IActivityManagementService _proxy;
-        public ActivityManagementMock()
+        private IConfigurationProvider _configurationProvider;
+        private IMapper _mapper;
+        public ActivityManagementMock(IConfigurationProvider configurationProvider)
         {
+            _configurationProvider = configurationProvider;
+            _mapper = _configurationProvider.CreateMapper();
             _proxy = CreateActivityManagement();
         }
 
@@ -28,13 +32,15 @@ namespace Wellness.Client.Services.Mock
             activityManagementMock.Setup(ams => ams.GetAll())
             .Returns(() =>
             {
-                return Task.FromResult(new List<Activity>(MockDataGenerator.Activities).AsEnumerable());
+                return Task.FromResult(new List<PersistenceWrapper<Activity>>(MockDataGenerator.Activities).AsEnumerable());
             });
 
             activityManagementMock.Setup(ams => ams.Create(It.IsAny<Activity>())).Returns((Activity a) =>
             {
-                a.Common = MockDataGenerator.CreateCommon();
-                MockDataGenerator.Activities.Add(a);
+                var output = _mapper.Map<Activity, PersistenceWrapper<Activity>>(a);
+                output.Common = MockDataGenerator.CreateCommon();
+
+                MockDataGenerator.Activities.Add(output);
                 return Task.FromResult(true);
             });
 
@@ -42,10 +48,10 @@ namespace Wellness.Client.Services.Mock
             {
                 MockDataGenerator.Activities.ForEach(ap =>
                 {
-                    if (ap.Id == a.Id)
+                    if (ap.Model.Id == a.Id)
                     {
-                        ap.Active = a.Active;
-                        ap.Name = a.Name;
+                        ap.Model.Active = a.Active;
+                        ap.Model.Name = a.Name;
                     }
                 });
                 return Task.FromResult(true);
@@ -55,9 +61,9 @@ namespace Wellness.Client.Services.Mock
             {
                 MockDataGenerator.Activities.ForEach(ap =>
                 {
-                    if (ap.Id == id)
+                    if (ap.Model.Id == id)
                     {
-                        ap.Active = false;
+                        ap.Model.Active = false;
                     }
                 });
                 return Task.FromResult(true);
@@ -71,7 +77,7 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Disable(activityId);
         }
 
-        public Task<IEnumerable<Activity>> GetAll()
+        public Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll()
         {
             return _proxy.GetAll();
         }

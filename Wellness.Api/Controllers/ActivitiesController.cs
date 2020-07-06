@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Wellness.Domain;
 using Wellness.Model;
 
 namespace Wellness.Api.Controllers
@@ -13,31 +14,26 @@ namespace Wellness.Api.Controllers
     [Route("api/[controller]")]
     public class ActivitiesController : ControllerBase
     {
-        private readonly IPersistanceService _persistanceService;
-        public ActivitiesController(IPersistanceService persistanceService)
+        private readonly IPersistanceService<Activity> _persistanceService;
+        private readonly DomainServiceBase<Activity> _domainServiceBase;
+        
+        public ActivitiesController(IPersistanceService<Activity> persistanceService,
+            DomainServiceBase<Activity> domainServiceBase)
         {
             _persistanceService = persistanceService;
+            _domainServiceBase = domainServiceBase;
         }
 
         [HttpGet]
-        public IEnumerable<Activity> Get(CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<Activity>>> Get(CancellationToken cancellationToken)
         {
-            var list = new List<Activity>();
-            return list;
+            return (await _domainServiceBase.GetAll(cancellationToken));
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(Activity activity, CancellationToken cancellationToken)
         {
-            var wrapper = new PersistenceWrapper<Activity>(activity, new Common()
-            {
-                CompanyId = Guid.NewGuid(),
-                CreatedBy = "bkotvis",
-                CreatedOn = DateTimeOffset.UtcNow,
-                 UpdatedBy = "bkotvis",
-                 UpdatedOn = DateTimeOffset.UtcNow
-            });
-            await _persistanceService.Create(wrapper);
+            await _domainServiceBase.Create(activity, cancellationToken);
             return Accepted();
         }
     }
