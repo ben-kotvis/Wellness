@@ -35,9 +35,9 @@ namespace Wellness.Client.Services
             return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
         }
 
-        public Task Update(Activity activity)
-        {
-            throw new NotImplementedException();
+        public async Task Update(Activity activity)
+        { 
+            await _httpClient.PutJsonAsync($"api/activities/{activity.Id}", activity);
         }
     }
 }

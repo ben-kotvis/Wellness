@@ -14,11 +14,9 @@ namespace Wellness.Client.Services.Mock
         private IFrequentlyAskedQuestionService _proxy;
         private IConfigurationProvider _configurationProvider;
         private IMapper _mapper;
-
-        public FAQManagmentMock(IConfigurationProvider configurationProvider)
+        public FAQManagmentMock(IMapper mapper)
         {
-            _configurationProvider = configurationProvider;
-            _mapper = _configurationProvider.CreateMapper();
+            _mapper = mapper;
             _proxy = CreateEventManagement();
         }
 

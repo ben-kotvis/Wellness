@@ -12,13 +12,10 @@ namespace Wellness.Client.Services.Mock
     public class ActivityParticipationMock : IActivityParticipationService
     {
         private IActivityParticipationService _proxy;
-        private IConfigurationProvider _configurationProvider;
         private IMapper _mapper;
-
-        public ActivityParticipationMock(IConfigurationProvider configurationProvider)
+        public ActivityParticipationMock(IMapper mapper)
         {
-            _configurationProvider = configurationProvider;
-            _mapper = _configurationProvider.CreateMapper();
+            _mapper = mapper;
             _proxy = CreateActivityParticipation();
         }
 

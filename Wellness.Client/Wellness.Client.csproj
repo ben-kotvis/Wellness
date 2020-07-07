@@ -15,19 +15,19 @@
   <ItemGroup>    
     <PackageReference Include="Accelist.FluentValidation.Blazor" Version="2.1.0" />    
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />    
-    <PackageReference Include="FluentValidation" Version="9.0.0-preview4" />    
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.0.0-preview4" />    
+    <PackageReference Include="FluentValidation" Version="9.0.0" />    
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.0.0" />    
     <PackageReference Include="Markdig" Version="0.20.0" />    
-    <PackageReference Include="MatBlazor" Version="2.5.0-preview-005" />    
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0-rc1.20223.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0-rc1.20223.4" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0-rc1.20223.4" PrivateAssets="all" />
+    <PackageReference Include="MatBlazor" Version="2.6.2" />    
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.0-preview.6.20312.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="5.0.0-preview.6.20312.15" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.0-preview.6.20312.15" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
     <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.ProtectedBrowserStorage" Version="0.1.0-alpha.19521.1" />
-    <PackageReference Include="Moq" Version="4.14.1" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.0-preview.3.20215.14" />
-    <PackageReference Include="RestSharp" Version="106.11.4" />
+    <PackageReference Include="Moq" Version="4.14.5" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.0-preview.6.20312.15" />
+    <PackageReference Include="RestSharp" Version="106.11.5-alpha.0.2" />
   </ItemGroup>
 
   <ItemGroup>

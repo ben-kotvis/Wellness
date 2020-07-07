@@ -24,27 +24,16 @@ namespace Wellness.Client
     {
         public static async Task Main(string[] args)
         {
-            IConfigurationProvider config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<EventParticipation, PersistenceWrapper<EventParticipation>>()
-                    .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
-                cfg.CreateMap<PersistenceWrapper<EventParticipation>, EventParticipation>();
-                cfg.CreateMap<ActivityParticipation, PersistenceWrapper<ActivityParticipation>>()
-                    .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
-                cfg.CreateMap<PersistenceWrapper<ActivityParticipation>, ActivityParticipation>();
-                cfg.CreateMap<FrequentlyAskedQuestion, PersistenceWrapper<FrequentlyAskedQuestion>>()
-                    .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
-                cfg.CreateMap<Activity, PersistenceWrapper<Activity>>()
-                    .ForMember(i => i.Model, opt => opt.MapFrom(src => src));
-            });
-
             
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            builder.Services.AddSingleton<IConfigurationProvider>(config);
+            builder.Services.AddSingleton(MappingConfigurator.Configure());
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             builder.Services.BuildWellness(true);
             builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
             builder.Services.AddValidatorsFromAssemblyContaining<EventParticipationValidation>();
+            builder.Services.AddValidatorsFromAssemblyContaining<ActivityValidation>();
+            builder.Services.AddValidatorsFromAssemblyContaining<ActivityParticipationValidation>();
 
 
             builder.RootComponents.Add<App>("app");
