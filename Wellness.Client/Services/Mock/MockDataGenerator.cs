@@ -12,7 +12,7 @@ namespace Wellness.Client.Services.Mock
     public static class MockDataGenerator
     {
         public static List<PersistenceWrapper<Activity>> Activities;
-        public static List<Event> Events;
+        public static List<PersistenceWrapper<Event>> Events;
         public static List<PersistenceWrapper<ActivityParticipation>> ActivityParticipations;
         public static List<PersistenceWrapper<EventParticipation>> EventParticipations;
         public static List<EventAttachment> EventAttachments;
@@ -248,16 +248,16 @@ doc](#an-h2-header). Here's a footnote [^1].
             var random = new Random();
             var index = random.Next(0, 3);
 
-            return Events.ElementAt(index);
+            return Events.Select(i => i.Model).ElementAt(index);
         }
 
-        public static List<Event> GetEvents()
+        public static List<PersistenceWrapper<Event>> GetEvents()
         {
-            var events = new List<Event>();
-            events.Add(new Event() { Id = Guid.NewGuid(), Points = 10, AnnualMaximum = 100, Active = true, Name = "5K Run", Common = CreateCommon() });
-            events.Add(new Event() { Id = Guid.NewGuid(), Points = 50, AnnualMaximum = 100, Active = true, Name = "Annual Health Assessment", Common = CreateCommon() });
-            events.Add(new Event() { Id = Guid.NewGuid(), Points = 25, AnnualMaximum = 100, Active = true, Name = "Dental Cleaning", Common = CreateCommon() });
-            events.Add(new Event() { Id = Guid.NewGuid(), Points = 20, AnnualMaximum = 100, Active = true, Name = "10K Run", Common = CreateCommon() });
+            var events = new List<PersistenceWrapper<Event>>();
+            events.Add(new PersistenceWrapper<Event>() { Model = new Event() { Id = Guid.NewGuid(), Points = 10, AnnualMaximum = 100, Active = true, Name = "5K Run" }, Common = CreateCommon() });
+            events.Add(new PersistenceWrapper<Event>() { Model = new Event() { Id = Guid.NewGuid(), Points = 50, AnnualMaximum = 100, Active = true, Name = "Annual Health Assessment" }, Common = CreateCommon() });
+            events.Add(new PersistenceWrapper<Event>() { Model = new Event() { Id = Guid.NewGuid(), Points = 25, AnnualMaximum = 100, Active = true, Name = "Dental Cleaning" }, Common = CreateCommon() });
+            events.Add(new PersistenceWrapper<Event>() { Model = new Event() { Id = Guid.NewGuid(), Points = 20, AnnualMaximum = 100, Active = true, Name = "10K Run" }, Common = CreateCommon() });
             return events;
         }
 

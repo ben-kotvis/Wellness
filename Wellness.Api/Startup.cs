@@ -42,6 +42,7 @@ namespace Wellness.Api
             services.AddSingleton(MappingConfigurator.Configure());
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddTransient<IValidator<Activity>, ActivityValidation>();
+            services.AddTransient<IValidator<Event>, EventValidation>();
             services.AddScoped(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddCors(options =>
             {

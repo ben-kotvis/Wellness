@@ -28,7 +28,12 @@
         <td>@context.Common.CreatedBy</td>
     </MatTableRow>
 </MatTable>
-
+@if (ViewModel.Debug)
+{
+<div class="float-right">
+    <MatIconButton Icon="import_export" @onclick="ViewModel.Load"></MatIconButton>
+</div>
+}
 <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
     <MatDialogTitle>
         @Loc["Activity"]

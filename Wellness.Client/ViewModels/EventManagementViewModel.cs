@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wellness.Client.Services.Mock;
 using Wellness.Model;
 
 namespace Wellness.Client.ViewModels
@@ -16,9 +17,10 @@ namespace Wellness.Client.ViewModels
         public int AnnualMaximumPoints { get; set; }
         public bool Active { get; set; }
 
+        public bool Debug { get; set; } = false;
         public Guid DialogId { get; set; } = Guid.Empty;
-
-        public IEnumerable<Event> Events { get; private set; }
+        
+        public IEnumerable<PersistenceWrapper<Event>> Events { get; private set; }
 
         public Event NewOrEditEvent { get; set; }
 
@@ -31,11 +33,22 @@ namespace Wellness.Client.ViewModels
             {
                 Active = true
             };
+#if DEBUG
+            Debug = true;
+#endif
         }
 
         public async Task OnInit()
         {
             Events = await _eventManagementService.GetAll();
+        }
+
+        public async Task Load()
+        {
+            foreach (var item in MockDataGenerator.GetEvents())
+            {
+                await _eventManagementService.Create(item.Model);
+            }
         }
 
         public async Task Delete(Guid id)
@@ -53,21 +66,21 @@ namespace Wellness.Client.ViewModels
         public void Edit(Guid id)
         {
             DialogId = id;
-            var existingItem = Events.FirstOrDefault(i => i.Id == id);
+            var existingItem = Events.FirstOrDefault(i => i.Model.Id == id);
 
             NewOrEditEvent.Id = id;
-            NewOrEditEvent.Name = existingItem.Name;
-            NewOrEditEvent.Active = existingItem.Active;
-            NewOrEditEvent.AnnualMaximum = existingItem.AnnualMaximum;
-            NewOrEditEvent.RequireAttachment = existingItem.RequireAttachment;
-            NewOrEditEvent.Points = existingItem.Points;            
+            NewOrEditEvent.Name = existingItem.Model.Name;
+            NewOrEditEvent.Active = existingItem.Model.Active;
+            NewOrEditEvent.AnnualMaximum = existingItem.Model.AnnualMaximum;
+            NewOrEditEvent.RequireAttachment = existingItem.Model.RequireAttachment;
+            NewOrEditEvent.Points = existingItem.Model.Points;            
 
             EditModalOpen = true;
         }
 
         public async Task Save()
         {
-            var eventObj = Events.FirstOrDefault(i => i.Id == DialogId);
+            var eventObj = Events.FirstOrDefault(i => i.Model.Id == DialogId);
             
             if(eventObj == default)
             {

@@ -11,7 +11,7 @@ namespace Wellness.Model
         Task Create(Event eventObj);
         Task Update(Event eventObj);
 
-        Task<IEnumerable<Event>> GetAll();
+        Task<IEnumerable<PersistenceWrapper<Event>>> GetAll();
 
         Task Disable(Guid eventId);        
     }

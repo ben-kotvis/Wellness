@@ -17,6 +17,7 @@ using Wellness.Client.Pages;
 using Microsoft.AspNetCore.Builder;
 using System.Net.Http;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Wellness.Client
 {
@@ -29,11 +30,11 @@ namespace Wellness.Client
 
             builder.Services.AddSingleton(MappingConfigurator.Configure());
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.BuildWellness(true);
-            builder.Services.AddValidatorsFromAssemblyContaining<EventValidation>();
-            builder.Services.AddValidatorsFromAssemblyContaining<EventParticipationValidation>();
-            builder.Services.AddValidatorsFromAssemblyContaining<ActivityValidation>();
-            builder.Services.AddValidatorsFromAssemblyContaining<ActivityParticipationValidation>();
+            builder.Services.BuildWellness(false);
+            builder.Services.AddTransient<IValidator<Event>,EventValidation>();
+            builder.Services.AddTransient<IValidator<EventParticipation>,EventParticipationValidation>();
+            //builder.Services.AddTransient<IValidator<Activity>, ActivityValidation>();
+            builder.Services.AddTransient<IValidator<ActivityParticipation>,ActivityParticipationValidation>();
 
 
             builder.RootComponents.Add<App>("app");

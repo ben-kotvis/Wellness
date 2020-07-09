@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wellness.Client.Services.Mock;
 using Wellness.Model;
 
 namespace Wellness.Client.ViewModels
@@ -13,7 +14,7 @@ namespace Wellness.Client.ViewModels
         public bool EditModalOpen { get; set; } = false;
         public string ActivityName { get; set; }
         public bool Active { get; set; } = true;
-
+        public bool Debug { get; set; } = false;
         public Guid DialogId { get; set; } = Guid.Empty;
 
         public IEnumerable<PersistenceWrapper<Activity>> Activities { get; private set; }
@@ -23,6 +24,10 @@ namespace Wellness.Client.ViewModels
         public ActivityManagementViewModel(IActivityManagementService activityManagementService)
         {
             _activityManagementService = activityManagementService;
+
+#if DEBUG
+            Debug = true;
+#endif
         }
 
         public async Task OnInit()
@@ -40,6 +45,14 @@ namespace Wellness.Client.ViewModels
         {
             DialogId = Guid.NewGuid();            
             EditModalOpen = true;
+        }
+
+        public async Task Load()
+        {
+            foreach (var item in MockDataGenerator.GetActivities())
+            {
+                await _activityManagementService.Create(item.Model);
+            }
         }
 
         public async Task Edit(Guid id)

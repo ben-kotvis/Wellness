@@ -21,20 +21,25 @@
     </MatTableHeader>
     <MatTableRow>
         <td>
-            <MatIconButton Icon="delete" @onclick="(e => ViewModel.Delete(context.Id))"></MatIconButton>
-            <MatIconButton Icon="edit" @onclick="(e => ViewModel.Edit(context.Id))"></MatIconButton>
+            <MatIconButton Icon="delete" @onclick="(e => ViewModel.Delete(context.Model.Id))"></MatIconButton>
+            <MatIconButton Icon="edit" @onclick="(e => ViewModel.Edit(context.Model.Id))"></MatIconButton>
         </td>
-        <td>@context.Name</td>
-        <td>@context.Points</td>
-        <td>@context.AnnualMaximum</td>
-        <td><MatCheckbox @bind-Value="context.Active" Disabled="true"></MatCheckbox></td>
-        <td><MatCheckbox @bind-Value="context.RequireAttachment" Disabled="true"></MatCheckbox></td>        
+        <td>@context.Model.Name</td>
+        <td>@context.Model.Points</td>
+        <td>@context.Model.AnnualMaximum</td>
+        <td><MatCheckbox @bind-Value="context.Model.Active" Disabled="true"></MatCheckbox></td>
+        <td><MatCheckbox @bind-Value="context.Model.RequireAttachment" Disabled="true"></MatCheckbox></td>
     </MatTableRow>
 </MatTable>
 
-
+@if (ViewModel.Debug)
+{
+    <div class="float-right">
+        <MatIconButton Icon="import_export" @onclick="ViewModel.Load"></MatIconButton>
+    </div>
+}
 <EditForm Model="@ViewModel.NewOrEditEvent" OnValidSubmit="@ViewModel.Save">
-    <FluentValidator></FluentValidator>
+    <FluentValidator />
     <ValidationSummary />
     <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
         <MatDialogTitle>
@@ -54,16 +59,16 @@
                 <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum" Label="@Loc["AnnualMax"]"></MatTextField>
                 <ValidationMessage For="() => ViewModel.NewOrEditEvent.AnnualMaximum"></ValidationMessage>
             </p>
-                <div>
-                    <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" Label="@Loc["RequireAttachment"]"></MatCheckbox>
-                </div>
-                <div>
-                    <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="@Loc["Active"]"></MatCheckbox>
-                </div>
+            <div>
+                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" Label="@Loc["RequireAttachment"]"></MatCheckbox>
+            </div>
+            <div>
+                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="@Loc["Active"]"></MatCheckbox>
+            </div>
         </MatDialogContent>
         <MatDialogActions>
             <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">@Loc["Cancel"]</MatButton>
             <MatButton Type="submit">@Loc["OK"]</MatButton>
         </MatDialogActions>
     </MatDialog>
-    </EditForm>
+</EditForm>

@@ -2,9 +2,11 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,6 +77,13 @@ namespace Wellness.Persistance.Mongo
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
             var filter = new FilterDefinitionBuilder<PersistenceWrapper<T>>();
             return await collection.Find(filter.Eq(i => i.Model.Id, id)).SingleAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<PersistenceWrapper<T>>> Get(Expression<Func<PersistenceWrapper<T>, bool>> filter, CancellationToken cancellationToken)
+        {
+            var database = _mongoClient.GetDatabase(_database);
+            var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
+            return await ((IMongoQueryable<PersistenceWrapper<T>>)collection.AsQueryable().Where(filter)).ToListAsync(cancellationToken);
         }
 
         public async Task Delete(Guid id, CancellationToken cancellationToken)

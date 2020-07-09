@@ -76,7 +76,7 @@ namespace Wellness.Client.ViewModels
             await SetEventParticipations();
 
             Activities = (await _activityManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active);            
-            Events = (await _eventManagementService.GetAll()).Where(i => i.Active);
+            Events = (await _eventManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active);
             EventValidation = new EventParticipationValidation(Events);
             ActivityValidation = new ActivityParticipationValidation(Activities);
         }

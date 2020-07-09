@@ -26,7 +26,7 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Update(eventObj);
         }
 
-        public Task<IEnumerable<Event>> GetAll()
+        public Task<IEnumerable<PersistenceWrapper<Event>>> GetAll()
         {
             return _proxy.GetAll();
         }
@@ -41,13 +41,12 @@ namespace Wellness.Client.Services.Mock
             var eventManagementMock = new Mock<IEventManagementService>();
             eventManagementMock.Setup(ams => ams.GetAll())
             .Returns(() => {
-                return Task.FromResult(new List<Event>(MockDataGenerator.Events).AsEnumerable());
+                return Task.FromResult(new List<PersistenceWrapper<Event>>(MockDataGenerator.Events).AsEnumerable());
             });
 
             eventManagementMock.Setup(ams => ams.Create(It.IsAny<Event>())).Returns((Event a) =>
             {
-                a.Common = MockDataGenerator.CreateCommon();
-                MockDataGenerator.Events.Add(a);
+                MockDataGenerator.Events.Add(new PersistenceWrapper<Event>() { Model = a, Common = MockDataGenerator.CreateCommon() });
                 return Task.FromResult(true);
             });
 
@@ -55,13 +54,13 @@ namespace Wellness.Client.Services.Mock
             {
                 MockDataGenerator.Events.ForEach(ap =>
                 {
-                    if (ap.Id == a.Id)
+                    if (ap.Model.Id == a.Id)
                     {
-                        ap.Active = a.Active;
-                        ap.Name = a.Name;
-                        ap.AnnualMaximum = a.AnnualMaximum;
-                        ap.Points = a.Points;
-                        ap.RequireAttachment = a.RequireAttachment;
+                        ap.Model.Active = a.Active;
+                        ap.Model.Name = a.Name;
+                        ap.Model.AnnualMaximum = a.AnnualMaximum;
+                        ap.Model.Points = a.Points;
+                        ap.Model.RequireAttachment = a.RequireAttachment;
                         
                     }
                 });
@@ -72,9 +71,9 @@ namespace Wellness.Client.Services.Mock
             {
                 MockDataGenerator.Events.ForEach(ap =>
                 {
-                    if (ap.Id == id)
+                    if (ap.Model.Id == id)
                     {
-                        ap.Active = false;
+                        ap.Model.Active = false;
                     }
                 });
                 return Task.FromResult(true);

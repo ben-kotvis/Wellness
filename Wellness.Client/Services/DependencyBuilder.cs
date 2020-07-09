@@ -15,13 +15,23 @@ namespace Wellness.Client.Services
         {
             if (useMock)
             {                
-                services.AddTransient<IActivityManagementService, Wellness.Client.Services.ActivityManagment>();
+                services.AddTransient<IActivityManagementService, ActivityManagementMock>();
                 services.AddSingleton<IActivityParticipationService, ActivityParticipationMock>();
                 services.AddSingleton<IEventManagementService, EventManagmentMock>();
                 services.AddSingleton<IEventParticipationService, EventParticipationMock>();
                 services.AddSingleton<IFrequentlyAskedQuestionService, FAQManagmentMock>();
                 services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());                
             }
+            else
+            {
+                services.AddTransient<IActivityManagementService, Wellness.Client.Services.ActivityManagment>();
+                services.AddSingleton<IActivityParticipationService, ActivityParticipationMock>();
+                services.AddSingleton<IEventManagementService, Wellness.Client.Services.EventManagment>();
+                services.AddSingleton<IEventParticipationService, EventParticipationMock>();
+                services.AddSingleton<IFrequentlyAskedQuestionService, FAQManagmentMock>();
+                services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
+            }
+
 
             services.AddScoped<HomeViewModel>();
             services.AddScoped<ActivityManagementViewModel>();
