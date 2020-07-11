@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public class ActivityParticipation : IIdentifiable
+    public class ActivityParticipation : IParticipate, IIdentifiable
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }

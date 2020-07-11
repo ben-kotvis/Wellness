@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Wellness.Model
 {
-    public interface IParticipate : IHaveCommon
+    public interface IParticipate 
     {
-        Guid Id { get; set; }
-        Guid UserParticipationId { get; set; }
-        UserParticipation UserParticipation { get; set; }
+        Guid UserId { get; set; }
+        DateTime SubmissionDate { get; set; }
     }
 }

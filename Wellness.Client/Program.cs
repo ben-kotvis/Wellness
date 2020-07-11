@@ -30,10 +30,10 @@ namespace Wellness.Client
 
             builder.Services.AddSingleton(MappingConfigurator.Configure());
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.BuildWellness(false);
-            builder.Services.AddTransient<IValidator<Event>,EventValidation>();
+            builder.Services.BuildWellness(true);
+            builder.Services.AddTransient<IValidator<Model.Event>,EventValidation>();
             builder.Services.AddTransient<IValidator<EventParticipation>,EventParticipationValidation>();
-            //builder.Services.AddTransient<IValidator<Activity>, ActivityValidation>();
+            builder.Services.AddTransient<IValidator<Model.Activity>, ActivityValidation>();
             builder.Services.AddTransient<IValidator<ActivityParticipation>,ActivityParticipationValidation>();
 
 

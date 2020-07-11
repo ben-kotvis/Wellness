@@ -42,6 +42,16 @@ namespace Wellness.Persistance.Mongo
             }
         }
 
+        public IModelQueryable<PersistenceWrapper<T>> Query 
+        { 
+            get
+            {
+                var database = _mongoClient.GetDatabase(_database);
+                var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
+                return new ModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable());
+            }
+        }
+
         public async Task Create(PersistenceWrapper<T> wrapped, CancellationToken cancellationToken)
         {            
             var database = _mongoClient.GetDatabase(_database);                        
@@ -83,7 +93,7 @@ namespace Wellness.Persistance.Mongo
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return await ((IMongoQueryable<PersistenceWrapper<T>>)collection.AsQueryable().Where(filter)).ToListAsync(cancellationToken);
+            return await collection.AsQueryable().Where(filter).ToListAsync(cancellationToken);
         }
 
         public async Task Delete(Guid id, CancellationToken cancellationToken)

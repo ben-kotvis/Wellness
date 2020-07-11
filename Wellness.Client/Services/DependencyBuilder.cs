@@ -24,10 +24,10 @@ namespace Wellness.Client.Services
             }
             else
             {
-                services.AddTransient<IActivityManagementService, Wellness.Client.Services.ActivityManagment>();
-                services.AddSingleton<IActivityParticipationService, ActivityParticipationMock>();
+                services.AddSingleton<IActivityManagementService, Wellness.Client.Services.ActivityManagment>();
+                services.AddSingleton<IActivityParticipationService, Wellness.Client.Services.ActivityParticipationManagement>();
                 services.AddSingleton<IEventManagementService, Wellness.Client.Services.EventManagment>();
-                services.AddSingleton<IEventParticipationService, EventParticipationMock>();
+                services.AddSingleton<IEventParticipationService, Wellness.Client.Services.EventParticipationManagement>();
                 services.AddSingleton<IFrequentlyAskedQuestionService, FAQManagmentMock>();
                 services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
             }

@@ -1,7 +1,7 @@
 ﻿@page "/EventManagement"
 
 @using Wellness.Model.ModelValidation
-
+@using Blazored.FluentValidation;
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Wellness.Client.Pages.EventManagementComponent
 
@@ -39,7 +39,7 @@
     </div>
 }
 <EditForm Model="@ViewModel.NewOrEditEvent" OnValidSubmit="@ViewModel.Save">
-    <FluentValidator />
+    <FluentValidationValidator />
     <ValidationSummary />
     <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
         <MatDialogTitle>

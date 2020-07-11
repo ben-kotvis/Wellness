@@ -43,6 +43,8 @@ namespace Wellness.Api
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddTransient<IValidator<Activity>, ActivityValidation>();
             services.AddTransient<IValidator<Event>, EventValidation>();
+            services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
+            services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
             services.AddScoped(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddCors(options =>
             {
@@ -63,8 +65,7 @@ namespace Wellness.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
-            
+            }            
             
             app.UseRouting();
 

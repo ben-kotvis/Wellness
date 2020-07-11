@@ -10,15 +10,19 @@ using RestSharp;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using System.Text.Json.Serialization;
+using System.Security.Cryptography;
 
 namespace Wellness.Client.Services
 {
     public class EventManagment : IEventManagementService
     {
+        private Lazy<Task<IEnumerable<PersistenceWrapper<Event>>>> _events;
+
         private readonly HttpClient _httpClient;
         public EventManagment(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _events = new Lazy<Task<IEnumerable<PersistenceWrapper<Event>>>>(async () => await _httpClient.GetJsonAsync<List<PersistenceWrapper<Event>>>("api/events"));
         }
 
         public async Task Create(Event eventObj)
@@ -32,12 +36,13 @@ namespace Wellness.Client.Services
 
         public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll()
         {
-            return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Event>>>("api/events");
+            return await _events.Value;
         }
 
         public async Task Update(Event eventObj)
         { 
             await _httpClient.PutJsonAsync($"api/events/{eventObj.Id}", eventObj);
         }
+
     }
 }

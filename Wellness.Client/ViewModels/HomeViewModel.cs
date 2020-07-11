@@ -40,9 +40,7 @@ namespace Wellness.Client.ViewModels
             NewActivityParticipation = new ActivityParticipation();
         }
 
-        public EventParticipationValidation EventValidation { get; set; }
         public EventParticipation NewEventParticipation { get; set; }
-        public ActivityParticipationValidation ActivityValidation { get; set; }
         public ActivityParticipation NewActivityParticipation { get; set; }
         public string PreviewFileType { get; set; }
         public string PreviewDataUrl { get; set; }
@@ -75,10 +73,8 @@ namespace Wellness.Client.ViewModels
             await SetActivityParticipations();
             await SetEventParticipations();
 
-            Activities = (await _activityManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active);            
-            Events = (await _eventManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active);
-            EventValidation = new EventParticipationValidation(Events);
-            ActivityValidation = new ActivityParticipationValidation(Activities);
+            Activities = (await _activityManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active).ToList();            
+            Events = (await _eventManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active).ToList();
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)

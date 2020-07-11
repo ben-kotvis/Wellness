@@ -1,11 +1,12 @@
 ﻿@using Wellness.Model
 @using System.Globalization
+@using Blazored.FluentValidation;
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Components.UserParticipation.Activities.Add.NewActivityComponent
 
 
 <EditForm Model="@ViewModel.NewActivityParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
-    <FluentValidator Validator="@ViewModel.ActivityValidation"></FluentValidator>
+    <FluentValidationValidator />
     <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
         <div>
             <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
