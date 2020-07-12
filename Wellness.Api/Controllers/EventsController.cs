@@ -16,9 +16,9 @@ namespace Wellness.Api.Controllers
     {
         private readonly IDomainService<Event> _domainServiceBase;
         
-        public EventsController(IDomainDependencies<Event> domainDependencies)
+        public EventsController(IDomainService<Event> domainServiceBase)
         {
-            _domainServiceBase = new DomainServiceBase<Event>(domainDependencies, this);
+            _domainServiceBase = domainServiceBase;
         }
 
         [HttpGet]

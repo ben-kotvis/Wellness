@@ -11,10 +11,11 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using System.Text.Json.Serialization;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Wellness.Client.Services
 {
-    public class EventManagment : IEventManagementService
+    public class EventManagment : IEventManagementService, IDomainServiceReader<Event>
     {
         private Lazy<Task<IEnumerable<PersistenceWrapper<Event>>>> _events;
 
@@ -34,9 +35,13 @@ namespace Wellness.Client.Services
             await _httpClient.DeleteAsync($"api/events/{eventId}");
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll()
+        public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(CancellationToken cancellationToken)
         {
             return await _events.Value;
+        }
+        public async Task<PersistenceWrapper<Event>> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return (await _events.Value).FirstOrDefault(i => i.Model.Id == id);
         }
 
         public async Task Update(Event eventObj)

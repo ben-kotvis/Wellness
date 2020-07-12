@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,12 +42,24 @@ namespace Wellness.Api
             services.AddMvc().AddFluentValidation();
 
             services.AddSingleton(MappingConfigurator.Configure());
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient(s =>
+            {
+                IHttpContextAccessor contextAccessor = s.GetService<IHttpContextAccessor>();
+                ClaimsPrincipal user = contextAccessor?.HttpContext?.User;
+                return user ?? throw new System.Exception("User not resolved");
+            });
+
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddTransient<IValidator<Activity>, ActivityValidation>();
             services.AddTransient<IValidator<Event>, EventValidation>();
             services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
             services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
             services.AddScoped(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
+            services.AddScoped(typeof(IDomainService<>), typeof(DomainServiceBase<>));
+            services.AddScoped(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));
+            services.AddScoped(typeof(IDomainServiceReader<>), typeof(DomainServiceBase<>));
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: CorsPolicyName,

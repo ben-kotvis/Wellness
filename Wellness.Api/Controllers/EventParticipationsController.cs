@@ -16,9 +16,9 @@ namespace Wellness.Api.Controllers
     {
         private readonly IParticipationDomainService<EventParticipation> _domainServiceBase;
         
-        public EventParticipationsController(IDomainDependencies<EventParticipation> domainDependencies)
+        public EventParticipationsController(IParticipationDomainService<EventParticipation> domainServiceBase)
         {
-            _domainServiceBase = new ParticipationDomainService<EventParticipation>(domainDependencies, this);
+            _domainServiceBase = domainServiceBase;
         }
 
         [HttpGet("users/{userId}/relativeIndex/{relativeIndex}")]

@@ -3,31 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Wellness.Model.ModelValidation
 {
     public class EventParticipationValidation : AbstractValidator<EventParticipation>
     {
-        private readonly IEventManagementService _eventManagementService;        
+        private readonly IDomainServiceReader<Event> _eventManagementService;        
 
-        public EventParticipationValidation(IEventManagementService eventManagementService)
+        public EventParticipationValidation(IDomainServiceReader<Event> eventManagementService)
         {
             _eventManagementService = eventManagementService;
             RuleFor(e => e.Event).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
-            RuleFor(e => e.Attachment).MustAsync(async (f, a, token) => await AttachmentIsMissing(f, a));
+            RuleFor(e => e.Attachment).MustAsync(AttachmentIsMissing);
         }
 
 
-        private async Task<bool> AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment)
+        private async Task<bool> AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment, CancellationToken cancellationToken)
         {
             if(eventParticipation.Event == default)
             {
                 return true;
             }
 
-            var events = await _eventManagementService.GetAll();
+            var events = await _eventManagementService.GetAll(cancellationToken);
 
             var eventObj = events.FirstOrDefault(i => i.Model.Id == eventParticipation.Event.Id);
 

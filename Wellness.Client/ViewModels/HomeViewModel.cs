@@ -5,6 +5,7 @@ using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
 using Wellness.Model.ModelValidation;
@@ -70,11 +71,11 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {            
-            await SetActivityParticipations();
-            await SetEventParticipations();
+            //await SetActivityParticipations();
+            //await SetEventParticipations();
 
             Activities = (await _activityManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active).ToList();            
-            Events = (await _eventManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active).ToList();
+            Events = (await _eventManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)

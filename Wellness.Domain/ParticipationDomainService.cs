@@ -11,8 +11,8 @@ namespace Wellness.Domain
     public class ParticipationDomainService<T> : DomainServiceBase<T>, IParticipationDomainService<T>
         where T : IIdentifiable, IParticipate
     {
-        public ParticipationDomainService(IDomainDependencies<T> domainDependencies, IAccessUser accessUser)
-            :base(domainDependencies, accessUser)
+        public ParticipationDomainService(IDomainDependencies<T> domainDependencies)
+            :base(domainDependencies)
         {
         }
 

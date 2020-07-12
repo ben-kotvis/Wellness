@@ -12,13 +12,13 @@ namespace Wellness.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ActivitiesController : ControllerBase, IAccessUser
+    public class ActivitiesController : ControllerBase
     {
         private readonly IDomainService<Activity> _domainServiceBase;
         
-        public ActivitiesController(IDomainDependencies<Activity> domainDependencies)
+        public ActivitiesController(IDomainService<Activity> domainService)
         {
-            _domainServiceBase = new DomainServiceBase<Activity>(domainDependencies, this);
+            _domainServiceBase = domainService;
         }
 
         [HttpGet]

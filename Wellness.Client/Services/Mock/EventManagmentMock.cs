@@ -6,6 +6,7 @@ using Wellness.Model;
 using Moq;
 using System.IO;
 using AutoMapper;
+using System.Threading;
 
 namespace Wellness.Client.Services.Mock
 {
@@ -26,9 +27,14 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Update(eventObj);
         }
 
-        public Task<IEnumerable<PersistenceWrapper<Event>>> GetAll()
+        public Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(CancellationToken cancellationToken)
         {
-            return _proxy.GetAll();
+            return _proxy.GetAll(cancellationToken);
+        }
+
+        public async Task<PersistenceWrapper<Event>> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return (await _proxy.GetAll(cancellationToken)).FirstOrDefault(i => i.Model.Id == id);
         }
 
         public Task Disable(Guid eventId)
@@ -39,7 +45,7 @@ namespace Wellness.Client.Services.Mock
         public IEventManagementService CreateEventManagement()
         {
             var eventManagementMock = new Mock<IEventManagementService>();
-            eventManagementMock.Setup(ams => ams.GetAll())
+            eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
             .Returns(() => {
                 return Task.FromResult(new List<PersistenceWrapper<Event>>(MockDataGenerator.Events).AsEnumerable());
             });

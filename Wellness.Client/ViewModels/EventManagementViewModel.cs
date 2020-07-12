@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Client.Services.Mock;
 using Wellness.Model;
@@ -40,7 +41,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            Events = await _eventManagementService.GetAll();
+            Events = await _eventManagementService.GetAll(CancellationToken.None);
         }
 
         public async Task Load()
@@ -54,7 +55,7 @@ namespace Wellness.Client.ViewModels
         public async Task Delete(Guid id)
         {
             await _eventManagementService.Disable(id);            
-            Events = await _eventManagementService.GetAll();
+            Events = await _eventManagementService.GetAll(CancellationToken.None);
         }
 
         public void New()
@@ -93,7 +94,7 @@ namespace Wellness.Client.ViewModels
             }
             
             EditModalOpen = false;
-            Events = await _eventManagementService.GetAll();
+            Events = await _eventManagementService.GetAll(CancellationToken.None);
 
             NewOrEditEvent = new Event();
         }

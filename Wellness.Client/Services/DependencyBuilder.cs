@@ -24,15 +24,15 @@ namespace Wellness.Client.Services
             }
             else
             {
-                services.AddSingleton<IActivityManagementService, Wellness.Client.Services.ActivityManagment>();
-                services.AddSingleton<IActivityParticipationService, Wellness.Client.Services.ActivityParticipationManagement>();
-                services.AddSingleton<IEventManagementService, Wellness.Client.Services.EventManagment>();
-                services.AddSingleton<IEventParticipationService, Wellness.Client.Services.EventParticipationManagement>();
+                services.AddSingleton<IActivityManagementService, ActivityManagment>();
+                services.AddSingleton<IActivityParticipationService, ActivityParticipationManagement>();
+                services.AddSingleton<IEventManagementService, EventManagment>();
+                services.AddSingleton<IEventParticipationService, EventParticipationManagement>();
                 services.AddSingleton<IFrequentlyAskedQuestionService, FAQManagmentMock>();
                 services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
             }
 
-
+            services.AddSingleton<IDomainServiceReader<Event>>(sp => sp.GetService<IEventManagementService>());
             services.AddScoped<HomeViewModel>();
             services.AddScoped<ActivityManagementViewModel>();
             services.AddScoped<EventManagementViewModel>();

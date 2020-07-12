@@ -12,11 +12,9 @@ namespace Wellness.Domain
         where T : IIdentifiable
     {
         protected readonly IDomainDependencies<T> _domainDependencies;
-        protected readonly IAccessUser _accessUser;
-        public DomainServiceBase(IDomainDependencies<T> domainDependencies, IAccessUser accessUser)
+        public DomainServiceBase(IDomainDependencies<T> domainDependencies)
         {
             _domainDependencies = domainDependencies;
-            _accessUser = accessUser;
         }
 
         public async Task Create(T model, CancellationToken cancellationToken)
@@ -25,9 +23,9 @@ namespace Wellness.Domain
 
             var wrapper = new PersistenceWrapper<T>(model, new Common()
             {
-                CreatedBy = _accessUser.User.Identity.Name,
+                CreatedBy = _domainDependencies.Principal.Identity.Name,
                 CreatedOn = DateTimeOffset.UtcNow,
-                UpdatedBy = _accessUser.User.Identity.Name,
+                UpdatedBy = _domainDependencies.Principal.Identity.Name,
                 UpdatedOn = DateTimeOffset.UtcNow
             });
             await _domainDependencies.PersistanceService.Create(wrapper, cancellationToken);
@@ -37,7 +35,7 @@ namespace Wellness.Domain
             await _domainDependencies.Validator.ValidateAndThrowAsync(model);
 
             var existing = await _domainDependencies.PersistanceService.Get(model.Id, cancellationToken);
-            existing.Common.UpdatedBy = _accessUser.User.Identity.Name;
+            existing.Common.UpdatedBy = _domainDependencies.Principal.Identity.Name;
             existing.Common.UpdatedOn = DateTimeOffset.UtcNow;
 
             _domainDependencies.Mapper.Map(model, existing.Model);
