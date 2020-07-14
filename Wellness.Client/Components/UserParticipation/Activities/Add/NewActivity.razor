@@ -9,7 +9,7 @@
     <FluentValidationValidator />
     <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
         <div>
-            <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
+            <MatSelectItem Class="tab-form-select" @bind-Disabled="ViewModel.IsSaving" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
                            Label="@Loc["SelectActivity"]" Context="selectContext">
                 <ItemTemplate>
                     <span>@selectContext.Name</span>
@@ -19,15 +19,15 @@
 
         </div>
         <div>
-            <MatNumericUpDownField Step="15" Maximum="450" FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatNumericUpDownField>
+            <MatNumericUpDownField  @bind-Disabled="ViewModel.IsSaving" Step="15" Maximum="450" FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatNumericUpDownField>
             <ValidationMessage For="() => ViewModel.NewActivityParticipation.Minutes"></ValidationMessage>
          </div>
         <div>
-            <MatDatePicker FullWidth="true" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.NewActivityParticipation.SubmissionDate"></MatDatePicker>
+            <MatDatePicker FullWidth="true" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.NewActivityParticipation.SubmissionDate"></MatDatePicker>
             <ValidationMessage For="() => ViewModel.NewActivityParticipation.SubmissionDate"></ValidationMessage>
         </div>
         <div class="text-right p-2">
-            <MatButton Type="submit" Raised="true">@Loc["Save"]</MatButton>
+            <MatButton Type="submit" Raised="true" @bind-Disabled="ViewModel.IsSaving">@Loc["Save"]</MatButton>
         </div>
     </div>
 

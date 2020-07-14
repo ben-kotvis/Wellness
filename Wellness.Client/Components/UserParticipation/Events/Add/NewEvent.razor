@@ -12,7 +12,7 @@
 
         <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
             <div>
-                <MatSelectItem Class="tab-form-select" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
+                <MatSelectItem @bind-Disabled="ViewModel.IsSaving" Class="tab-form-select" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
                        Label="@Loc["SelectEvent"]" Context="selectContext">
                     <ItemTemplate>
                         <span>@selectContext.Name</span>
@@ -22,15 +22,15 @@
                 <ValidationMessage For="() => ViewModel.NewEventParticipation.Event" ></ValidationMessage>
             </div>
             <div>
-                <MatFileUpload Id="EventFileUpload" OnChange="@FilesReady"></MatFileUpload>
+                <MatFileUpload Id="EventFileUpload" @bind-Disabled="ViewModel.IsSaving" OnChange="@FilesReady"></MatFileUpload>
                 <ValidationMessage For="() => ViewModel.NewEventParticipation.Attachment"></ValidationMessage>
             </div>
             <div>
-                <MatDatePicker FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
+                <MatDatePicker @bind-Disabled="ViewModel.IsSaving" FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
                 <ValidationMessage For="() => ViewModel.NewEventParticipation.SubmissionDate"></ValidationMessage>
             </div>
             <div class="text-right p-2">
-                <MatButton Type="submit" Raised="true">@Loc["Save"]</MatButton>
+                <MatButton Type="submit" Raised="true" @bind-Disabled="ViewModel.IsSaving">@Loc["Save"]</MatButton>
             </div>
         </div>
     </EditForm>

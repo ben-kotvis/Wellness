@@ -31,7 +31,14 @@ else
                                  OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
                 </MatTab>
                 <MatTab Label="@Loc["Activities"]">
-                    <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                    @if (ViewModel.LoadingActivities)
+                    {
+                        <MatProgressBar Indeterminate="true"></MatProgressBar>
+                    }
+                    else
+                    {
+                        <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                    }
                 </MatTab>
             </WellnessMatTabGroup>
         </div>
@@ -44,7 +51,14 @@ else
                               OnEventSubmissionCompleted="@((e) => { ViewModel.EventTabIndex = 1; })" />
                 </MatTab>
                 <MatTab Label="@Loc["Events"]">
-                    <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+                    @if (ViewModel.LoadingEvents)
+                    {
+                        <MatProgressBar Indeterminate="true"></MatProgressBar>
+                    }
+                    else
+                    {
+                        <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+                    }
                 </MatTab>
             </WellnessMatTabGroup>
 

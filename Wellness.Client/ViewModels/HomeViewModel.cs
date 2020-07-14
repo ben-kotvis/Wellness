@@ -14,9 +14,13 @@ namespace Wellness.Client.ViewModels
 {    
     public class HomeViewModel : IViewModelBase, IActivityParticipationViewModel, IEventParticipationViewModel
     {
+        public bool IsSaving { get; set; }
         public Guid Id { get; set; }
         public IEnumerable<Activity> Activities { get; set; }
         public IEnumerable<Event> Events { get; set; }
+
+        public bool LoadingActivities { get; set; }
+        public bool LoadingEvents { get; set; }
 
         public IEnumerable<PersistenceWrapper<ActivityParticipation>> ActivityParticipations { get; set; }
         public IEnumerable<PersistenceWrapper<EventParticipation>> EventParticipations { get; set; }
@@ -71,9 +75,6 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {            
-            //await SetActivityParticipations();
-            //await SetEventParticipations();
-
             Activities = (await _activityManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active).ToList();            
             Events = (await _eventManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
         }
@@ -93,18 +94,21 @@ namespace Wellness.Client.ViewModels
         public async Task MonthChanged(MonthChangedEventArgs args)
         {
             SelectedRelativeIndex = args.Month.RelativeIndex;
-            await SetActivityParticipations();
-            await SetEventParticipations();
+            await Task.WhenAll(SetActivityParticipations(), SetEventParticipations());
         }
 
         private async Task SetActivityParticipations()
         {
-            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);            
+            LoadingActivities = true;
+            ActivityParticipations = await _activityParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);
+            LoadingActivities = false;
         }
 
         private async Task SetEventParticipations()
         {
-            EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);                        
+            LoadingEvents = true;
+            EventParticipations = await _eventParticipationService.GetByRelativeMonthIndex(SelectedRelativeIndex, Id);
+            LoadingEvents = false;
         }
 
         public async Task PreviewAttachment(Guid id)
@@ -127,6 +131,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task SaveActivity()
         {
+            IsSaving = true;
             NewActivityParticipation.Id = Guid.NewGuid();
             NewActivityParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
             NewActivityParticipation.UserId = Id;
@@ -134,15 +139,18 @@ namespace Wellness.Client.ViewModels
             await _activityParticipationService.Create(NewActivityParticipation);
 
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewActivityParticipation.SubmissionDate.Month);
-            
-            await SetActivityParticipations();
 
             //clear out UI
             NewActivityParticipation = new ActivityParticipation();
+
+            await SetActivityParticipations();
+
+            IsSaving = false;
         }
 
         public async Task SaveEvent()
-        {    
+        {
+            IsSaving = true;
             var selectedEvent = Events.FirstOrDefault(i => i.Id == NewEventParticipation.Event.Id);
 
             NewEventParticipation.Id = Guid.NewGuid();            
@@ -157,6 +165,8 @@ namespace Wellness.Client.ViewModels
 
             //clear out UI
             NewEventParticipation = new EventParticipation();
+
+            IsSaving = false;
         }
     }
 }
