@@ -1,6 +1,7 @@
 ﻿@page "/FrequentlyAskedQuestionManagement"
 
 @using Markdig
+@using Blazored.FluentValidation
 
 @inherits Wellness.Client.Pages.FAQManagementComponent
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
@@ -32,7 +33,7 @@
     </div>
 
 <EditForm Model="@ViewModel.NewOrEditFAQ" OnValidSubmit="@ViewModel.Save">
-    <FluentValidator></FluentValidator>
+    <FluentValidationValidator />
     <ValidationSummary />
     <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
         <MatDialogTitle>

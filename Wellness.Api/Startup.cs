@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Wellness.Domain;
+using Wellness.Domain.ModelValidation;
 using Wellness.Model;
-using Wellness.Model.ModelValidation;
 using Wellness.Persistance.Mongo;
 
 namespace Wellness.Api
@@ -42,6 +42,7 @@ namespace Wellness.Api
             services.AddMvc().AddFluentValidation();
 
             services.AddSingleton(MappingConfigurator.Configure());
+            services.AddSingleton<IMap, Mapping>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient(s =>
             {
@@ -55,6 +56,7 @@ namespace Wellness.Api
             services.AddTransient<IValidator<Event>, EventValidation>();
             services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
             services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
+            services.AddScoped(typeof(IValidate<>), typeof(Validation<>));
             services.AddScoped(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddScoped(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddScoped(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));

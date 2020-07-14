@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Wellness.Model.ModelValidation;
+using Wellness.Domain.ModelValidation;
 
 namespace Wellness.Client.ViewModels
 {    

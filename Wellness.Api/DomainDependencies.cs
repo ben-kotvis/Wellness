@@ -14,8 +14,8 @@ namespace Wellness.Api
     {
         public DomainDependencies(
             IPersistanceService<T> persistanceService,
-            IValidator<T> validator,
-            IMapper mapper, 
+            IValidate<T> validator,
+            IMap mapper, 
             ClaimsPrincipal claimsPrincipal)
         {
             PersistanceService = persistanceService;
@@ -26,8 +26,9 @@ namespace Wellness.Api
         public ClaimsPrincipal Principal { get; }
         public IPersistanceService<T> PersistanceService { get; }
 
-        public IValidator<T> Validator { get; }
+        public IValidate<T> Validator { get; }
 
-        public IMapper Mapper { get; }
+        public IMap Mapper { get; }
+
     }
 }

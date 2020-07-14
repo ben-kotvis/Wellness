@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Wellness.Model;
 
-namespace Wellness.Model.ModelValidation
+namespace Wellness.Domain.ModelValidation
 {
     public class ActivityValidation : AbstractValidator<Activity>
     {

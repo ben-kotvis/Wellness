@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Wellness.Model;
 
-namespace Wellness.Model
+namespace Wellness.Domain
 {
     public class MappingConfigurator
     {
