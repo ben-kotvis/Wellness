@@ -6,6 +6,7 @@ using Wellness.Model;
 using Moq;
 using System.IO;
 using AutoMapper;
+using System.Threading;
 
 namespace Wellness.Client.Services.Mock
 {
@@ -27,7 +28,7 @@ namespace Wellness.Client.Services.Mock
         public IActivityManagementService CreateActivityManagement()
         {
             var activityManagementMock = new Mock<IActivityManagementService>();
-            activityManagementMock.Setup(ams => ams.GetAll())
+            activityManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
             .Returns(() =>
             {
                 return Task.FromResult(new List<PersistenceWrapper<Activity>>(MockDataGenerator.Activities).AsEnumerable());
@@ -75,9 +76,14 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Disable(activityId);
         }
 
-        public Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll()
+        public async Task<PersistenceWrapper<Activity>> Get(Guid id, CancellationToken cancellationToken)
         {
-            return _proxy.GetAll();
+            return (await GetAll(cancellationToken)).FirstOrDefault(i => i.Model.Id == id);
+        }
+
+        public Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(CancellationToken cancellationToken)
+        {
+            return _proxy.GetAll(cancellationToken);
         }
 
         public Task Update(Activity activity)

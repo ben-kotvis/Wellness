@@ -12,11 +12,11 @@ namespace Wellness.Client.ViewModels
 {    
     public class EventManagementViewModel : IViewModelBase
     {
+        public string IconClass { get; set; } = "d-none";
+        public bool IsSaving { get; set; } = false;
         public bool EditModalOpen { get; set; } = false;
-        public string EventName { get; set; }
-        public int Points { get; set; }
-        public int AnnualMaximumPoints { get; set; }
-        public bool Active { get; set; }
+        public bool DeleteDialogIsOpen { get; set; } = false;
+        public Guid SelectedDeleteId { get; set; }
 
         public bool Debug { get; set; } = false;
         public Guid DialogId { get; set; } = Guid.Empty;
@@ -52,10 +52,19 @@ namespace Wellness.Client.ViewModels
             }
         }
 
-        public async Task Delete(Guid id)
+        public void Delete(Guid id)
         {
-            await _eventManagementService.Disable(id);            
+            DeleteDialogIsOpen = true;
+            SelectedDeleteId = id;
+        }
+
+        public async Task OnDeleteConfirmed(Guid id)
+        {
+            await _eventManagementService.Disable(id);
             Events = await _eventManagementService.GetAll(CancellationToken.None);
+
+            DeleteDialogIsOpen = false;
+            SelectedDeleteId = default;
         }
 
         public void New()
@@ -81,6 +90,8 @@ namespace Wellness.Client.ViewModels
 
         public async Task Save()
         {
+            IsSaving = true;
+            IconClass = "spinning-icon";
             var eventObj = Events.FirstOrDefault(i => i.Model.Id == DialogId);
             
             if(eventObj == default)
@@ -93,10 +104,13 @@ namespace Wellness.Client.ViewModels
                 await _eventManagementService.Update(NewOrEditEvent);
             }
             
-            EditModalOpen = false;
             Events = await _eventManagementService.GetAll(CancellationToken.None);
 
+            EditModalOpen = false;
             NewOrEditEvent = new Event();
+            DialogId = default;
+            IconClass = "d-none";
+            IsSaving = false;
         }
     }
 }

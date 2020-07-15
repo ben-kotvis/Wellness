@@ -151,7 +151,7 @@ namespace Wellness.Client.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this Activity?.
+        ///   Looks up a localized string similar to Are you sure you want to delete?.
         /// </summary>
         internal static string DeleteConfirmationMessage {
             get {

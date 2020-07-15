@@ -10,15 +10,23 @@ using RestSharp;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using System.Text.Json.Serialization;
+using System.Threading;
 
 namespace Wellness.Client.Services
 {
     public class ActivityManagment : IActivityManagementService
     {
         private readonly HttpClient _httpClient;
+
+        private Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>> _activities;
         public ActivityManagment(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            Reset();
+        }
+        private void Reset()
+        {
+            _activities = new Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>>(async () => await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities"));
         }
 
         public async Task Create(Activity activity)
@@ -30,7 +38,11 @@ namespace Wellness.Client.Services
             await _httpClient.DeleteAsync($"api/activities/{activityId}");
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll()
+        public async Task<PersistenceWrapper<Activity>> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return (await _activities.Value).FirstOrDefault(i => i.Model.Id == id);
+        }
+        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(CancellationToken cancellationToken)
         {
             return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
         }

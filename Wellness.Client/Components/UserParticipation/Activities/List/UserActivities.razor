@@ -1,6 +1,7 @@
 ﻿@using Wellness.Model
 @using System.Globalization
 @using Wellness.Client.Components.UserParticipation.Activities.Add
+@using Wellness.Client.Components.Shared
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Components.UserParticipation.Activities.List.UserActivitiesComponent
 
@@ -14,34 +15,25 @@
 }
 else
 {
-        <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" Striped="true"
-                   HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
-            <MatTableHeader>
-                <th></th>
-                <th>@Loc["Activity"]</th>
-                <th>@Loc["Minutes"]</th>
-                <th>@Loc["Points"]</th>
-                <th>@Loc["Date"]</th>
-            </MatTableHeader>
-            <MatTableRow>
-                <td>
-                    <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
-                </td>
-                <td>@context.Model.Activity.Name</td>
-                <td>@context.Model.Minutes</td>
-                <td>@context.Model.PointsEarned</td>
-                <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
-            </MatTableRow>
-        </MatTable>
-        }
+    <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" Striped="true"
+              HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
+        <MatTableHeader>
+            <th></th>
+            <th>@Loc["Activity"]</th>
+            <th>@Loc["Minutes"]</th>
+            <th>@Loc["Points"]</th>
+            <th>@Loc["Date"]</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>
+                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
+            </td>
+            <td>@context.Model.Activity.Name</td>
+            <td>@context.Model.Minutes</td>
+            <td>@context.Model.PointsEarned</td>
+            <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
+        </MatTableRow>
+    </MatTable>
+}
 
-        <MatDialog @bind-IsOpen="@dialogIsOpen">
-            <MatDialogTitle>@Loc["DeleteConfirmationLabel"]</MatDialogTitle>
-            <MatDialogContent>
-                <p>@Loc["DeleteConfirmationMessage"]</p>
-            </MatDialogContent>
-            <MatDialogActions>
-                <MatButton OnClick="@(e => { dialogIsOpen = false; })">@Loc["Cancel"]</MatButton>
-                <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
-            </MatDialogActions>
-        </MatDialog>
+<ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>

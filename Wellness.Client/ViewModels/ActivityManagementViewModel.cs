@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Client.Services.Mock;
 using Wellness.Model;
@@ -11,9 +12,16 @@ namespace Wellness.Client.ViewModels
 {    
     public class ActivityManagementViewModel : IViewModelBase
     {
+        public string IconClass { get; set; } = "d-none";
+        public bool IsSaving { get; set; } = false;
+
         public bool EditModalOpen { get; set; } = false;
-        public string ActivityName { get; set; }
-        public bool Active { get; set; } = true;
+
+        public bool DeleteDialogIsOpen { get; set; } = false;
+        public Guid SelectedDeleteId { get; set; }
+
+        public Activity NewOrEditActivity { get; set; }
+
         public bool Debug { get; set; } = false;
         public Guid DialogId { get; set; } = Guid.Empty;
 
@@ -25,6 +33,11 @@ namespace Wellness.Client.ViewModels
         {
             _activityManagementService = activityManagementService;
 
+            NewOrEditActivity = new Activity()
+            {
+                Active = true
+            };
+
 #if DEBUG
             Debug = true;
 #endif
@@ -32,16 +45,25 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            Activities = await _activityManagementService.GetAll();
+            Activities = await _activityManagementService.GetAll(CancellationToken.None);
         }
 
-        public async Task Delete(Guid id)
+        public void Delete(Guid id)
         {
-            await _activityManagementService.Disable(id);            
-            Activities = await _activityManagementService.GetAll();
+            DeleteDialogIsOpen = true;
+            SelectedDeleteId = id;
         }
 
-        public async Task New()
+        public async Task OnDeleteConfirmed(Guid id)
+        {
+            await _activityManagementService.Disable(id);
+            Activities = await _activityManagementService.GetAll(CancellationToken.None);
+
+            DeleteDialogIsOpen = false;
+            SelectedDeleteId = default;
+        }
+
+        public void New()
         {
             DialogId = Guid.NewGuid();            
             EditModalOpen = true;
@@ -55,41 +77,37 @@ namespace Wellness.Client.ViewModels
             }
         }
 
-        public async Task Edit(Guid id)
+        public void Edit(Guid id)
         {
             DialogId = id;
             var existingItem = Activities.FirstOrDefault(i => i.Model.Id == id);
-            ActivityName = existingItem.Model.Name;
-            Active = existingItem.Model.Active;
+            NewOrEditActivity.Name = existingItem.Model.Name;
+            NewOrEditActivity.Active = existingItem.Model.Active;
 
             EditModalOpen = true;
         }
 
         public async Task Save()
         {
+            IconClass = "spinning-icon";
+            IsSaving = true;
             var activity = Activities.FirstOrDefault(i => i.Model.Id == DialogId)?.Model;
 
-            Action<Activity> action = (ac) =>
+            if (activity == default)
             {
-                ac.Active = Active;
-                ac.Name = ActivityName;
-            };
-
-            if(activity == default)
-            {
-                activity = new Activity();                
-                activity.Id = DialogId;
-                action.Invoke(activity);
-                await _activityManagementService.Create(activity);
+                NewOrEditActivity.Id = DialogId;
+                await _activityManagementService.Create(NewOrEditActivity);
             }
             else
             {
-                action.Invoke(activity);
-                await _activityManagementService.Update(activity);
+                await _activityManagementService.Update(NewOrEditActivity);
             }
-            
+
+            Activities = await _activityManagementService.GetAll(CancellationToken.None);
+            NewOrEditActivity = new Activity() { Active = true };
+            IconClass = "d-none";
             EditModalOpen = false;
-            Activities = await _activityManagementService.GetAll();
+            IsSaving = false;
         }
     }
 }

@@ -52,15 +52,17 @@ namespace Wellness.Api
             });
 
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
-            services.AddTransient<IValidator<Activity>, ActivityValidation>();
-            services.AddTransient<IValidator<Event>, EventValidation>();
-            services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
-            services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
+            services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());
+            services.AddSingleton<IPersistanceReaderService<Activity>>(sp => sp.GetService<IPersistanceService<Activity>>());
             services.AddScoped(typeof(IValidate<>), typeof(Validation<>));
             services.AddScoped(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddScoped(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddScoped(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));
-            services.AddScoped(typeof(IDomainServiceReader<>), typeof(DomainServiceBase<>));
+            
+            services.AddTransient<IValidator<Activity>, ActivityValidation>();
+            services.AddTransient<IValidator<Event>, EventValidation>();
+            services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
+            services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
 
             services.AddCors(options =>
             {

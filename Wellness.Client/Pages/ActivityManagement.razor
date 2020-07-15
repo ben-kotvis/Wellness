@@ -1,6 +1,8 @@
 ﻿@page "/ActivityManagement"
 
-
+@using Wellness.Domain.ModelValidation
+@using Blazored.FluentValidation;
+@using Wellness.Client.Components.Shared
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Wellness.Client.Pages.ActivityManagementComponent
 
@@ -28,26 +30,33 @@
         <td>@context.Common.CreatedBy</td>
     </MatTableRow>
 </MatTable>
+
+<ConfirmationDialog IsOpen="@ViewModel.DeleteDialogIsOpen" SelectedId="@ViewModel.SelectedDeleteId" OnConfirmDelete="@ViewModel.OnDeleteConfirmed"></ConfirmationDialog>
+
+
 @if (ViewModel.Debug)
 {
-<div class="float-right">
-    <MatIconButton Icon="import_export" @onclick="ViewModel.Load"></MatIconButton>
-</div>
+    <div class="float-right">
+        <MatIconButton Icon="import_export" @onclick="ViewModel.Load"></MatIconButton>
+    </div>
 }
-<MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
-    <MatDialogTitle>
-        @Loc["Activity"]
-    </MatDialogTitle>
-    <MatDialogContent>
-        <MatTextField @bind-Value="ViewModel.ActivityName" Label="@Loc["Name"]"></MatTextField>
-        <MatCheckbox @bind-Value="ViewModel.Active" Label="@Loc["Active"]"></MatCheckbox>
-    </MatDialogContent>
-    <MatDialogActions>
-        <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">
-            @Loc["Cancel"]
-        </MatButton>
-        <MatButton OnClick="@ViewModel.Save">
-            @Loc["OK"]
-        </MatButton>
-    </MatDialogActions>
-</MatDialog>
+<EditForm Model="@ViewModel.NewOrEditActivity" OnValidSubmit="@ViewModel.Save">
+    <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
+        <FluentValidationValidator />
+        <ValidationSummary />
+        <MatDialogTitle>
+            @Loc["Activity"]
+        </MatDialogTitle>
+        <MatDialogContent>
+            <MatTextField @bind-Value="ViewModel.NewOrEditActivity.Name" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Name"]"></MatTextField>
+            <ValidationMessage For="() => ViewModel.NewOrEditActivity.Name"></ValidationMessage>
+            <MatCheckbox @bind-Value="ViewModel.NewOrEditActivity.Active" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Active"]"></MatCheckbox>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">
+                @Loc["Cancel"]
+            </MatButton>
+            <MatButton Type="submit">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</EditForm>

@@ -148,7 +148,7 @@
     <value>Delete Confirmation</value>
   </data>
   <data name="DeleteConfirmationMessage" xml:space="preserve">
-    <value>Are you sure you want to delete this Activity?</value>
+    <value>Are you sure you want to delete?</value>
   </data>
   <data name="DeleteEventConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to delete this Event?</value>

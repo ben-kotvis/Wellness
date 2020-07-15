@@ -1,6 +1,7 @@
 ﻿@using Wellness.Model
 @using System.Globalization
 @using Wellness.Client.Components.UserParticipation.Activities.Add
+@using Wellness.Client.Components.Shared
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Components.UserParticipation.Events.List.UserEventsComponent
 
@@ -40,16 +41,9 @@ else
     </MatTable>
 }
 
-<MatDialog @bind-IsOpen="@dialogIsOpen">
-    <MatDialogTitle>@Loc["DeleteConfirmationLabel"]</MatDialogTitle>
-    <MatDialogContent>
-        <p>@Loc["DeleteEventConfirmationMessage"]</p>
-    </MatDialogContent>
-    <MatDialogActions>
-        <MatButton OnClick="@(e => { dialogIsOpen = false; })">@Loc["Cancel"]</MatButton>
-        <MatButton OnClick="@(async e => { await OnConfirmDelete.InvokeAsync(SelectedId); dialogIsOpen = false; })">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
-    </MatDialogActions>
-</MatDialog>
+
+<ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>
+
 
 <MatDialog @bind-IsOpen="@ViewModel.PreviewDialogIsOpen">
     <MatDialogTitle>@Loc["AttachmentView"]</MatDialogTitle>

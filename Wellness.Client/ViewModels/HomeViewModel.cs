@@ -81,7 +81,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {            
-            Activities = (await _activityManagementService.GetAll()).Select(i => i.Model).Where(i => i.Active).ToList();            
+            Activities = (await _activityManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();            
             Events = (await _eventManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
         }
 

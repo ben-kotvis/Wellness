@@ -40,6 +40,13 @@ namespace Wellness.Api.Controllers
             return Accepted();
         }
 
+        [HttpDelete("{activityId}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid activityId, CancellationToken cancellationToken)
+        {
+            await _domainServiceBase.Delete(activityId, cancellationToken);
+            return NoContent();
+        }
+
         [HttpPut("{activityId}")]
         public async Task<IActionResult> Put([FromRoute] Guid activityId, Activity activity, CancellationToken cancellationToken)
         {

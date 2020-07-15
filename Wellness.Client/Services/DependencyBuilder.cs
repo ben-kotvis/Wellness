@@ -32,7 +32,9 @@ namespace Wellness.Client.Services
                 services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
             }
 
-            services.AddSingleton<IDomainServiceReader<Event>>(sp => sp.GetService<IEventManagementService>());
+            services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IEventManagementService>());
+            services.AddSingleton<IPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
+
             services.AddScoped<HomeViewModel>();
             services.AddScoped<ActivityManagementViewModel>();
             services.AddScoped<EventManagementViewModel>();

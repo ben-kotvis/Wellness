@@ -2,6 +2,7 @@
 
 @using Wellness.Domain.ModelValidation
 @using Blazored.FluentValidation;
+@using Wellness.Client.Components.Shared; 
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Wellness.Client.Pages.EventManagementComponent
 
@@ -32,6 +33,10 @@
     </MatTableRow>
 </MatTable>
 
+
+<ConfirmationDialog IsOpen="@ViewModel.DeleteDialogIsOpen" SelectedId="@ViewModel.SelectedDeleteId" OnConfirmDelete="@ViewModel.OnDeleteConfirmed"></ConfirmationDialog>
+
+
 @if (ViewModel.Debug)
 {
     <div class="float-right">
@@ -47,28 +52,28 @@
         </MatDialogTitle>
         <MatDialogContent>
             <p>
-                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name" Label="@Loc["Name"]"></MatTextField>
+                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Name " @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Name"]"></MatTextField>
                 <ValidationMessage For="() => ViewModel.NewOrEditEvent.Name"></ValidationMessage>
             </p>
             <p>
 
-                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" Label="@Loc["PointsPerEvent"]"></MatTextField>
+                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.Points" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["PointsPerEvent"]"></MatTextField>
                 <ValidationMessage For="() => ViewModel.NewOrEditEvent.Points"></ValidationMessage>
             </p>
             <p>
-                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum" Label="@Loc["AnnualMax"]"></MatTextField>
+                <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["AnnualMax"]"></MatTextField>
                 <ValidationMessage For="() => ViewModel.NewOrEditEvent.AnnualMaximum"></ValidationMessage>
             </p>
             <div>
-                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" Label="@Loc["RequireAttachment"]"></MatCheckbox>
+                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["RequireAttachment"]"></MatCheckbox>
             </div>
             <div>
-                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" Label="@Loc["Active"]"></MatCheckbox>
+                <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Active"]"></MatCheckbox>
             </div>
         </MatDialogContent>
         <MatDialogActions>
             <MatButton Type="button" OnClick="@(e => { ViewModel.EditModalOpen = false; })">@Loc["Cancel"]</MatButton>
-            <MatButton Type="submit">@Loc["OK"]</MatButton>
+            <MatButton Type="submit">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
         </MatDialogActions>
     </MatDialog>
 </EditForm>

@@ -1,0 +1,13 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
+@inherits ConfirmationDialogComponent
+
+<MatDialog @bind-IsOpen="@IsOpen">
+    <MatDialogTitle>@Loc["DeleteConfirmationLabel"]</MatDialogTitle>
+    <MatDialogContent>
+        <p>@Loc["DeleteConfirmationMessage"]</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { IsOpen = false; })">@Loc["Cancel"]</MatButton>
+        <MatButton OnClick="Confirm">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="IconClass"></MatIcon></MatButton>
+    </MatDialogActions>
+</MatDialog>
