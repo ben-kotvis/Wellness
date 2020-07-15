@@ -52,6 +52,8 @@ namespace Wellness.Client.ViewModels
         public bool PreviewDialogIsOpen { get; set; }
         public string EventAttachmentFileLocation { get; set; }
 
+        public string IconClass { get; set; } = "d-none";
+
         public int ActivityTabIndex { get; set; } = 1;
         public int EventTabIndex { get; set; } = 1;
 
@@ -63,14 +65,18 @@ namespace Wellness.Client.ViewModels
 
         public async Task ActivityParticipationDeleted(Guid id)
         {
+            IconClass = "spinning-icon";
             await _activityParticipationService.Delete(id);
             await SetActivityParticipations();
+            IconClass = "d-none";
         }
 
         public async Task EventParticipationDeleted(Guid id)
         {
+            IconClass = "spinning-icon";
             await _eventParticipationService.Delete(id);
             await SetEventParticipations();
+            IconClass = "d-none";
         }
 
         public async Task OnInit()
@@ -132,6 +138,7 @@ namespace Wellness.Client.ViewModels
         public async Task SaveActivity()
         {
             IsSaving = true;
+            IconClass = "spinning-icon";
             NewActivityParticipation.Id = Guid.NewGuid();
             NewActivityParticipation.PointsEarned = Math.Round(NewActivityParticipation.Minutes * 0.166666666667m);
             NewActivityParticipation.UserId = Id;
@@ -144,13 +151,14 @@ namespace Wellness.Client.ViewModels
             NewActivityParticipation = new ActivityParticipation();
 
             await SetActivityParticipations();
-
+            IconClass = "d-none";
             IsSaving = false;
         }
 
         public async Task SaveEvent()
         {
             IsSaving = true;
+            IconClass = "spinning-icon";
             var selectedEvent = Events.FirstOrDefault(i => i.Id == NewEventParticipation.Event.Id);
 
             NewEventParticipation.Id = Guid.NewGuid();            
@@ -166,6 +174,7 @@ namespace Wellness.Client.ViewModels
             //clear out UI
             NewEventParticipation = new EventParticipation();
 
+            IconClass = "d-none";
             IsSaving = false;
         }
     }

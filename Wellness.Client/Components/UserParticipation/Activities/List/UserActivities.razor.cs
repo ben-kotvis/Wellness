@@ -12,6 +12,8 @@ namespace Wellness.Client.Components.UserParticipation.Activities.List
 {
     public class UserActivitiesComponent : ComponentBase
     {
+        [Parameter] public IActivityParticipationViewModel ViewModel { get; set; }
+
         [Parameter] public IEnumerable<PersistenceWrapper<ActivityParticipation>> ActivityParticipations { get; set; }
 
         [Parameter] public EventCallback<Guid> OnConfirmDelete { get; set; }

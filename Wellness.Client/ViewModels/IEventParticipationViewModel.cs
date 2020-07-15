@@ -8,6 +8,7 @@ namespace Wellness.Client.ViewModels
 {
     public interface IEventParticipationViewModel
     {
+        string IconClass { get; set; }
         bool IsSaving { get; set; }
         IEnumerable<Event> Events { get; set; }
         string PreviewFileType { get; set; }

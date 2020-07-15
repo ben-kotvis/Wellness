@@ -1,5 +1,21 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+
+.spinning-icon {
+    animation: spin-animation 1s infinite;
+    display: inline-block;
+}
+
+@keyframes spin-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
+    }
+}
+
 .container {
     width: 80px;
     height: 100px;

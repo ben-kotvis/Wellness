@@ -33,11 +33,13 @@ else
                 <MatTab Label="@Loc["Activities"]">
                     @if (ViewModel.LoadingActivities)
                     {
-                        <MatProgressBar Indeterminate="true"></MatProgressBar>
-                    }
+                        <div class="p-3">
+                            <MatProgressBar Indeterminate="true"></MatProgressBar>
+                        </div>
+                        }
                     else
                     {
-                        <UserActivities ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                        <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
                     }
                 </MatTab>
             </WellnessMatTabGroup>
@@ -53,7 +55,9 @@ else
                 <MatTab Label="@Loc["Events"]">
                     @if (ViewModel.LoadingEvents)
                     {
+                    <div class="p-3">
                         <MatProgressBar Indeterminate="true"></MatProgressBar>
+                    </div>
                     }
                     else
                     {
