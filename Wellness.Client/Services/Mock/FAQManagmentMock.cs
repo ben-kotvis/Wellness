@@ -1,11 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using Moq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
 
 namespace Wellness.Client.Services.Mock
 {
@@ -47,7 +47,8 @@ namespace Wellness.Client.Services.Mock
         {
             var eventManagementMock = new Mock<IFrequentlyAskedQuestionService>();
             eventManagementMock.Setup(ams => ams.GetAll())
-            .Returns(() => {
+            .Returns(() =>
+            {
                 return Task.FromResult(new List<PersistenceWrapper<FrequentlyAskedQuestion>>(MockDataGenerator.FrequentlyAskedQuestions).AsEnumerable());
             });
 

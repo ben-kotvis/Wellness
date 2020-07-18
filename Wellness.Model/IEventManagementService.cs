@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Wellness.Model
@@ -12,6 +8,6 @@ namespace Wellness.Model
         Task Create(Event eventObj);
         Task Update(Event eventObj);
 
-        Task Disable(Guid eventId);        
+        Task Disable(Guid eventId);
     }
 }

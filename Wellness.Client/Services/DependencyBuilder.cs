@@ -1,11 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Wellness.Model;
 using Wellness.Client.Services.Mock;
 using Wellness.Client.ViewModels;
+using Wellness.Model;
 
 namespace Wellness.Client.Services
 {
@@ -14,26 +10,26 @@ namespace Wellness.Client.Services
         public static void BuildWellness(this IServiceCollection services, bool useMock = true)
         {
             if (useMock)
-            {                
-                services.AddTransient<IActivityManagementService, ActivityManagementMock>();
-                services.AddSingleton<IActivityParticipationService, ActivityParticipationMock>();
-                services.AddSingleton<IEventManagementService, EventManagmentMock>();
-                services.AddSingleton<IEventParticipationService, EventParticipationMock>();
-                services.AddSingleton<IFrequentlyAskedQuestionService, FAQManagmentMock>();
-                services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());                
+            {
+                services.AddScoped<IActivityManagementService, ActivityManagementMock>();
+                services.AddScoped<IActivityParticipationService, ActivityParticipationMock>();
+                services.AddScoped<IEventManagementService, EventManagmentMock>();
+                services.AddScoped<IEventParticipationService, EventParticipationMock>();
+                services.AddScoped<IFrequentlyAskedQuestionService, FAQManagmentMock>();
+                services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
             }
             else
             {
-                services.AddSingleton<IActivityManagementService, ActivityManagment>();
-                services.AddSingleton<IActivityParticipationService, ActivityParticipationManagement>();
-                services.AddSingleton<IEventManagementService, EventManagment>();
-                services.AddSingleton<IEventParticipationService, EventParticipationManagement>();
-                services.AddSingleton<IFrequentlyAskedQuestionService, FAQManagmentMock>();
+                services.AddScoped<IActivityManagementService, ActivityManagment>();
+                services.AddScoped<IActivityParticipationService, ActivityParticipationManagement>();
+                services.AddScoped<IEventManagementService, EventManagment>();
+                services.AddScoped<IEventParticipationService, EventParticipationManagement>();
+                services.AddScoped<IFrequentlyAskedQuestionService, FAQManagmentMock>();
                 services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
             }
 
-            services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IEventManagementService>());
-            services.AddSingleton<IPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
+            services.AddScoped<IPersistanceReaderService<Event>>(sp => sp.GetService<IEventManagementService>());
+            services.AddScoped<IPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
 
             services.AddScoped<HomeViewModel>();
             services.AddScoped<ActivityManagementViewModel>();

@@ -1,17 +1,13 @@
-﻿using MatBlazor;
-using Microsoft.AspNetCore.Components.Web;
-using System;
-using System.Buffers.Text;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Wellness.Domain.ModelValidation;
 
 namespace Wellness.Client.ViewModels
-{    
+{
     public class HomeViewModel : IViewModelBase, IActivityParticipationViewModel, IEventParticipationViewModel
     {
         public bool IsSaving { get; set; }
@@ -27,7 +23,7 @@ namespace Wellness.Client.ViewModels
 
         private IActivityParticipationService _activityParticipationService;
         private IActivityManagementService _activityManagementService;
-        
+
         private IEventParticipationService _eventParticipationService;
         private IEventManagementService _eventManagementService;
 
@@ -40,7 +36,7 @@ namespace Wellness.Client.ViewModels
             _activityParticipationService = activityParticipationService;
             _activityManagementService = activityManagementService;
             _eventParticipationService = eventParticipationService;
-            _eventManagementService = eventManagementService;            ;
+            _eventManagementService = eventManagementService; ;
             NewEventParticipation = new EventParticipation();
             NewActivityParticipation = new ActivityParticipation();
         }
@@ -80,8 +76,8 @@ namespace Wellness.Client.ViewModels
         }
 
         public async Task OnInit()
-        {            
-            Activities = (await _activityManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();            
+        {
+            Activities = (await _activityManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
             Events = (await _eventManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
         }
 
@@ -122,9 +118,9 @@ namespace Wellness.Client.ViewModels
             var eventParticipation = EventParticipations.FirstOrDefault(i => i.Model.Id == id);
 
             var bytes = await File.ReadAllBytesAsync(eventParticipation.Model.Attachment.FilePath);
-            PreviewDialogIsOpen = true; 
-            PreviewDataUrl = $"data:{eventParticipation.Model.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}"; 
-            PreviewFileType = eventParticipation.Model.Attachment?.ContentType;            
+            PreviewDialogIsOpen = true;
+            PreviewDataUrl = $"data:{eventParticipation.Model.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}";
+            PreviewFileType = eventParticipation.Model.Attachment?.ContentType;
         }
 
         public async Task SetUser(Guid id)
@@ -161,14 +157,14 @@ namespace Wellness.Client.ViewModels
             IconClass = "spinning-icon";
             var selectedEvent = Events.FirstOrDefault(i => i.Id == NewEventParticipation.Event.Id);
 
-            NewEventParticipation.Id = Guid.NewGuid();            
+            NewEventParticipation.Id = Guid.NewGuid();
             NewEventParticipation.PointsEarned = selectedEvent.Points;
             NewEventParticipation.UserId = Id;
 
-            await _eventParticipationService.Create(NewEventParticipation);                
-                        
+            await _eventParticipationService.Create(NewEventParticipation);
+
             SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewEventParticipation.SubmissionDate.Month);
-            
+
             await SetEventParticipations();
 
             //clear out UI

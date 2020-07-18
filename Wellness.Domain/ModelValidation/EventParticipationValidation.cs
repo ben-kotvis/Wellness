@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
-using Wellness.Model;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
+using Wellness.Model;
 
 namespace Wellness.Domain.ModelValidation
 {
     public class EventParticipationValidation : AbstractValidator<EventParticipation>
     {
-        private readonly IPersistanceReaderService<Event> _eventManagementService;        
+        private readonly IPersistanceReaderService<Event> _eventManagementService;
 
         public EventParticipationValidation(IPersistanceReaderService<Event> eventManagementService)
         {
@@ -22,7 +22,7 @@ namespace Wellness.Domain.ModelValidation
 
         private async Task<bool> AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment, CancellationToken cancellationToken)
         {
-            if(eventParticipation.Event == default)
+            if (eventParticipation.Event == default)
             {
                 return true;
             }

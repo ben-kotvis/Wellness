@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Wellness.Model;
 
 namespace Wellness.Api
@@ -15,7 +9,7 @@ namespace Wellness.Api
         public DomainDependencies(
             IPersistanceService<T> persistanceService,
             IValidate<T> validator,
-            IMap mapper, 
+            IMap mapper,
             ClaimsPrincipal claimsPrincipal)
         {
             PersistanceService = persistanceService;

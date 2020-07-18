@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page  "/{SelectedUserId:guid}"
 
+@using Microsoft.AspNetCore.Authorization
 @using Wellness.Client.Components.MonthsMenu
 @using Wellness.Client.Components.UserParticipation.Activities.List
 @using Wellness.Client.Components.UserParticipation.Activities.Add
@@ -9,7 +10,7 @@
 @using Wellness.Client.Components.Shared
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
 @inherits Wellness.Client.Pages.IndexComponent
-
+@attribute [Authorize]
 
 @if (ViewModel.ActivityParticipations == null)
 {
@@ -36,7 +37,7 @@ else
                         <div class="p-3">
                             <MatProgressBar Indeterminate="true"></MatProgressBar>
                         </div>
-                        }
+                    }
                     else
                     {
                         <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
@@ -55,9 +56,9 @@ else
                 <MatTab Label="@Loc["Events"]">
                     @if (ViewModel.LoadingEvents)
                     {
-                    <div class="p-3">
-                        <MatProgressBar Indeterminate="true"></MatProgressBar>
-                    </div>
+                        <div class="p-3">
+                            <MatProgressBar Indeterminate="true"></MatProgressBar>
+                        </div>
                     }
                     else
                     {

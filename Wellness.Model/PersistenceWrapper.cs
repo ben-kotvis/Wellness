@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Wellness.Model
+﻿namespace Wellness.Model
 {
     public class PersistenceWrapper<T> : IHaveCommon
-        where T : IIdentifiable 
+        where T : IIdentifiable
     {
         public string Id { get { return Model.Id.ToString(); } }
 

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +10,7 @@ namespace Wellness.Domain
         where T : IIdentifiable, IParticipate
     {
         public ParticipationDomainService(IDomainDependencies<T> domainDependencies)
-            :base(domainDependencies)
+            : base(domainDependencies)
         {
         }
 

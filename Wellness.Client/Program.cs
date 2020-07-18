@@ -1,24 +1,21 @@
+using FluentValidation;
+using Markdig;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Text;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Wellness.Client.Services;
-using FluentValidation;
-using Wellness.Domain.ModelValidation;
-using Wellness.Domain;
 using System.Globalization;
-using Microsoft.JSInterop;
-using AutoMapper;
-using Wellness.Model;
-using Markdig;
-using Microsoft.Extensions.Localization;
-using Wellness.Client.Pages;
-using Microsoft.AspNetCore.Builder;
 using System.Net.Http;
-using System.Linq;
-using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using Wellness.Client.Services;
+using Wellness.Domain;
+using Wellness.Domain.ModelValidation;
+using Wellness.Model;
 
 namespace Wellness.Client
 {
@@ -26,26 +23,38 @@ namespace Wellness.Client
     {
         public static async Task Main(string[] args)
         {
-            
+
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             builder.Services.AddSingleton(MappingConfigurator.Configure());
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             builder.Services.BuildWellness(false);
-            builder.Services.AddTransient<IValidator<Model.Event>,EventValidation>();
-            builder.Services.AddTransient<IValidator<EventParticipation>,EventParticipationValidation>();
+            builder.Services.AddTransient<IValidator<Model.Event>, EventValidation>();
+            builder.Services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
             builder.Services.AddTransient<IValidator<Model.Activity>, ActivityValidation>();
-            builder.Services.AddTransient<IValidator<ActivityParticipation>,ActivityParticipationValidation>();
-
+            builder.Services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
 
             builder.RootComponents.Add<App>("app");
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44354") });
 
+            builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
+            builder.Services.AddHttpClient("Default",
+                    client =>
+                    {
+                        client.BaseAddress = new Uri("https://localhost:44354");
+                    })
+                .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+            
+            builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Default"));
+            builder.Services.AddMsalAuthentication(options =>
+            {
+                builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
+                options.ProviderOptions.AdditionalScopesToConsent.Add("https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard");
+            });
 
             builder.Services.AddLocalization();
 
             var host = builder.Build();
-            
+
             var supportedCulteres = new List<CultureInfo>() { new CultureInfo("en") };
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -53,7 +62,24 @@ namespace Wellness.Client
                 options.SupportedUICultures = supportedCulteres;
             });
 
-            await host.RunAsync();            
+            await host.RunAsync();
+        }
+    }
+    public class CustomAuthorizationMessageHandler : AuthorizationMessageHandler
+    {
+        public CustomAuthorizationMessageHandler(IAccessTokenProvider provider,
+            NavigationManager navigationManager)
+            : base(provider, navigationManager)
+        {
+            ConfigureHandler(
+                authorizedUrls: new[] { "https://localhost:44354" },
+                scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile" });
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Console.WriteLine(request.Headers.Authorization);
+            return base.SendAsync(request, cancellationToken);  
         }
     }
 }

@@ -1,17 +1,14 @@
-﻿using MatBlazor;
-using Microsoft.AspNetCore.Components.Web;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
 
 namespace Wellness.Client.ViewModels
-{    
+{
     public class FAQManagementViewModel : IViewModelBase
     {
         private IFrequentlyAskedQuestionService _frequentlyAskedQuestionService;
-        
+
         public FAQManagementViewModel(IFrequentlyAskedQuestionService frequentlyAskedQuestionService)
         {
             _frequentlyAskedQuestionService = frequentlyAskedQuestionService;
@@ -51,7 +48,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task Save()
         {
-            if(DialogId == default)
+            if (DialogId == default)
             {
                 NewOrEditFAQ.Id = Guid.NewGuid();
                 await _frequentlyAskedQuestionService.Create(NewOrEditFAQ);
@@ -60,7 +57,7 @@ namespace Wellness.Client.ViewModels
             {
                 await _frequentlyAskedQuestionService.Update(NewOrEditFAQ);
             }
-            
+
             FAQs = await _frequentlyAskedQuestionService.GetAll();
             NewOrEditFAQ = new FrequentlyAskedQuestion();
             EditModalOpen = false;
@@ -68,7 +65,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task FileAttached(List<EventAttachmentArgs> args)
         {
-            if(NewOrEditFAQ.Images == default)
+            if (NewOrEditFAQ.Images == default)
             {
                 NewOrEditFAQ.Images = new List<EventAttachment>();
             }

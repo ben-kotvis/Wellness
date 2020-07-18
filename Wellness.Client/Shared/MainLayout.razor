@@ -10,6 +10,7 @@
                 <MatNavItem Href="/"><MatAppBarTitle>@Loc["Title"]</MatAppBarTitle></MatNavItem>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <LoginDisplay />
                 <MatIconButton Icon="settings" @onclick="(async e => await Menu.OpenAsync(MenuButton.Ref))" @ref="MenuButton"></MatIconButton>
                 <MatMenu @ref="Menu">
                     <MatList>

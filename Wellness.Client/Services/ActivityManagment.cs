@@ -1,16 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
-using RestSharp;
-using System.Net.Http;
-using Microsoft.AspNetCore.Components;
-using System.Text.Json.Serialization;
-using System.Threading;
 
 namespace Wellness.Client.Services
 {
@@ -26,7 +22,10 @@ namespace Wellness.Client.Services
         }
         private void Reset()
         {
-            _activities = new Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>>(async () => await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities"));
+            _activities = new Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>>(async () =>
+            {
+                    return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
+            });
         }
 
         public async Task Create(Activity activity)
@@ -44,11 +43,11 @@ namespace Wellness.Client.Services
         }
         public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(CancellationToken cancellationToken)
         {
-            return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
+            return await _activities.Value;
         }
 
         public async Task Update(Activity activity)
-        { 
+        {
             await _httpClient.PutJsonAsync($"api/activities/{activity.Id}", activity);
         }
     }

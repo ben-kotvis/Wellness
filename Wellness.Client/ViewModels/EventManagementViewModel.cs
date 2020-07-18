@@ -1,6 +1,4 @@
-﻿using MatBlazor;
-using Microsoft.AspNetCore.Components.Web;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,7 +7,7 @@ using Wellness.Client.Services.Mock;
 using Wellness.Model;
 
 namespace Wellness.Client.ViewModels
-{    
+{
     public class EventManagementViewModel : IViewModelBase
     {
         public string IconClass { get; set; } = "d-none";
@@ -20,13 +18,13 @@ namespace Wellness.Client.ViewModels
 
         public bool Debug { get; set; } = false;
         public Guid DialogId { get; set; } = Guid.Empty;
-        
+
         public IEnumerable<PersistenceWrapper<Event>> Events { get; private set; }
 
         public Event NewOrEditEvent { get; set; }
 
         private IEventManagementService _eventManagementService;
-        
+
         public EventManagementViewModel(IEventManagementService eventManagementService)
         {
             _eventManagementService = eventManagementService;
@@ -69,7 +67,7 @@ namespace Wellness.Client.ViewModels
 
         public void New()
         {
-            DialogId = Guid.NewGuid();            
+            DialogId = Guid.NewGuid();
             EditModalOpen = true;
         }
 
@@ -83,7 +81,7 @@ namespace Wellness.Client.ViewModels
             NewOrEditEvent.Active = existingItem.Model.Active;
             NewOrEditEvent.AnnualMaximum = existingItem.Model.AnnualMaximum;
             NewOrEditEvent.RequireAttachment = existingItem.Model.RequireAttachment;
-            NewOrEditEvent.Points = existingItem.Model.Points;            
+            NewOrEditEvent.Points = existingItem.Model.Points;
 
             EditModalOpen = true;
         }
@@ -93,8 +91,8 @@ namespace Wellness.Client.ViewModels
             IsSaving = true;
             IconClass = "spinning-icon";
             var eventObj = Events.FirstOrDefault(i => i.Model.Id == DialogId);
-            
-            if(eventObj == default)
+
+            if (eventObj == default)
             {
                 NewOrEditEvent.Id = DialogId;
                 await _eventManagementService.Create(NewOrEditEvent);
@@ -103,7 +101,7 @@ namespace Wellness.Client.ViewModels
             {
                 await _eventManagementService.Update(NewOrEditEvent);
             }
-            
+
             Events = await _eventManagementService.GetAll(CancellationToken.None);
 
             EditModalOpen = false;

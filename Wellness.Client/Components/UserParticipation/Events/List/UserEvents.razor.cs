@@ -1,13 +1,6 @@
-﻿using MatBlazor;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components;
 using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Wellness.Client.ViewModels;
 using Wellness.Model;

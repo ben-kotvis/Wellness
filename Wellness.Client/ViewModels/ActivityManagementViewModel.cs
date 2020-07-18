@@ -1,6 +1,4 @@
-﻿using MatBlazor;
-using Microsoft.AspNetCore.Components.Web;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,7 +7,7 @@ using Wellness.Client.Services.Mock;
 using Wellness.Model;
 
 namespace Wellness.Client.ViewModels
-{    
+{
     public class ActivityManagementViewModel : IViewModelBase
     {
         public string IconClass { get; set; } = "d-none";
@@ -28,7 +26,7 @@ namespace Wellness.Client.ViewModels
         public IEnumerable<PersistenceWrapper<Activity>> Activities { get; private set; }
 
         private IActivityManagementService _activityManagementService;
-        
+
         public ActivityManagementViewModel(IActivityManagementService activityManagementService)
         {
             _activityManagementService = activityManagementService;
@@ -65,7 +63,7 @@ namespace Wellness.Client.ViewModels
 
         public void New()
         {
-            DialogId = Guid.NewGuid();            
+            DialogId = Guid.NewGuid();
             EditModalOpen = true;
         }
 

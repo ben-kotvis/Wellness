@@ -1,21 +1,20 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Wellness.Domain;
 using Wellness.Model;
 
 namespace Wellness.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ActivitiesController : ControllerBase
     {
         private readonly IDomainService<Activity> _domainServiceBase;
-        
+
         public ActivitiesController(IDomainService<Activity> domainService)
         {
             _domainServiceBase = domainService;

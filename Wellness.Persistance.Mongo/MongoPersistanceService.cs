@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -7,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
@@ -42,8 +40,8 @@ namespace Wellness.Persistance.Mongo
             }
         }
 
-        public IModelQueryable<PersistenceWrapper<T>> Query 
-        { 
+        public IModelQueryable<PersistenceWrapper<T>> Query
+        {
             get
             {
                 var database = _mongoClient.GetDatabase(_database);
@@ -53,8 +51,8 @@ namespace Wellness.Persistance.Mongo
         }
 
         public async Task Create(PersistenceWrapper<T> wrapped, CancellationToken cancellationToken)
-        {            
-            var database = _mongoClient.GetDatabase(_database);                        
+        {
+            var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
             var options = new InsertOneOptions();
             await collection.InsertOneAsync(wrapped, options, cancellationToken);

@@ -1,15 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
-using RestSharp;
-using System.Net.Http;
-using Microsoft.AspNetCore.Components;
-using System.Text.Json.Serialization;
 
 namespace Wellness.Client.Services
 {
@@ -17,9 +12,9 @@ namespace Wellness.Client.Services
     {
 
         private readonly HttpClient _httpClient;
-        public EventParticipationManagement(HttpClient httpClient)
+        public EventParticipationManagement(IHttpClientFactory clientFactory)
         {
-            _httpClient = httpClient;
+            _httpClient = clientFactory.CreateClient("Default");
         }
 
         public async Task Create(EventParticipation eventParticipation)

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
-using System.Threading;
 
 namespace Wellness.Client.Services.Mock
 {
@@ -46,7 +44,8 @@ namespace Wellness.Client.Services.Mock
         {
             var eventManagementMock = new Mock<IEventManagementService>();
             eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
-            .Returns(() => {
+            .Returns(() =>
+            {
                 return Task.FromResult(new List<PersistenceWrapper<Event>>(MockDataGenerator.Events).AsEnumerable());
             });
 
@@ -67,7 +66,7 @@ namespace Wellness.Client.Services.Mock
                         ap.Model.AnnualMaximum = a.AnnualMaximum;
                         ap.Model.Points = a.Points;
                         ap.Model.RequireAttachment = a.RequireAttachment;
-                        
+
                     }
                 });
                 return Task.FromResult(true);

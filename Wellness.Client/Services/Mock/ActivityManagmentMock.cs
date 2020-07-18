@@ -1,12 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
-using System.Threading;
 
 namespace Wellness.Client.Services.Mock
 {

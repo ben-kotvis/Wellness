@@ -1,10 +1,5 @@
-﻿using MatBlazor;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Wellness.Client.Components.Shared
@@ -13,10 +8,10 @@ namespace Wellness.Client.Components.Shared
     {
         [Parameter]
         public bool IsOpen { get; set; }
-        
+
         [Parameter]
         public Guid SelectedId { get; set; }
-                
+
         [Parameter]
         public EventCallback<Guid> OnConfirmDelete { get; set; }
 

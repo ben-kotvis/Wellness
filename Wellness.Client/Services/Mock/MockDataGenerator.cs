@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
 
 namespace Wellness.Client.Services.Mock
 {
@@ -51,7 +49,7 @@ namespace Wellness.Client.Services.Mock
         private static List<PersistenceWrapper<FrequentlyAskedQuestion>> BootstrapFAQs()
         {
             var faqs = new List<PersistenceWrapper<FrequentlyAskedQuestion>>();
-                        
+
             faqs.Add(new PersistenceWrapper<FrequentlyAskedQuestion>()
             {
                 Common = CreateCommon(),
@@ -175,13 +173,13 @@ doc](#an-h2-header). Here's a footnote [^1].
         public static User CreateUser(Guid id, string firstName, string lastName)
         {
             var random = new Random();
-            var user =  new User()
+            var user = new User()
             {
                 Id = id,
                 Common = CreateCommon(),
                 FirstName = firstName,
                 LastName = lastName,
-                AnnualTotal = random.Next(30, 150)                
+                AnnualTotal = random.Next(30, 150)
             };
 
             user.AveragePointsPerMonth = Math.Floor(user.AnnualTotal / DateTimeOffset.UtcNow.Month);
@@ -211,7 +209,7 @@ doc](#an-h2-header). Here's a footnote [^1].
             var random = new Random();
             var index = random.Next(0, 9);
 
-            return Activities.Select(i =>i.Model).ElementAt(index);
+            return Activities.Select(i => i.Model).ElementAt(index);
         }
 
         public static List<PersistenceWrapper<EventParticipation>> BootstrapUserEvents()

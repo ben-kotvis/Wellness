@@ -1,9 +1,7 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Wellness.Client.Components.Shared
@@ -15,7 +13,7 @@ namespace Wellness.Client.Components.Shared
 
         [Parameter]
         public Dictionary<string, string> Items { get; set; }
-        
+
         [Parameter]
         public EventCallback<string> OnItemSelected { get; set; }
 

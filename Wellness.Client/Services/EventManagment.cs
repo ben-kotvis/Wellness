@@ -1,18 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
-using Moq;
-using System.IO;
-using AutoMapper;
-using RestSharp;
-using System.Net.Http;
-using Microsoft.AspNetCore.Components;
-using System.Text.Json.Serialization;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Linq.Expressions;
 
 namespace Wellness.Client.Services
 {
@@ -21,9 +14,9 @@ namespace Wellness.Client.Services
         private Lazy<Task<IEnumerable<PersistenceWrapper<Event>>>> _events;
 
         private readonly HttpClient _httpClient;
-        public EventManagment(HttpClient httpClient)
+        public EventManagment(IHttpClientFactory clientFactory)
         {
-            _httpClient = httpClient;
+            _httpClient = clientFactory.CreateClient("Default");
             Reset();
         }
 
@@ -40,7 +33,7 @@ namespace Wellness.Client.Services
         public async Task Disable(Guid eventId)
         {
             await _httpClient.DeleteAsync($"api/events/{eventId}");
-            Reset();            
+            Reset();
         }
 
         public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(CancellationToken cancellationToken)
@@ -53,7 +46,7 @@ namespace Wellness.Client.Services
         }
 
         public async Task Update(Event eventObj)
-        { 
+        {
             await _httpClient.PutJsonAsync($"api/events/{eventObj.Id}", eventObj);
             Reset();
         }

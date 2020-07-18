@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Threading.Tasks;
 using Wellness.Model;
-using System.Globalization;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace Wellness.Client.Components.MonthsMenu
 {
     public class MonthsMenuComponent : ComponentBase
     {
-        
+
         public List<Month> Months;
         private int previousRelativeIndex = -5;
         private int nextRelativeIndex = 5;
@@ -35,7 +34,7 @@ namespace Wellness.Client.Components.MonthsMenu
 
         public async Task MonthChanged(MouseEventArgs args, int index)
         {
-            var today = DateTime.Now;            
+            var today = DateTime.Now;
             var selectedMonth = today.AddMonths(index);
             await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, index, selectedMonth.Year)));
         }
@@ -89,7 +88,7 @@ namespace Wellness.Client.Components.MonthsMenu
             SelectedIndex = relatveIndex;
 
             await OnMonthChanged.InvokeAsync(new MonthChangedEventArgs(createMonth(selectedMonth.Month, relatveIndex, selectedMonth.Year)));
-       }
+        }
 
     }
 }

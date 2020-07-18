@@ -1,11 +1,7 @@
 ﻿using MatBlazor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Wellness.Client.ViewModels;
 using Wellness.Model;
@@ -16,7 +12,7 @@ namespace Wellness.Client.Components.UserParticipation.Events.Add
     public class NewEventComponent : ComponentBase
     {
         [Inject] IJSRuntime JSRuntime { get; set; }
-        [Parameter] public IEventParticipationViewModel ViewModel { get; set; }        
+        [Parameter] public IEventParticipationViewModel ViewModel { get; set; }
         [Parameter] public EventCallback<EventAttachmentArgs> OnFileAttached { get; set; }
         [Parameter] public EventCallback OnEventSubmissionCompleted { get; set; }
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Wellness.Model
+﻿namespace Wellness.Model
 {
     public interface IMap
     {

@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
+using System.Security.Claims;
+using Wellness.Api.Authorization;
 using Wellness.Domain;
 using Wellness.Domain.ModelValidation;
 using Wellness.Model;
@@ -58,7 +54,7 @@ namespace Wellness.Api
             services.AddScoped(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddScoped(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddScoped(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));
-            
+
             services.AddTransient<IValidator<Activity>, ActivityValidation>();
             services.AddTransient<IValidator<Event>, EventValidation>();
             services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
@@ -66,14 +62,30 @@ namespace Wellness.Api
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: CorsPolicyName,
+                options.AddDefaultPolicy(
                                   builder =>
                                   {
                                       builder
                                       .WithOrigins("https://localhost:44353")
                                       .AllowAnyHeader()
-                                      .AllowAnyMethod();                                      
+                                      .AllowAnyMethod()
+                                      .AllowCredentials();
                                   });
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddMicrosoftWebApi(options =>
+                    {
+                        Configuration.Bind("AzureAdB2C", options);
+
+                        options.TokenValidationParameters.NameClaimType = "name";
+                    },
+            options => { Configuration.Bind("AzureAdB2C", options); });
+
+            services.AddAuthorization(options =>
+            {
+                // Create policy to check for the scope 'read'
+                options.AddPolicy("ReadScope", policy => policy.Requirements.Add(new ScopesRequirement("Auth.Standard")));
             });
         }
 
@@ -83,16 +95,17 @@ namespace Wellness.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }            
-            
+            }
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors(CorsPolicyName);
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();                
+                endpoints.MapControllers();
             });
         }
     }
