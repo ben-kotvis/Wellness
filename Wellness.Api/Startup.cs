@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
+using System.Threading;
 using Wellness.Api.Authorization;
 using Wellness.Domain;
 using Wellness.Domain.ModelValidation;
@@ -46,6 +47,8 @@ namespace Wellness.Api
                 ClaimsPrincipal user = contextAccessor?.HttpContext?.User;
                 return user ?? throw new System.Exception("User not resolved");
             });
+
+            services.AddTransient<IRequestDependencies, RequestDependencies>();
 
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());

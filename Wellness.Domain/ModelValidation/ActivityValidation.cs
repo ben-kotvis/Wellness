@@ -16,10 +16,10 @@ namespace Wellness.Domain.ModelValidation
             RuleFor(e => e.Name).MustAsync(ActivityNameIsUnique).WithMessage("Activity name must be unique");
         }
 
-        private async Task<bool> ActivityNameIsUnique(string activityName, CancellationToken cancellationToken)
+        private async Task<bool> ActivityNameIsUnique(Activity activity, string activityName, CancellationToken cancellationToken)
         {
-            var events = await _activityManagementService.GetAll(cancellationToken);
-            return !events.Any(i => i.Model.Name.ToLower() == activityName.ToLower());
+            var activities = await _activityManagementService.GetAll(cancellationToken);
+            return !activities.Any(i => i.Model.Id != activity.Id && i.Model.Name.ToLower() == activityName.ToLower());
         }
     }
 }

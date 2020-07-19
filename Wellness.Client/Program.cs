@@ -76,10 +76,5 @@ namespace Wellness.Client
                 scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile" });
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            Console.WriteLine(request.Headers.Authorization);
-            return base.SendAsync(request, cancellationToken);  
-        }
     }
 }

@@ -24,17 +24,19 @@ namespace Wellness.Client.Services
         {
             _activities = new Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>>(async () =>
             {
-                    return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
+                return await _httpClient.GetJsonAsync<List<PersistenceWrapper<Activity>>>("api/activities");
             });
         }
 
         public async Task Create(Activity activity)
         {
             await _httpClient.PostJsonAsync($"api/activities", activity);
+            Reset();
         }
         public async Task Disable(Guid activityId)
         {
             await _httpClient.DeleteAsync($"api/activities/{activityId}");
+            Reset();
         }
 
         public async Task<PersistenceWrapper<Activity>> Get(Guid id, CancellationToken cancellationToken)
@@ -49,6 +51,7 @@ namespace Wellness.Client.Services
         public async Task Update(Activity activity)
         {
             await _httpClient.PutJsonAsync($"api/activities/{activity.Id}", activity);
+            Reset();
         }
     }
 }

@@ -77,8 +77,8 @@ namespace Wellness.Client.ViewModels
 
         public void Edit(Guid id)
         {
-            DialogId = id;
             var existingItem = Activities.FirstOrDefault(i => i.Model.Id == id);
+            DialogId = id;
             NewOrEditActivity.Name = existingItem.Model.Name;
             NewOrEditActivity.Active = existingItem.Model.Active;
 
@@ -91,9 +91,10 @@ namespace Wellness.Client.ViewModels
             IsSaving = true;
             var activity = Activities.FirstOrDefault(i => i.Model.Id == DialogId)?.Model;
 
+            NewOrEditActivity.Id = DialogId;
+
             if (activity == default)
             {
-                NewOrEditActivity.Id = DialogId;
                 await _activityManagementService.Create(NewOrEditActivity);
             }
             else

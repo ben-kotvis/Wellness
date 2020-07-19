@@ -19,10 +19,10 @@ namespace Wellness.Domain.ModelValidation
             RuleFor(e => e.AnnualMaximum).GreaterThanOrEqualTo(e => e.Points).WithMessage("Annual maximum must be greater than or eqaul to than the points for the single event.");
         }
 
-        private async Task<bool> EventNameIsUnique(string eventName, CancellationToken cancellationToken)
+        private async Task<bool> EventNameIsUnique(Event eventObj, string eventName, CancellationToken cancellationToken)
         {
             var events = await _eventManagementService.GetAll(cancellationToken);
-            return !events.Any(i => i.Model.Name.ToLower() == eventName.ToLower());
+            return !events.Any(i => i.Model.Id != eventObj.Id && i.Model.Name.ToLower() == eventName.ToLower());
         }
     }
 }
