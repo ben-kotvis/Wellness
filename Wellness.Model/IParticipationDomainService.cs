@@ -7,6 +7,6 @@ namespace Wellness.Model
 {
     public interface IParticipationDomainService<T> : IDomainService<T> where T : IIdentifiable, IParticipate
     {
-        Task<IEnumerable<PersistenceWrapper<T>>> GetBySelectedIndex(Guid userId, int selectedIndex, CancellationToken cancellationToken);
+        Task<IEnumerable<PersistenceWrapper<T>>> GetBySelectedIndex(Guid userId, int selectedIndex, IRequestDependencies requestDependencies);
     }
 }

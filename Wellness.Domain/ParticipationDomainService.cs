@@ -14,7 +14,7 @@ namespace Wellness.Domain
         {
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<T>>> GetBySelectedIndex(Guid userId, int selectedIndex, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<T>>> GetBySelectedIndex(Guid userId, int selectedIndex, IRequestDependencies requestDependencies)
         {
             var dateBaseOnRelativeIndex = DateTimeOffset.UtcNow.AddMonths(selectedIndex);
 
@@ -24,7 +24,7 @@ namespace Wellness.Domain
             i.Model.SubmissionDate >= startDate &&
             i.Model.SubmissionDate < endDate &&
             i.Model.UserId == userId);
-            return await queryable.ToListAsync(cancellationToken);
+            return await queryable.ToListAsync(requestDependencies.CancellationToken);
         }
     }
 }

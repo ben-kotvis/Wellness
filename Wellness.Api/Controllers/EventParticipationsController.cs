@@ -25,7 +25,7 @@ namespace Wellness.Api.Controllers
         [HttpGet("users/{userId}/relativeIndex/{relativeIndex}")]
         public async Task<IEnumerable<PersistenceWrapper<EventParticipation>>> Get(Guid userId, int relativeIndex, [FromServices] IRequestDependencies requestDependencies)
         {
-            return await _domainServiceBase.GetBySelectedIndex(userId, relativeIndex, requestDependencies.CancellationToken);
+            return await _domainServiceBase.GetBySelectedIndex(userId, relativeIndex, requestDependencies);
         }
     }
 }

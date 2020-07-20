@@ -9,15 +9,12 @@ namespace Wellness.Api
         public DomainDependencies(
             IPersistanceService<T> persistanceService,
             IValidate<T> validator,
-            IMap mapper,
-            ClaimsPrincipal claimsPrincipal)
+            IMap mapper)
         {
             PersistanceService = persistanceService;
             Validator = validator;
             this.Mapper = mapper;
-            this.Principal = claimsPrincipal;
         }
-        public ClaimsPrincipal Principal { get; }
         public IPersistanceService<T> PersistanceService { get; }
 
         public IValidate<T> Validator { get; }

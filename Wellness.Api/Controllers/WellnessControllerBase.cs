@@ -25,33 +25,33 @@ namespace Wellness.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<PersistenceWrapper<T>>> Get([FromServices] IRequestDependencies requestDependencies)
         {
-            return (await _domainServiceBase.GetAll(requestDependencies.CancellationToken));
+            return (await _domainServiceBase.GetAll(requestDependencies));
         }
 
         [HttpGet("{id}")]
         public async Task<PersistenceWrapper<T>> Get([FromRoute] Guid id, [FromServices] IRequestDependencies requestDependencies)
         {
-            return (await _domainServiceBase.Get(id, requestDependencies.CancellationToken));
+            return (await _domainServiceBase.Get(id, requestDependencies));
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(T activity, [FromServices] IRequestDependencies requestDependencies)
         {
-            await _domainServiceBase.Create(activity, requestDependencies.CancellationToken);
+            await _domainServiceBase.Create(activity, requestDependencies);
             return Accepted();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id, [FromServices] IRequestDependencies requestDependencies)
         {
-            await _domainServiceBase.Delete(id, requestDependencies.CancellationToken);
+            await _domainServiceBase.Delete(id, requestDependencies);
             return NoContent();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] Guid id, T activity, [FromServices] IRequestDependencies requestDependencies)
         {
-            await _domainServiceBase.Update(activity, requestDependencies.CancellationToken);
+            await _domainServiceBase.Update(activity, requestDependencies);
             return Accepted();
         }
     }
