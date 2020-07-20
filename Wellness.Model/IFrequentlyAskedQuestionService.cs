@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public interface IFrequentlyAskedQuestionService
+    public interface IFrequentlyAskedQuestionService : IPersistanceReaderService<FrequentlyAskedQuestion>
     {
-        Task Create(FrequentlyAskedQuestion frequentlyAskedQuestion);
+        Task Create(FrequentlyAskedQuestion frequentlyAskedQuestion, CancellationToken cancellationToken);
 
-        Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll();
+        Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(CancellationToken cancellationToken);
 
-        Task Delete(Guid id);
+        Task Delete(Guid id, CancellationToken cancellationToken);
 
-        Task Update(FrequentlyAskedQuestion frequentlyAskedQuestion);
+        Task Update(FrequentlyAskedQuestion frequentlyAskedQuestion, CancellationToken cancellationToken);
 
-        Task<string> UploadFile(string name, string contentType, Func<Stream, Task> streamTask);
+        Task<string> UploadFile(string name, string contentType, Func<Stream, Task> streamTask, CancellationToken cancellationToken);
     }
 }

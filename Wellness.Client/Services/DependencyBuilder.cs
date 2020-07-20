@@ -24,11 +24,12 @@ namespace Wellness.Client.Services
                 services.AddScoped<IActivityParticipationService, ActivityParticipationManagement>();
                 services.AddScoped<IEventManagementService, EventManagment>();
                 services.AddScoped<IEventParticipationService, EventParticipationManagement>();
-                services.AddScoped<IFrequentlyAskedQuestionService, FAQManagmentMock>();
+                services.AddScoped<IFrequentlyAskedQuestionService, FrequentlyAskedQuestionManagment>();
                 services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
             }
 
             services.AddScoped<IPersistanceReaderService<Event>>(sp => sp.GetService<IEventManagementService>());
+            services.AddScoped<IPersistanceReaderService<FrequentlyAskedQuestion>>(sp => sp.GetService<IFrequentlyAskedQuestionService>());
             services.AddScoped<IPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
 
             services.AddScoped<HomeViewModel>();

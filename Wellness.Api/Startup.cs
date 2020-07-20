@@ -62,6 +62,7 @@ namespace Wellness.Api
             services.AddSingleton<IValidator<Event>, EventValidation>();
             services.AddSingleton<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
             services.AddSingleton<IValidator<EventParticipation>, EventParticipationValidation>();
+            services.AddSingleton<IValidator<FrequentlyAskedQuestion>, FAQValidation>();
 
             services.AddCors(options =>
             {

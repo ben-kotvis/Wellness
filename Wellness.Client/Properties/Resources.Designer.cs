@@ -106,6 +106,15 @@ namespace Wellness.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Answer (Markdown Enabled).
+        /// </summary>
+        internal static string Answer {
+            get {
+                return ResourceManager.GetString("Answer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attachment View.
         /// </summary>
         internal static string AttachmentView {

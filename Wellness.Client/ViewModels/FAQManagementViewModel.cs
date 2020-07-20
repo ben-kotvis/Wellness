@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
 
@@ -11,7 +12,12 @@ namespace Wellness.Client.ViewModels
 
         public FAQManagementViewModel(IFrequentlyAskedQuestionService frequentlyAskedQuestionService)
         {
-            _frequentlyAskedQuestionService = frequentlyAskedQuestionService;
+            _frequentlyAskedQuestionService = frequentlyAskedQuestionService; 
+            
+            NewOrEditFAQ = new FrequentlyAskedQuestion()
+            {
+                Active = true
+            };
         }
 
         public IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>> FAQs { get; set; }
@@ -21,11 +27,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            FAQs = await _frequentlyAskedQuestionService.GetAll();
-            NewOrEditFAQ = new FrequentlyAskedQuestion()
-            {
-                Active = true
-            };
+            FAQs = await _frequentlyAskedQuestionService.GetAll(CancellationToken.None);
         }
 
         public async Task New()
@@ -51,14 +53,14 @@ namespace Wellness.Client.ViewModels
             if (DialogId == default)
             {
                 NewOrEditFAQ.Id = Guid.NewGuid();
-                await _frequentlyAskedQuestionService.Create(NewOrEditFAQ);
+                await _frequentlyAskedQuestionService.Create(NewOrEditFAQ, CancellationToken.None);
             }
             else
             {
-                await _frequentlyAskedQuestionService.Update(NewOrEditFAQ);
+                await _frequentlyAskedQuestionService.Update(NewOrEditFAQ, CancellationToken.None);
             }
 
-            FAQs = await _frequentlyAskedQuestionService.GetAll();
+            FAQs = await _frequentlyAskedQuestionService.GetAll(CancellationToken.None);
             NewOrEditFAQ = new FrequentlyAskedQuestion();
             EditModalOpen = false;
         }
@@ -72,7 +74,7 @@ namespace Wellness.Client.ViewModels
 
             foreach (var arg in args)
             {
-                var eventAttachmentFileLocation = await _frequentlyAskedQuestionService.UploadFile(arg.Name, arg.Type, arg.WriteToStreamAsync);
+                var eventAttachmentFileLocation = await _frequentlyAskedQuestionService.UploadFile(arg.Name, arg.Type, arg.WriteToStreamAsync, CancellationToken.None);
                 NewOrEditFAQ.Images.Add(new EventAttachment()
                 {
                     ContentType = arg.Type,

@@ -132,6 +132,9 @@
   <data name="AnnualTotal" xml:space="preserve">
     <value>Annual Total</value>
   </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Answer (Markdown Enabled)</value>
+  </data>
   <data name="AttachmentView" xml:space="preserve">
     <value>Attachment View</value>
   </data>

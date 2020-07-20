@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
@@ -44,7 +45,13 @@ namespace Wellness.Domain
 
         public async Task<IEnumerable<PersistenceWrapper<T>>> GetAll(IRequestDependencies requestDependencies)
         {
-            return await _domainDependencies.PersistanceService.GetAll(requestDependencies.CancellationToken);
+            var result = await _domainDependencies.PersistanceService.GetAll(requestDependencies.CancellationToken);
+            if(result == null)
+            {
+                return Enumerable.Empty<PersistenceWrapper<T>>();
+            }
+
+            return result;
         }
 
         public async Task<PersistenceWrapper<T>> Get(Guid id, IRequestDependencies requestDependencies)

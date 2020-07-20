@@ -8,12 +8,17 @@
 
 <h2>@Loc["FAQManagement"]</h2>
 
-    <div class="float-right">
-        <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
+<div class="row">
+    <div class="col-12">
+        <div class="text-right">
+            <MatIconButton Icon="add" @onclick="ViewModel.New"></MatIconButton>
+        </div>
     </div>
-
-    <div>
-        <MatAccordion Multi="true">
+</div>
+<div>
+    <MatAccordion Multi="true">
+        @if (ViewModel != null && ViewModel.FAQs != null)
+        {
             @foreach (var item in ViewModel.FAQs)
             {
                 <MatExpansionPanel>
@@ -29,8 +34,9 @@
                     </MatExpansionPanelDetails>
                 </MatExpansionPanel>
             }
-        </MatAccordion>
-    </div>
+        }
+    </MatAccordion>
+</div>
 
 <EditForm Model="@ViewModel.NewOrEditFAQ" OnValidSubmit="@ViewModel.Save">
     <FluentValidationValidator />
