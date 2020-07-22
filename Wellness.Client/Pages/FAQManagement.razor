@@ -74,7 +74,7 @@
         </MatDialogContent>
         <MatDialogActions>
             <MatButton Type="button" OnClick="@ViewModel.Cancel">@Loc["Cancel"]</MatButton>
-            <MatButton Type="submit">@Loc["OK"]</MatButton>
+            <MatButton Type="submit">@Loc["OK"]<MatIcon Icon="cached" @bind-Disabled="ViewModel.IsSaving" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
         </MatDialogActions>
     </MatDialog>
 </EditForm>

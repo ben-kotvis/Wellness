@@ -10,6 +10,8 @@ namespace Wellness.Client.ViewModels
     {
         private IFrequentlyAskedQuestionService _frequentlyAskedQuestionService;
 
+        public string IconClass { get; set; } = "d-none";
+        public bool IsSaving { get; set; } = false;
         public FAQManagementViewModel(IFrequentlyAskedQuestionService frequentlyAskedQuestionService)
         {
             _frequentlyAskedQuestionService = frequentlyAskedQuestionService; 
@@ -50,6 +52,8 @@ namespace Wellness.Client.ViewModels
 
         public async Task Save()
         {
+            IsSaving = true;
+            IconClass = "spinning-icon";
             if (DialogId == default)
             {
                 NewOrEditFAQ.Id = Guid.NewGuid();
@@ -63,6 +67,9 @@ namespace Wellness.Client.ViewModels
             FAQs = await _frequentlyAskedQuestionService.GetAll(CancellationToken.None);
             NewOrEditFAQ = new FrequentlyAskedQuestion();
             EditModalOpen = false;
+
+            IsSaving = false;
+            IconClass = "d-none";
         }
 
         public async Task FileAttached(List<EventAttachmentArgs> args)

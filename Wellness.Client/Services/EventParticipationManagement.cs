@@ -5,6 +5,10 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Wellness.Model;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Threading;
 
 namespace Wellness.Client.Services
 {
@@ -34,7 +38,17 @@ namespace Wellness.Client.Services
 
         public async Task<string> UploadFile(string name, string contentType, Func<Stream, Task> streamTask)
         {
-            throw new NotImplementedException();
+            using (var stream = new MemoryStream())
+            {
+                await streamTask(stream);
+                using (var form = new MultipartFormDataContent())
+                using (HttpContent fileContent = new ByteArrayContent(stream.GetBuffer()))
+                {
+                    form.Add(fileContent, "\"upload\"", name);
+                    var result = await _httpClient.PostAsync($"api/wellnessfiles", form);
+                    return (await result.Content.ReadFromJsonAsync<List<EventAttachment>>()).First().FilePath;
+                }
+            }
         }
     }
 }
