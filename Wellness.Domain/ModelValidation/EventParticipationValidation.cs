@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,8 +18,17 @@ namespace Wellness.Domain.ModelValidation
             RuleFor(e => e.Event).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
             RuleFor(e => e.Attachment).MustAsync(AttachmentIsMissing);
+            RuleFor(e => e.Attachment).Must(ValidateImageAttachment).WithMessage("File must be in an image format.");
         }
 
+        private bool ValidateImageAttachment(EventAttachment eventAttachment)
+        {
+            if(eventAttachment != default)
+            {
+                return eventAttachment.ContentType.StartsWith("image");
+            }
+            return true;
+        }
 
         private async Task<bool> AttachmentIsMissing(EventParticipation eventParticipation, EventAttachment attachment, CancellationToken cancellationToken)
         {
