@@ -43,12 +43,18 @@ namespace Wellness.Client.Services
                 await streamTask(stream);
                 using (var form = new MultipartFormDataContent())
                 using (HttpContent fileContent = new ByteArrayContent(stream.GetBuffer()))
-                {
+                {   
                     form.Add(fileContent, "\"upload\"", name);
+                    fileContent.Headers.Add("Content-Type", "application/octet-stream");
                     var result = await _httpClient.PostAsync($"api/wellnessfiles", form);
                     return (await result.Content.ReadFromJsonAsync<List<EventAttachment>>()).First().FilePath;
                 }
             }
+        }
+
+        public async Task<byte[]> DownloadFile(string path)
+        {
+            return await _httpClient.GetByteArrayAsync(path);
         }
     }
 }

@@ -116,10 +116,9 @@ namespace Wellness.Client.ViewModels
         public async Task PreviewAttachment(Guid id)
         {
             var eventParticipation = EventParticipations.FirstOrDefault(i => i.Model.Id == id);
-
-            var bytes = await File.ReadAllBytesAsync(eventParticipation.Model.Attachment.FilePath);
+            var bytes = await _eventParticipationService.DownloadFile(eventParticipation.Model.Attachment.FilePath);
             PreviewDialogIsOpen = true;
-            PreviewDataUrl = $"data:{eventParticipation.Model.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}";
+            PreviewDataUrl =$"data:{eventParticipation.Model.Attachment?.ContentType};base64,{Convert.ToBase64String(bytes)}";
             PreviewFileType = eventParticipation.Model.Attachment?.ContentType;
         }
 

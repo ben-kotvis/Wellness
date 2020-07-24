@@ -9,6 +9,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
+using System.Text;
+using System.Web;
 
 namespace Wellness.Api.Controllers
 {
@@ -18,7 +20,7 @@ namespace Wellness.Api.Controllers
     public class WellnessFilesController: ControllerBase
     {
         [HttpPost]
-        public async Task<IEnumerable<EventAttachment>> Post()
+        public async Task<IEnumerable<EventAttachment>> Post([FromServices] IRequestDependencies requestDependencies)
         {
             var fileList = new List<EventAttachment>();
             if (HttpContext.Request.Form.Files.Any())
@@ -36,7 +38,7 @@ namespace Wellness.Api.Controllers
                         fileList.Add(new EventAttachment()
                         {
                             ContentType = formFile.ContentType,
-                            FilePath = filePath,
+                            FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/wellnessfiles/{HttpUtility.UrlEncode(formFile.ContentType)}/{Path.GetFileName(filePath)}",
                             FileSize = formFile.Length,
                             Name = formFile.Name
                         });
@@ -46,5 +48,21 @@ namespace Wellness.Api.Controllers
             return fileList;
         }
 
+        [HttpGet("{contentType}/{fileName}")]
+        public async Task<IActionResult> Get([FromRoute] string contentType, [FromRoute] string fileName, [FromServices] IRequestDependencies requestDependencies)
+        {
+            if (fileName == null)
+                return Content("filename not present");
+
+            var path = Path.Combine(Path.GetTempPath(), fileName);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, HttpUtility.UrlDecode(contentType), fileName);
+        }
     }
 }

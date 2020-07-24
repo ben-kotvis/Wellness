@@ -14,6 +14,7 @@ namespace Wellness.Model
         Task Delete(Guid id);
 
         Task<string> UploadFile(string name, string contentType, Func<Stream, Task> streamTask);
+        Task<byte[]> DownloadFile(string path);
 
     }
 }
