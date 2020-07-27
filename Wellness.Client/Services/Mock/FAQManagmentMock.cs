@@ -13,7 +13,6 @@ namespace Wellness.Client.Services.Mock
     public class FAQManagmentMock : IFrequentlyAskedQuestionService
     {
         private IFrequentlyAskedQuestionService _proxy;
-        private IConfigurationProvider _configurationProvider;
         private IMapper _mapper;
         public FAQManagmentMock(IMapper mapper)
         {
@@ -54,12 +53,13 @@ namespace Wellness.Client.Services.Mock
         {
             var eventManagementMock = new Mock<IFrequentlyAskedQuestionService>();
             eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
-            .Returns(() =>
+            .Returns((CancellationToken token) =>
             {
                 return Task.FromResult(new List<PersistenceWrapper<FrequentlyAskedQuestion>>(MockDataGenerator.FrequentlyAskedQuestions).AsEnumerable());
             });
 
-            eventManagementMock.Setup(ams => ams.Create(It.IsAny<FrequentlyAskedQuestion>(), It.IsAny<CancellationToken>())).Returns((FrequentlyAskedQuestion a) =>
+            eventManagementMock.Setup(ams => ams.Create(It.IsAny<FrequentlyAskedQuestion>(), It.IsAny<CancellationToken>()))
+                .Returns((FrequentlyAskedQuestion a, CancellationToken token) =>
             {
                 var output = _mapper.Map<FrequentlyAskedQuestion, PersistenceWrapper<FrequentlyAskedQuestion>>(a);
                 output.Common = MockDataGenerator.CreateCommon();
@@ -67,7 +67,8 @@ namespace Wellness.Client.Services.Mock
                 return Task.FromResult(true);
             });
 
-            eventManagementMock.Setup(ams => ams.Update(It.IsAny<FrequentlyAskedQuestion>(), It.IsAny<CancellationToken>())).Returns((FrequentlyAskedQuestion a) =>
+            eventManagementMock.Setup(ams => ams.Update(It.IsAny<FrequentlyAskedQuestion>(), It.IsAny<CancellationToken>()))
+                .Returns((FrequentlyAskedQuestion a, CancellationToken token) =>
             {
                 MockDataGenerator.FrequentlyAskedQuestions.ForEach(ap =>
                 {
@@ -80,7 +81,8 @@ namespace Wellness.Client.Services.Mock
                 return Task.FromResult(true);
             });
 
-            eventManagementMock.Setup(ams => ams.UploadFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Func<Stream, Task>>(), It.IsAny<CancellationToken>())).Returns(async (string n, string ct, Func<Stream, Task> f) =>
+            eventManagementMock.Setup(ams => ams.UploadFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Func<Stream, Task>>(), It.IsAny<CancellationToken>()))
+                .Returns(async (string n, string ct, Func<Stream, Task> f, CancellationToken token) =>
             {
                 Guid id = Guid.NewGuid();
                 var fileName = Path.GetTempFileName();
@@ -93,7 +95,7 @@ namespace Wellness.Client.Services.Mock
                 return fileName;
             });
 
-            eventManagementMock.Setup(ams => ams.Delete(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns((Guid id) =>
+            eventManagementMock.Setup(ams => ams.Delete(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns((Guid id, CancellationToken token) =>
             {
                 MockDataGenerator.FrequentlyAskedQuestions.RemoveAll(ap => ap.Model.Id == id);
                 return Task.FromResult(true);

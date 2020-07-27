@@ -40,7 +40,7 @@ namespace Wellness.Client
             builder.Services.AddHttpClient("Default",
                     client =>
                     {
-                        client.BaseAddress = new Uri("https://localhost:44354");
+                        client.BaseAddress = new Uri(builder.Configuration["ServerAddress"]);
                     })
                 .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
             
@@ -68,11 +68,11 @@ namespace Wellness.Client
     public class CustomAuthorizationMessageHandler : AuthorizationMessageHandler
     {
         public CustomAuthorizationMessageHandler(IAccessTokenProvider provider,
-            NavigationManager navigationManager)
+            NavigationManager navigationManager, IConfiguration configuration)
             : base(provider, navigationManager)
         {
             ConfigureHandler(
-                authorizedUrls: new[] { "https://localhost:44354" },
+                authorizedUrls: new[] { configuration.GetValue<string>("ServerAddress") },
                 scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile" });
         }
 

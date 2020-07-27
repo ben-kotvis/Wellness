@@ -77,9 +77,9 @@ namespace Wellness.Client.Services.Mock
             return eventParticipationMock.Object;
         }
 
-        public Task<byte[]> DownloadFile(string path)
+        public async Task<byte[]> DownloadFile(string path)
         {
-            throw new NotImplementedException();
+            return await File.ReadAllBytesAsync(path);
         }
     }
 }

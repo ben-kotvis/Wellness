@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
+using System;
 using System.Security.Claims;
 using System.Threading;
 using Wellness.Api.Authorization;
@@ -64,13 +65,15 @@ namespace Wellness.Api
             services.AddSingleton<IValidator<EventParticipation>, EventParticipationValidation>();
             services.AddSingleton<IValidator<FrequentlyAskedQuestion>, FAQValidation>();
 
+            Console.WriteLine(Configuration.GetValue<string>("ClientSource"));
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
                                   builder =>
                                   {
                                       builder
-                                      .WithOrigins("https://localhost:44353")
+                                      .WithOrigins(Configuration.GetValue<string>("ClientSource"))
                                       .AllowAnyHeader()
                                       .AllowAnyMethod()
                                       .AllowCredentials();
