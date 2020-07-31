@@ -33,6 +33,8 @@ namespace Wellness.Client
             builder.Services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
             builder.Services.AddTransient<IValidator<Model.Activity>, ActivityValidation>();
             builder.Services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
+            builder.Services.AddTransient<IValidator<User>, UserValidation>();
+            builder.Services.AddSingleton<IClientState, ClientState>();
 
             builder.RootComponents.Add<App>("app");
 

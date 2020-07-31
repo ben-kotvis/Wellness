@@ -15,7 +15,7 @@ namespace Wellness.Api.Controllers
     public abstract class WellnessControllerBase<T> : ControllerBase
         where T : IIdentifiable
     {
-        private readonly IDomainService<T> _domainServiceBase;
+        protected readonly IDomainService<T> _domainServiceBase;
 
         public WellnessControllerBase(IDomainService<T> domainService)
         {

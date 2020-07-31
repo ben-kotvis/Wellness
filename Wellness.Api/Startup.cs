@@ -57,6 +57,7 @@ namespace Wellness.Api
             services.AddSingleton(typeof(IValidate<>), typeof(Validation<>));
             services.AddSingleton(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));
+            services.AddSingleton<IProfileDomainService, ProfileDomainService>();
             services.AddSingleton(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));
 
             services.AddSingleton<IValidator<Activity>, ActivityValidation>();
@@ -64,6 +65,7 @@ namespace Wellness.Api
             services.AddSingleton<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
             services.AddSingleton<IValidator<EventParticipation>, EventParticipationValidation>();
             services.AddSingleton<IValidator<FrequentlyAskedQuestion>, FAQValidation>();
+            services.AddSingleton<IValidator<User>, UserValidation>();
 
             Console.WriteLine(Configuration.GetValue<string>("ClientSource"));
 

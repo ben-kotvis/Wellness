@@ -223,6 +223,24 @@ namespace Wellness.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        internal static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        internal static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Activities.
         /// </summary>
         internal static string ManageActivities {
@@ -336,6 +354,15 @@ namespace Wellness.Client.Properties {
         internal static string Previous {
             get {
                 return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Provide The Following Information.
+        /// </summary>
+        internal static string ProfileDirections {
+            get {
+                return ResourceManager.GetString("ProfileDirections", resourceCulture);
             }
         }
         

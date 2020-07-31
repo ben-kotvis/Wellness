@@ -25,7 +25,7 @@ namespace Wellness.Client.Services
                 services.AddScoped<IEventManagementService, EventManagment>();
                 services.AddScoped<IEventParticipationService, EventParticipationManagement>();
                 services.AddScoped<IFrequentlyAskedQuestionService, FrequentlyAskedQuestionManagment>();
-                services.AddSingleton<IProfileService>(MockDataGenerator.CreateProfile());
+                services.AddScoped<IProfileService, ProfileManagment>();
             }
 
             services.AddScoped<IPersistanceReaderService<Event>>(sp => sp.GetService<IEventManagementService>());
@@ -33,6 +33,7 @@ namespace Wellness.Client.Services
             services.AddScoped<IPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
 
             services.AddScoped<HomeViewModel>();
+            services.AddScoped<DashboardViewModel>();
             services.AddScoped<ActivityManagementViewModel>();
             services.AddScoped<EventManagementViewModel>();
             services.AddScoped<MainViewModel>();

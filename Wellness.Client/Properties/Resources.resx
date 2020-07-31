@@ -171,6 +171,12 @@
   <data name="FAQManagement" xml:space="preserve">
     <value>Frequently Asked Question Management</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
   <data name="ManageActivities" xml:space="preserve">
     <value>Manage Activities</value>
   </data>
@@ -209,6 +215,9 @@
   </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
+  </data>
+  <data name="ProfileDirections" xml:space="preserve">
+    <value>Please Provide The Following Information</value>
   </data>
   <data name="RequireAttachment" xml:space="preserve">
     <value>Require Attachment</value>

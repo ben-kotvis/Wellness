@@ -28,5 +28,10 @@ namespace Wellness.Persistance.Mongo
         {
             return await _wrapped.ToListAsync(cancellationToken);
         }
+
+        public async Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken)
+        {
+            return await _wrapped.FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

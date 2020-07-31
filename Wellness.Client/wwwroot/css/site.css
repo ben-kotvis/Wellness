@@ -1,5 +1,15 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.mdc-tab i {
+    vertical-align: middle;
+}
+.mdc-tab span.tab-label {
+    vertical-align: middle;
+}
+
+.mdc-tab {
+    display:inline-block;
+}
 
 .spinning-icon {
     animation: spin-animation 1s infinite;

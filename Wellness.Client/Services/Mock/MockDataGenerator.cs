@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
 
@@ -14,9 +15,9 @@ namespace Wellness.Client.Services.Mock
         public static List<PersistenceWrapper<ActivityParticipation>> ActivityParticipations;
         public static List<PersistenceWrapper<EventParticipation>> EventParticipations;
         public static List<EventAttachment> EventAttachments;
-        public static List<User> Users;
+        public static List<PersistenceWrapper<User>> Users;
         public static List<PersistenceWrapper<FrequentlyAskedQuestion>> FrequentlyAskedQuestions;
-
+        public static PersistenceWrapper<User> CurrentUser;
         static MockDataGenerator()
         {
             Activities = GetActivities();
@@ -26,6 +27,7 @@ namespace Wellness.Client.Services.Mock
             EventAttachments = new List<EventAttachment>();
             Users = BootstrapUsers();
             FrequentlyAskedQuestions = BootstrapFAQs();
+            CurrentUser = default;
         }
 
         public static Guid CompanyId = Guid.Parse("6f783ddd-2c46-4ba2-8c20-5c641daa6f36");
@@ -34,14 +36,21 @@ namespace Wellness.Client.Services.Mock
         public static IProfileService CreateProfile()
         {
             var profileServiceMock = new Mock<IProfileService>();
-            profileServiceMock.Setup(ams => ams.GetCurrent())
-                .Returns(() => Task.FromResult(Users.First(i => i.Id == CurrentUserId)));
+            profileServiceMock.Setup(ams => ams.GetCurrent(It.IsAny<CancellationToken>()))
+                .Returns((CancellationToken cancellationToken) => Task.FromResult(CurrentUser));
 
-            profileServiceMock.Setup(ams => ams.Get(It.IsAny<Guid>()))
-                .Returns((Guid id) => Task.FromResult(Users.First(i => i.Id == id)));
+            profileServiceMock.Setup(ams => ams.Create(It.IsAny<User>()))
+                .Returns((User u) => { CurrentUser = new PersistenceWrapper<User>() { Model = u, Common = CreateCommon() }; return Task.FromResult(true); });
 
-            profileServiceMock.Setup(ams => ams.Find(It.IsAny<string>()))
-                .Returns((string searchText) => Task.FromResult(Users.Where(i => i.FirstName.ToLower().Contains(searchText.ToLower()) || i.LastName.ToLower().Contains(searchText.ToLower()))));
+            profileServiceMock.Setup(ams => ams.Update(It.IsAny<User>()))
+                .Returns((User u) => { CurrentUser = new PersistenceWrapper<User>() { Model = u, Common = CreateCommon() }; return Task.FromResult(true); });
+
+            profileServiceMock.Setup(ams => ams.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .Returns((Guid id, CancellationToken cancellationToken) => Task.FromResult(Users.First(i => i.Model.Id == id)));
+
+            profileServiceMock.Setup(ams => ams.Find(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Returns((string searchText, CancellationToken cancellationToken) => Task.FromResult(Users.Where(i => i.Model.FirstName.ToLower().Contains(searchText.ToLower()) || 
+                i.Model.LastName.ToLower().Contains(searchText.ToLower()))));
 
             return profileServiceMock.Object;
         }
@@ -145,15 +154,14 @@ doc](#an-h2-header). Here's a footnote [^1].
             return faqs;
         }
 
-        private static List<User> BootstrapUsers()
+        private static List<PersistenceWrapper<User>> BootstrapUsers()
         {
-            var users = new List<User>();
+            var users = new List<PersistenceWrapper<User>>();
 
-            users.Add(CreateUser(CurrentUserId, "Current", "User"));
-            users.Add(CreateUser(Guid.NewGuid(), "Test", "User1"));
-            users.Add(CreateUser(Guid.NewGuid(), "Test", "User2"));
-            users.Add(CreateUser(Guid.NewGuid(), "Test", "User3"));
-            users.Add(CreateUser(Guid.NewGuid(), "Test", "User4"));
+            users.Add(CreateUser(Guid.NewGuid().ToString(), "Test", "User1"));
+            users.Add(CreateUser(Guid.NewGuid().ToString(), "Test", "User2"));
+            users.Add(CreateUser(Guid.NewGuid().ToString(), "Test", "User3"));
+            users.Add(CreateUser(Guid.NewGuid().ToString(), "Test", "User4"));
 
             return users;
         }
@@ -170,19 +178,23 @@ doc](#an-h2-header). Here's a footnote [^1].
             return userActivities;
         }
 
-        public static User CreateUser(Guid id, string firstName, string lastName)
+        public static PersistenceWrapper<User> CreateUser(string id, string firstName, string lastName)
         {
             var random = new Random();
-            var user = new User()
+
+            var user = new PersistenceWrapper<User>()
             {
-                Id = id,
-                Common = CreateCommon(),
-                FirstName = firstName,
-                LastName = lastName,
-                AnnualTotal = random.Next(30, 150)
+                Model = new User()
+                {
+                    ProviderObjectId = id,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    AnnualTotal = random.Next(30, 150)
+                },
+                Common = CreateCommon()
             };
 
-            user.AveragePointsPerMonth = Math.Floor(user.AnnualTotal / DateTimeOffset.UtcNow.Month);
+            user.Model.AveragePointsPerMonth = Math.Floor(user.Model.AnnualTotal / DateTimeOffset.UtcNow.Month);
             return user;
         }
 

@@ -1,0 +1,89 @@
+﻿@page "/Dashboard"
+@page  "/{SelectedUserId}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Wellness.Client.Components.MonthsMenu
+@using Wellness.Client.Components.UserParticipation.Activities.List
+@using Wellness.Client.Components.UserParticipation.Activities.Add
+@using Wellness.Client.Components.UserParticipation.Events.List
+@using Wellness.Client.Components.UserParticipation.Events.Add
+@using Wellness.Client.Components.Shared
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
+@inherits Wellness.Client.Pages.DashboardComponent
+@attribute [Authorize]
+
+@if (ViewModel.ActivityParticipations == null)
+{
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+}
+else
+{
+
+    <div class="mat-elevation-z2">
+
+        <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
+        <div class="content">
+
+            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
+
+                <MatTab>
+                    <LabelContent>
+                        <span class="tab-label">@Loc["New"]</span>
+                        <MatIcon Icon="@MatIconNames.Add"></MatIcon>
+                    </LabelContent>
+                    <ChildContent>
+                        <NewActivity ViewModel="@ViewModel"
+                                     OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
+                    </ChildContent>
+
+                </MatTab>
+                <MatTab Label="@Loc["Activities"]">
+                    @if (ViewModel.LoadingActivities)
+                    {
+                        <div class="p-3">
+                            <MatProgressBar Indeterminate="true"></MatProgressBar>
+                        </div>
+                    }
+                    else
+                    {
+                        <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                    }
+                </MatTab>
+            </WellnessMatTabGroup>
+        </div>
+
+        <div class="content">
+            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
+                <MatTab>
+                    <LabelContent>
+                        <span class="tab-label">@Loc["New"]</span>
+                        <MatIcon Icon="@MatIconNames.Add"></MatIcon>
+                    </LabelContent>
+                    <ChildContent>
+                        <NewEvent ViewModel="@ViewModel"
+                                  OnFileAttached="@ViewModel.EventFileAttached"
+                                  OnEventSubmissionCompleted="@((e) => { ViewModel.EventTabIndex = 1; })" />
+                    </ChildContent>
+                </MatTab>
+                <MatTab Label="@Loc["Events"]">
+                    @if (ViewModel.LoadingEvents)
+                    {
+                        <div class="p-3">
+                            <MatProgressBar Indeterminate="true"></MatProgressBar>
+                        </div>
+                    }
+                    else
+                    {
+                        <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+                    }
+                </MatTab>
+            </WellnessMatTabGroup>
+
+        </div>
+    </div>
+
+
+
+}

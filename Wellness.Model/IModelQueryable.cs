@@ -8,6 +8,8 @@ namespace Wellness.Model
 {
     public interface IModelQueryable<T>
     {
+
+        Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken);
         IModelQueryable<T> Where(Expression<Func<T, bool>> condition);
         Task<List<T>> ToListAsync(CancellationToken cancellationToken);
     }

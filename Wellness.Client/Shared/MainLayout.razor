@@ -38,15 +38,15 @@
                     <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
                         <p>
                             <b>@Loc["Name"]</b><br />
-                            @ViewModel.CurrentUser.FirstName @ViewModel.CurrentUser.LastName
+                            @ViewModel.CurrentUser?.FirstName @ViewModel.CurrentUser?.LastName
                         </p>
                         <p>
                             <b>@Loc["AnnualTotal"]</b><br />
-                            @ViewModel.CurrentUser.AnnualTotal
+                            @ViewModel.CurrentUser?.AnnualTotal
                         </p>
                         <p>
                             <b>@Loc["PointsPerMonthAverage"]</b><br />
-                            @ViewModel.CurrentUser.AveragePointsPerMonth
+                            @ViewModel.CurrentUser?.AveragePointsPerMonth
                         </p>
                     </MatBody2>
                 </MatCardContent>
@@ -78,10 +78,10 @@
                             <MatList SingleSelection="true" TwoLine="true">
                                 @foreach (var user in ViewModel.SearchResults)
                                     {
-                                <MatListItem Href="@user.Id.ToString()">
+                                <MatListItem Href="@user.Model.Id.ToString()">
                                     <MatListItemText>
-                                        <MatListItemPrimaryText>@user.FirstName @user.LastName</MatListItemPrimaryText>
-                                        <MatListItemSecondaryText>Annual Total: @user.AnnualTotal</MatListItemSecondaryText>
+                                        <MatListItemPrimaryText>@user.Model.FirstName @user.Model.LastName</MatListItemPrimaryText>
+                                        <MatListItemSecondaryText>Annual Total: @user.Model.AnnualTotal</MatListItemSecondaryText>
                                     </MatListItemText>
                                 </MatListItem>
                                     }
