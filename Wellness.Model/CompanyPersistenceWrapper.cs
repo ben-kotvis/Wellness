@@ -1,23 +1,22 @@
 ﻿namespace Wellness.Model
 {
-    public class PersistenceWrapper<T> : IHaveCommon
-        where T : IIdentifiable
+    public class CompanyPersistenceWrapper<T> where T : IIdentifiable
     {
         public string Id { get { return Model.Id.ToString(); } }
 
-        public PersistenceWrapper(T model, Common common)
+        public CompanyPersistenceWrapper(T model, Common common)
         {
             Model = model;
             Common = common;
         }
 
-        public PersistenceWrapper()
+        public CompanyPersistenceWrapper()
         {
 
         }
 
         public T Model { get; set; }
-        public Common Common { get; set; }
+        public CompanyCommon Common { get; set; }
 
     }
 

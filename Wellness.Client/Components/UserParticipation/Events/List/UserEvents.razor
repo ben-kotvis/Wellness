@@ -9,49 +9,51 @@
 
 @if (!EventParticipations.Any())
 {
-    <span>@Loc["EmptyEventsMessage"]</span>
-}
-else
-{
-    <MatTable Items="@EventParticipations" class="wellness-table" PageSize="30" Striped="true"
-              HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
-        <MatTableHeader>
-            <th></th>
-            <th>@Loc["Event"]</th>
-            <th>@Loc["UploadedFiles"]</th>
-            <th>@Loc["Points"]</th>
-            <th>@Loc["EventDate"]</th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>
-                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
-            </td>
-            <td>@context.Model.Event.Name</td>
-            <td>
-                @if (context.Model.Attachment != null)
-                {
-                    <span>
-                        @context.Model.Attachment?.Name
-                        <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Model.Id))"></MatIconButton>
-                    </span>
-                }
-            </td>
-            <td>@context.Model.PointsEarned</td>
-            <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
-        </MatTableRow>
-    </MatTable>
-    }
+    <div class="text-xl-center m-5">
+        <span>@Loc["EmptyEventsMessage"]</span>
+        </div>
+        }
+        else
+        {
+        <MatTable Items="@EventParticipations" class="wellness-table" PageSize="30" Striped="true"
+                  HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
+            <MatTableHeader>
+                <th></th>
+                <th>@Loc["Event"]</th>
+                <th>@Loc["UploadedFiles"]</th>
+                <th>@Loc["Points"]</th>
+                <th>@Loc["EventDate"]</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>
+                    <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
+                </td>
+                <td>@context.Model.Event.Name</td>
+                <td>
+                    @if (context.Model.Attachment != null)
+                        {
+                        <span>
+                            @context.Model.Attachment?.Name
+                            <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Model.Id))"></MatIconButton>
+                        </span>
+                        }
+                </td>
+                <td>@context.Model.PointsEarned</td>
+                <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
+            </MatTableRow>
+        </MatTable>
+        }
 
 
-    <ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>
+        <ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>
 
 
-    <MatDialog @bind-IsOpen="@ViewModel.PreviewDialogIsOpen">
-        <MatDialogTitle>@Loc["AttachmentView"]</MatDialogTitle>
-        <MatDialogContent Class="accordion">
-            <object data="@ViewModel.PreviewDataUrl" type="@ViewModel.PreviewFileType"></object>
-        </MatDialogContent>
-        <MatDialogActions>
-            <MatButton OnClick="@(e => { ViewModel.PreviewDialogIsOpen = false; })">@Loc["Close"]</MatButton>
-        </MatDialogActions>
-    </MatDialog>
+        <MatDialog @bind-IsOpen="@ViewModel.PreviewDialogIsOpen">
+            <MatDialogTitle>@Loc["AttachmentView"]</MatDialogTitle>
+            <MatDialogContent Class="accordion">
+                <object data="@ViewModel.PreviewDataUrl" type="@ViewModel.PreviewFileType"></object>
+            </MatDialogContent>
+            <MatDialogActions>
+                <MatButton OnClick="@(e => { ViewModel.PreviewDialogIsOpen = false; })">@Loc["Close"]</MatButton>
+            </MatDialogActions>
+        </MatDialog>

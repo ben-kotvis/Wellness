@@ -14,6 +14,8 @@ namespace Wellness.Client.ViewModels
     {
         public string IconClass { get; set; } = "d-none";
         public bool IsSaving { get; set; }
+
+        public bool IsLoading { get; set; } = true;
         public User NewOrEditUser { get; set; }
         private IProfileService _profileService;
         private IClientState _clientState;
@@ -45,6 +47,7 @@ namespace Wellness.Client.ViewModels
                 }
                 var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
                 NewOrEditUser.ProviderObjectId = state.User.FindFirst("oid").Value;
+                IsLoading = false;
             }
         }
 

@@ -9,22 +9,32 @@
 @inherits Wellness.Client.Pages.IndexComponent
 @attribute [Authorize]
 
-<div class="mat-elevation-z2 p-5 m-auto">
-    <p><b>@Loc["ProfileDirections"]</b></p>
-    <EditForm Model="@ViewModel.NewOrEditUser" OnValidSubmit="@ViewModel.Save">
-        <FluentValidationValidator />
-        <ValidationSummary />
+    <div class="mat-elevation-z2 p-5 m-auto">
+        @if (ViewModel.IsLoading)
+        {
+            <p>Loading...</p>
+            <div class="m-auto">
+                <MatIcon Icon="cached" Class="spinning-icon"></MatIcon>
+            </div>
+        }
+        else
+        {
+            <p><b>@Loc["ProfileDirections"]</b></p>
+            <EditForm Model="@ViewModel.NewOrEditUser" OnValidSubmit="@ViewModel.Save">
+                <FluentValidationValidator />
+                <ValidationSummary />
 
-        <p>
-            <MatTextField @bind-Value="ViewModel.NewOrEditUser.FirstName " @bind-Disabled="ViewModel.IsSaving" Label="@Loc["FirstName"]"></MatTextField>
-            <ValidationMessage For="() => ViewModel.NewOrEditUser.FirstName"></ValidationMessage>
-        </p>
-        <p>
-            <MatTextField @bind-Value="ViewModel.NewOrEditUser.LastName" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["LastName"]"></MatTextField>
-            <ValidationMessage For="() => ViewModel.NewOrEditUser.LastName"></ValidationMessage>
-        </p>
-        <div class="float-right">
-            <MatButton Type="submit">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
-        </div>
-    </EditForm>
-</div>
+                <p>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditUser.FirstName " @bind-Disabled="ViewModel.IsSaving" Label="@Loc["FirstName"]"></MatTextField>
+                    <ValidationMessage For="() => ViewModel.NewOrEditUser.FirstName"></ValidationMessage>
+                </p>
+                <p>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditUser.LastName" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["LastName"]"></MatTextField>
+                    <ValidationMessage For="() => ViewModel.NewOrEditUser.LastName"></ValidationMessage>
+                </p>
+                <div class="float-right">
+                    <MatButton Type="submit">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
+                </div>
+            </EditForm>
+        }
+    </div>

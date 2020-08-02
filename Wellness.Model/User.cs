@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Wellness.Model
 {
@@ -10,5 +11,6 @@ namespace Wellness.Model
         public string LastName { get; set; }
         public decimal AnnualTotal { get; set; }
         public decimal AveragePointsPerMonth { get; set; }
+        public List<CompanyRoles> CompanyRoles { get; set; }
     }
 }
