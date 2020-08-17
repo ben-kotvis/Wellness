@@ -62,6 +62,7 @@ namespace Wellness.Domain
         public async Task Delete(Guid id, IRequestDependencies requestDependencies)
         {
             await _domainDependencies.PersistanceService.Delete(id, requestDependencies.CancellationToken);
+            await _domainDependencies.ClientNotifier.SendNotification("Test");
         }
     }
 }

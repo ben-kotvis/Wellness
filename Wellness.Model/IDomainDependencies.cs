@@ -7,5 +7,6 @@ namespace Wellness.Model
         IValidate<T> Validator { get; }
         IPersistanceService<T> PersistanceService { get; }
         IMap Mapper { get; }
+        IClientNotifier ClientNotifier { get; }
     }
 }

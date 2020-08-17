@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
     <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.ProtectedBrowserStorage" Version="0.1.0-alpha.19521.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.6" />
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.0-preview.6.20312.15" />
@@ -41,6 +42,9 @@
 
   <ItemGroup>
     <Content Update="Pages\Dashboard.razor">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Content>
+    <Content Update="Pages\ProfileInfoCapture.razor">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Content>
     <Content Update="Pages\Index.razor">

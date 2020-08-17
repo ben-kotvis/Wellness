@@ -1,0 +1,29 @@
+﻿@inherits SiteLayoutComponent
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
+@using Wellness.Model
+@using Wellness.Client.Components.Shared
+
+<MatAppBarContainer>
+    <MatAppBar>
+        <MatAppBarRow>
+            <MatAppBarSection>
+                <MatNavItem Href="/"><MatAppBarTitle>@Loc["Title"]</MatAppBarTitle></MatNavItem>
+                <MatNavItem Href="/">@Loc["Products"]</MatNavItem>
+                <MatNavItem Href="/">@Loc["Solutions"]</MatNavItem>
+                <MatNavItem Href="/">@Loc["AboutUs"]</MatNavItem>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+
+                <MatNavItem Href="/">@Loc["SignUp"]</MatNavItem>
+                <MatNavItem Href="/ProfileInfo">@Loc["SignIn"]</MatNavItem>
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+</MatAppBarContainer>
+<div class="container site">
+
+            @Body
+
+
+</div>
+

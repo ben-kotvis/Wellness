@@ -6,16 +6,14 @@ using Wellness.Client.ViewModels;
 
 namespace Wellness.Client.Pages
 {
-    public class DashboardComponent : WellnessComponentBase<DashboardViewModel>
+    public class ProfileInfoCaptureComponent : WellnessComponentBase<HomeViewModel>
     {
-        [Inject] public override DashboardViewModel ViewModel { get; set; }
-        [Parameter] public Guid SelectedUserId { get; set; }
+        [Inject] public override HomeViewModel ViewModel { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
 
-            await ViewModel.SetUser(SelectedUserId);
         }
     }
 }

@@ -30,8 +30,11 @@
     width: 80px;
     height: 100px;
     margin: 100px auto;
-    margin-top: calc(100vh / 2 - 50px);
+    margin-top: calc(100vh / 2 - 50px); 
 }
+    .container.site {
+        margin-top: 75px;
+    }
 
 .block {
     position: relative;
@@ -119,13 +122,14 @@
 }
 
 .mdc-table th {
-    padding: 9px 18px;
-    font-size: 0.9em;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    font-weight: 600;
 }
 
 .mdc-table td {
-    padding: 9px 18px;
-    font-size: 0.9em;
+    padding: 5px 10px;
+    font-size: 0.8em;
 }
 
 .wellness-table thead th {

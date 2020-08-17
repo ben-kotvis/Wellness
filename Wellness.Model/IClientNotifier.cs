@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public interface IClientState
+    public interface IClientNotifier
     {
-        User CurrentUser { get; set; }
+        Task SendNotification(string message);
     }
 }

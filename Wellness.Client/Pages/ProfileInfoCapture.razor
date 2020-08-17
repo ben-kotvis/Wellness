@@ -1,0 +1,40 @@
+﻿@page "/ProfileInfo"
+@layout RoutingLayout
+
+@using Microsoft.AspNetCore.Authorization
+@using Wellness.Client.Components.Shared
+@using Wellness.Domain.ModelValidation
+@using Blazored.FluentValidation;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Wellness.Client.Properties.Resources> Loc
+@inherits Wellness.Client.Pages.ProfileInfoCaptureComponent
+@attribute [Authorize]
+
+    <div class="mat-elevation-z2 p-5 m-auto">
+        @if (ViewModel.IsLoading)
+        {
+            <p>Loading...</p>
+            <div class="m-auto">
+                <MatIcon Icon="cached" Class="spinning-icon"></MatIcon>
+            </div>
+        }
+        else
+        {
+            <p><b>@Loc["ProfileDirections"]</b></p>
+            <EditForm Model="@ViewModel.NewOrEditUser" OnValidSubmit="@ViewModel.Save">
+                <FluentValidationValidator />
+                <ValidationSummary />
+
+                <p>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditUser.FirstName " @bind-Disabled="ViewModel.IsSaving" Label="@Loc["FirstName"]"></MatTextField>
+                    <ValidationMessage For="() => ViewModel.NewOrEditUser.FirstName"></ValidationMessage>
+                </p>
+                <p>
+                    <MatTextField @bind-Value="ViewModel.NewOrEditUser.LastName" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["LastName"]"></MatTextField>
+                    <ValidationMessage For="() => ViewModel.NewOrEditUser.LastName"></ValidationMessage>
+                </p>
+                <div class="float-right">
+                    <MatButton Type="submit">@Loc["OK"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
+                </div>
+            </EditForm>
+        }
+    </div>

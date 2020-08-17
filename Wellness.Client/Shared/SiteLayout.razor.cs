@@ -5,7 +5,7 @@ using Wellness.Client.ViewModels;
 
 namespace Wellness.Client.Shared
 {
-    public class RoutingLayoutComponent : LayoutComponentBase
+    public class SiteLayoutComponent : LayoutComponentBase
     {
     }
 }

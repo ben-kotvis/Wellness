@@ -6,14 +6,7 @@ using Wellness.Client.ViewModels;
 
 namespace Wellness.Client.Pages
 {
-    public class IndexComponent : WellnessComponentBase<HomeViewModel>
+    public class IndexComponent : ComponentBase
     {
-        [Inject] public override HomeViewModel ViewModel { get; set; }
-
-        protected override async Task OnParametersSetAsync()
-        {
-            await base.OnParametersSetAsync();
-
-        }
     }
 }

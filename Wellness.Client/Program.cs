@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -46,6 +47,9 @@ namespace Wellness.Client
                     })
                 .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
             
+            builder.Services.AddScoped<HubConnection>((sp) => new HubConnectionBuilder()
+                .WithUrl("https://localhost:44354/notificationhub").Build());
+
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Default"));
             builder.Services.AddMsalAuthentication(options =>
             {
@@ -73,6 +77,7 @@ namespace Wellness.Client
             NavigationManager navigationManager, IConfiguration configuration)
             : base(provider, navigationManager)
         {
+            
             ConfigureHandler(
                 authorizedUrls: new[] { configuration.GetValue<string>("ServerAddress") },
                 scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile" });

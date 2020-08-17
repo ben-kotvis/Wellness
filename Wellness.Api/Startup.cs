@@ -17,6 +17,13 @@ using Wellness.Domain.ModelValidation;
 using Wellness.Model;
 using Wellness.Persistance.Mongo;
 
+
+
+
+using System.Linq;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.ResponseCompression;
+
 namespace Wellness.Api
 {
     public class Startup
@@ -33,6 +40,13 @@ namespace Wellness.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSignalR();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
 
             services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
             services.AddOptions();
@@ -51,6 +65,7 @@ namespace Wellness.Api
 
             services.AddTransient<IRequestDependencies, RequestDependencies>();
 
+            services.AddSingleton<IClientNotifier, ClientNotificationHub>();
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());
             services.AddSingleton<IPersistanceReaderService<Activity>>(sp => sp.GetService<IPersistanceService<Activity>>());
@@ -115,6 +130,7 @@ namespace Wellness.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationHub>("/notificationhub");
             });
         }
     }

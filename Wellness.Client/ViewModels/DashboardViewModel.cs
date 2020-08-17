@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,12 +28,14 @@ namespace Wellness.Client.ViewModels
 
         private IEventParticipationService _eventParticipationService;
         private IEventManagementService _eventManagementService;
+        private HubConnection _hubConnection;
 
         public DashboardViewModel(
             IActivityParticipationService activityParticipationService,
             IActivityManagementService activityManagementService,
             IEventParticipationService eventParticipationService,
-            IEventManagementService eventManagementService)
+            IEventManagementService eventManagementService,
+            HubConnection hubConnection)
         {
             _activityParticipationService = activityParticipationService;
             _activityManagementService = activityManagementService;
@@ -39,6 +43,7 @@ namespace Wellness.Client.ViewModels
             _eventManagementService = eventManagementService; ;
             NewEventParticipation = new EventParticipation();
             NewActivityParticipation = new ActivityParticipation();
+            _hubConnection = hubConnection;
         }
 
         public EventParticipation NewEventParticipation { get; set; }
@@ -79,6 +84,15 @@ namespace Wellness.Client.ViewModels
         {
             Activities = (await _activityManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
             Events = (await _eventManagementService.GetAll(CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
+
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                _hubConnection.On<string>("NotificationMessage", (message) =>
+                {
+                    Console.WriteLine(message);
+                });
+                await _hubConnection.StartAsync();
+            }
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)

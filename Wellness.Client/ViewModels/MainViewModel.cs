@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,11 +18,13 @@ namespace Wellness.Client.ViewModels
 
         private IProfileService _profileService;
         private IClientState _clientState;
+        private NavigationManager _navigationManager;
 
-        public MainViewModel(IProfileService profileService, IClientState clientState)
+        public MainViewModel(IProfileService profileService, IClientState clientState, NavigationManager navigationManager)
         {
             _profileService = profileService;
             _clientState = clientState;
+            _navigationManager = navigationManager;
         }
 
         public async Task OnInit()
