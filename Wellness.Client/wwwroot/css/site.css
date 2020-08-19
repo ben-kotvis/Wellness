@@ -133,7 +133,7 @@ h6 .material-icons {
 }
 
 .demo-mat-card {
-    max-width: 95%;
+    margin:9px;
 }
 
 .demo-mat-card-content {
@@ -199,6 +199,7 @@ h6 .material-icons {
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: ghostwhite;
 }
 
 .demo-custom-table-row:nth-of-type(odd) {
