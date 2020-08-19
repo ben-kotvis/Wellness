@@ -50,7 +50,19 @@
         <MatDialogContent>
             <MatTextField @bind-Value="ViewModel.NewOrEditActivity.Name" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Name"]"></MatTextField>
             <ValidationMessage For="() => ViewModel.NewOrEditActivity.Name"></ValidationMessage>
-            <MatCheckbox @bind-Value="ViewModel.NewOrEditActivity.Active" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Active"]"></MatCheckbox>
+            
+            <p>
+                <MatAutocompleteList Items="@ViewModel.MatIconNames" TItem="String" Label="@Loc["SelectIcon"]" CustomStringSelector="@(i => i)"
+                                     @bind-Value="ViewModel.NewOrEditActivity.IconName" Context="selectContext">
+                    <ItemTemplate>
+                        <span>@selectContext</span>
+                        <MatIcon Icon="@selectContext" />
+                    </ItemTemplate>
+                </MatAutocompleteList>
+            </p>
+            <p>
+                <MatCheckbox @bind-Value="ViewModel.NewOrEditActivity.Active" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Active"]"></MatCheckbox>
+            </p>
         </MatDialogContent>
         <MatDialogActions>
             <MatButton OnClick="@(e => { ViewModel.EditModalOpen = false; })">

@@ -78,6 +78,7 @@ namespace Wellness.Client.ViewModels
 
             NewOrEditEvent.Id = id;
             NewOrEditEvent.Name = existingItem.Model.Name;
+            NewOrEditEvent.IconName = existingItem.Model.IconName;
             NewOrEditEvent.Active = existingItem.Model.Active;
             NewOrEditEvent.AnnualMaximum = existingItem.Model.AnnualMaximum;
             NewOrEditEvent.RequireAttachment = existingItem.Model.RequireAttachment;

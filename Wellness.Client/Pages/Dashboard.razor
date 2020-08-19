@@ -22,69 +22,69 @@
 else
 {
 
-    <div class="mat-elevation-z2">
+        <div class="mat-elevation-z2">
 
-        <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
-        <div class="content">
+            <MonthsMenu OnMonthChanged="ViewModel.MonthChanged" />
+            <div class="content">
 
-            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
+                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
 
-                <MatTab>
-                    <LabelContent>
-                        <span class="tab-label">@Loc["New"]</span>
-                        <MatIcon Icon="@MatIconNames.Add"></MatIcon>
-                    </LabelContent>
-                    <ChildContent>
-                        <NewActivity ViewModel="@ViewModel"
-                                     OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
-                    </ChildContent>
+                    <MatTab>
+                        <LabelContent>
+                            <span class="tab-label">@Loc["New"]</span>
+                            <MatIcon Icon="@MatIconNames.Add"></MatIcon>
+                        </LabelContent>
+                        <ChildContent>
+                            <NewActivity ViewModel="@ViewModel"
+                                         OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
+                        </ChildContent>
 
-                </MatTab>
-                <MatTab Label="@Loc["Activities"]">
-                    @if (ViewModel.LoadingActivities)
-                    {
-                        <div class="m-5">
-                            <MatProgressBar Indeterminate="true"></MatProgressBar>
-                        </div>
-                    }
-                    else
-                    {
-                        <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
-                    }
-                </MatTab>
-            </WellnessMatTabGroup>
+                    </MatTab>
+                    <MatTab Label="@Loc["Activities"]">
+                        @if (ViewModel.LoadingActivities)
+                        {
+                            <div class="m-5">
+                                <MatProgressBar Indeterminate="true"></MatProgressBar>
+                            </div>
+                        }
+                        else
+                        {
+                            <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+                        }
+                    </MatTab>
+                </WellnessMatTabGroup>
+            </div>
+
+            <div class="content">
+                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
+                    <MatTab>
+                        <LabelContent>
+                            <span class="tab-label">@Loc["New"]</span>
+                            <MatIcon Icon="@MatIconNames.Add"></MatIcon>
+                        </LabelContent>
+                        <ChildContent>
+                            <NewEvent ViewModel="@ViewModel"
+                                      OnFileAttached="@ViewModel.EventFileAttached"
+                                      OnEventSubmissionCompleted="@((e) => { ViewModel.EventTabIndex = 1; })" />
+                        </ChildContent>
+                    </MatTab>
+                    <MatTab Label="@Loc["Events"]">
+                        @if (ViewModel.LoadingEvents)
+                        {
+                            <div class="m-5">
+                                <MatProgressBar Indeterminate="true"></MatProgressBar>
+                            </div>
+                        }
+                        else
+                        {
+                            <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+                        }
+                    </MatTab>
+                </WellnessMatTabGroup>
+
+            </div>
         </div>
 
-        <div class="content">
-            <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">
-                <MatTab>
-                    <LabelContent>
-                        <span class="tab-label">@Loc["New"]</span>
-                        <MatIcon Icon="@MatIconNames.Add"></MatIcon>
-                    </LabelContent>
-                    <ChildContent>
-                        <NewEvent ViewModel="@ViewModel"
-                                  OnFileAttached="@ViewModel.EventFileAttached"
-                                  OnEventSubmissionCompleted="@((e) => { ViewModel.EventTabIndex = 1; })" />
-                    </ChildContent>
-                </MatTab>
-                <MatTab Label="@Loc["Events"]">
-                    @if (ViewModel.LoadingEvents)
-                    {
-                        <div class="m-5">
-                            <MatProgressBar Indeterminate="true"></MatProgressBar>
-                        </div>
-                    }
-                    else
-                    {
-                        <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
-                    }
-                </MatTab>
-            </WellnessMatTabGroup>
-
-        </div>
-    </div>
 
 
-
-}
+        }

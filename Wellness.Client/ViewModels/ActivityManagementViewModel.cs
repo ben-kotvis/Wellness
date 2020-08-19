@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Client.Services.Mock;
@@ -10,6 +11,8 @@ namespace Wellness.Client.ViewModels
 {
     public class ActivityManagementViewModel : IViewModelBase
     {
+
+
         public string IconClass { get; set; } = "d-none";
         public bool IsSaving { get; set; } = false;
 
@@ -24,6 +27,8 @@ namespace Wellness.Client.ViewModels
         public Guid DialogId { get; set; } = Guid.Empty;
 
         public IEnumerable<PersistenceWrapper<Activity>> Activities { get; private set; }
+
+        public IEnumerable<string> MatIconNames { get; set; }
 
         private IActivityManagementService _activityManagementService;
 
@@ -44,6 +49,14 @@ namespace Wellness.Client.ViewModels
         public async Task OnInit()
         {
             Activities = await _activityManagementService.GetAll(CancellationToken.None);
+            MatIconNames = GetConstants(typeof(MatBlazor.MatIconNames));
+        }
+
+        private List<string> GetConstants(Type type)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Static)
+                      .Where(f => f.PropertyType == typeof(string))
+                      .Select(f => (string)f.GetValue(null)).ToList();
         }
 
         public void Delete(Guid id)
@@ -79,7 +92,10 @@ namespace Wellness.Client.ViewModels
         {
             var existingItem = Activities.FirstOrDefault(i => i.Model.Id == id);
             DialogId = id;
+
+            NewOrEditActivity.Id = id;
             NewOrEditActivity.Name = existingItem.Model.Name;
+            NewOrEditActivity.IconName = existingItem.Model.IconName;
             NewOrEditActivity.Active = existingItem.Model.Active;
 
             EditModalOpen = true;
@@ -91,10 +107,9 @@ namespace Wellness.Client.ViewModels
             IsSaving = true;
             var activity = Activities.FirstOrDefault(i => i.Model.Id == DialogId)?.Model;
 
-            NewOrEditActivity.Id = DialogId;
-
             if (activity == default)
             {
+                NewOrEditActivity.Id = DialogId;
                 await _activityManagementService.Create(NewOrEditActivity);
             }
             else

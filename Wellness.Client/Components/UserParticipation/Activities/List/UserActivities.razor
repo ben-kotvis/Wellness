@@ -17,25 +17,49 @@
 }
 else
 {
-    <MatTable Items="@ActivityParticipations" class="wellness-table" PageSize="30" Striped="true"
-              HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
-        <MatTableHeader>
-            <th></th>
-            <th>@Loc["Activity"]</th>
-            <th>@Loc["Minutes"]</th>
-            <th>@Loc["Points"]</th>
-            <th>@Loc["Date"]</th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>
-                <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
-            </td>
-            <td>@context.Model.Activity.Name</td>
-            <td>@context.Model.Minutes</td>
-            <td>@context.Model.PointsEarned</td>
-            <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
-        </MatTableRow>
-    </MatTable>
+
+    @foreach (var item in ActivityParticipations)
+    {
+        <MatCard class="demo-mat-card">
+            <MatCardContent>
+                <div class="demo-mat-card-content">
+                    <MatHeadline6 class="demo-mat-card-clean-margin">
+                        @item.Model.Activity.Name
+
+
+                        <MatChip Label="@Loc["Activity"]" TrailingIcon="@MatIconNames.Recent_actors" Class="float-right"></MatChip>
+                    </MatHeadline6>
+                </div>
+                <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin border-top">
+                    <p>
+                        <span class="points">@item.Model.PointsEarned</span>
+                        <span>@Loc["Points"]</span>
+
+                        @if (item.Model.Activity.IconName != default)
+                        {
+                            <MatIcon Icon="@item.Model.Activity.IconName"></MatIcon>
+                        }
+                        else
+                        {
+                            <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>
+                        }
+                    </p>
+                    <p>
+                        @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
+                    </p>
+                    <p>
+                        @item.Model.Minutes<span> @Loc["Minutes"]</span>
+                    </p>
+                    <p>
+
+                        <MatIconButton Icon="@MatIconNames.Delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = item.Model.Id; })"></MatIconButton>
+                    </p>
+                </MatBody2>
+            </MatCardContent>
+        </MatCard>
+    }
+
+
 }
 
 <ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>

@@ -11,9 +11,35 @@
     display:inline-block;
 }
 
+.content .demo-mat-card {
+    margin: 2em;
+}
+
+.points {
+    color: forestgreen;
+    font-size: 6em;
+}
+
+.border-top {
+    border-top: 1px solid InactiveBorder;
+}
+.mat-body2 p > .material-icons {
+    float: right;
+    font-size: 5em;
+}
+
+.mat-body2 p:nth-child(1) {
+    line-height: 6em;
+}
+
 .spinning-icon {
     animation: spin-animation 1s infinite;
     display: inline-block;
+}
+
+h6 .material-icons {
+    font-size: 34px;
+    vertical-align: bottom;
 }
 
 @keyframes spin-animation {
