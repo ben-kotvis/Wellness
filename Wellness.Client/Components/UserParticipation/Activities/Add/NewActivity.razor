@@ -5,32 +5,69 @@
 @inherits Components.UserParticipation.Activities.Add.NewActivityComponent
 
 
-<EditForm Model="@ViewModel.NewActivityParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
-    <FluentValidationValidator />
-    <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
-        <div style="width: 45%; margin:auto;">
-            <div>
-                <MatSelectItem Class="tab-form-select" @bind-Disabled="ViewModel.IsSaving" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
-                               Label="@Loc["SelectActivity"]" Context="selectContext">
-                    <ItemTemplate>
-                        <span>@selectContext.Name</span>
-                    </ItemTemplate>
-                </MatSelectItem>
-                <ValidationMessage For="() => ViewModel.NewActivityParticipation.Activity"></ValidationMessage>
 
-            </div>
-            <div>
-                <MatNumericUpDownField @bind-Disabled="ViewModel.IsSaving" Step="15" Maximum="450" FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatNumericUpDownField>
-                <ValidationMessage For="() => ViewModel.NewActivityParticipation.Minutes"></ValidationMessage>
-            </div>
-            <div>
-                <MatDatePicker FullWidth="true" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.NewActivityParticipation.SubmissionDate"></MatDatePicker>
-                <ValidationMessage For="() => ViewModel.NewActivityParticipation.SubmissionDate"></ValidationMessage>
-            </div>
-            <div class="text-right p-2">
-                <MatButton Type="submit" Raised="true" @bind-Disabled="ViewModel.IsSaving">@Loc["Save"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
-            </div>
-        </div>
-        </div>
+    <EditForm Model="@ViewModel.NewActivityParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveActivity(); await OnActivitySubmissionCompleted.InvokeAsync(null); })">
+        <MatCard class="demo-mat-card">
+            <div class="demo-mat-card-content">
+                <MatHeadline6 class="demo-mat-card-clean-margin">
+                    @Loc["Activities"]
 
-</EditForm>
+                </MatHeadline6>
+            </div>
+            <MatCardContent >
+                <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+                    <MatAccordion>
+                        <MatExpansionPanel @bind-Expanded="@ViewModel.CreateActivityIsOpen">
+                            <MatExpansionPanelSummary>
+                                <MatExpansionPanelHeader>@Loc["New"]</MatExpansionPanelHeader>
+                            </MatExpansionPanelSummary>
+                            <MatExpansionPanelDetails>
+
+                                <FluentValidationValidator />
+                                <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
+                                    <div style="width: 45%; margin:auto;">
+                                        <div>
+                                            <MatSelectItem Class="tab-form-select" @bind-Disabled="ViewModel.IsSaving" @bind-Value="ViewModel.NewActivityParticipation.Activity" Items="@ViewModel.Activities.ToList()"
+                                                           Label="@Loc["SelectActivity"]" Context="selectContext">
+                                                <ItemTemplate>
+                                                    <span>@selectContext.Name</span>
+                                                </ItemTemplate>
+                                            </MatSelectItem>
+                                            <ValidationMessage For="() => ViewModel.NewActivityParticipation.Activity"></ValidationMessage>
+
+                                        </div>
+                                        <div>
+                                            <MatNumericUpDownField @bind-Disabled="ViewModel.IsSaving" Step="15" Maximum="450" FullWidth="true" @bind-Value="ViewModel.NewActivityParticipation.Minutes" Label="@Loc["NumberofMinutes"]"></MatNumericUpDownField>
+                                            <ValidationMessage For="() => ViewModel.NewActivityParticipation.Minutes"></ValidationMessage>
+                                        </div>
+                                        <div>
+                                            <MatDatePicker FullWidth="true" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["ActivityDate"]" TValue="DateTime" @bind-Value="ViewModel.NewActivityParticipation.SubmissionDate"></MatDatePicker>
+                                            <ValidationMessage For="() => ViewModel.NewActivityParticipation.SubmissionDate"></ValidationMessage>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </MatExpansionPanelDetails>
+                        </MatExpansionPanel>
+                    </MatAccordion>
+
+
+
+
+
+                </MatBody2>
+            </MatCardContent>
+            <MatCardActions>
+                <MatCardActionButtons Class="text-right p2">
+                    <MatButton Type="submit" Raised="true" @bind-Disabled="ViewModel.IsSaving">@Loc["Save"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
+
+                    <MatButton>Cancel</MatButton>
+                </MatCardActionButtons>
+            </MatCardActions>
+        </MatCard>
+
+
+
+
+
+    </EditForm>

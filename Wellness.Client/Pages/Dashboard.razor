@@ -27,6 +27,8 @@
     </div>
     <div class="col-lg-6 col-md-6">
 
+        <NewActivity ViewModel="@ViewModel"
+                     OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
         <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
     </div>
     <div class="col-lg-6 col-md-6">
@@ -38,33 +40,6 @@
 
         <div class="mat-elevation-z2">
 
-            <div class="content">
-
-                <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.ActivityTabIndex">
-
-                    <MatTab>
-                        <LabelContent>
-                            <span class="tab-label">@Loc["New"]</span>
-                            <MatIcon Icon="@MatIconNames.Add"></MatIcon>
-                        </LabelContent>
-                        <ChildContent>
-                            <NewActivity ViewModel="@ViewModel"
-                                         OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
-                        </ChildContent>
-
-                    </MatTab>
-                    <MatTab Label="@Loc["Activities"]">
-                        @if (ViewModel.LoadingActivities)
-                        {
-    <div class="m-5">
-        <MatProgressBar Indeterminate="true"></MatProgressBar>
-    </div> }
-else
-{
-<UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />}
-                    </MatTab>
-                </WellnessMatTabGroup>
-            </div>
 
             <div class="content">
                 <WellnessMatTabGroup DefaultIndex="1" @bind-ActiveIndex="@ViewModel.EventTabIndex">

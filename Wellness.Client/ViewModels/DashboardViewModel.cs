@@ -58,6 +58,8 @@ namespace Wellness.Client.ViewModels
         public int ActivityTabIndex { get; set; } = 1;
         public int EventTabIndex { get; set; } = 1;
 
+        public bool CreateActivityIsOpen { get; set; } = false;
+
         private IActivityManagementService ActivityManagement { get; set; }
 
         public string SelectedId { set; get; } = Guid.Empty.ToString();

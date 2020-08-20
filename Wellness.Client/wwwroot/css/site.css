@@ -20,9 +20,6 @@
     font-size: 6em;
 }
 
-.border-top {
-    border-top: 1px solid InactiveBorder;
-}
 .mat-body2 p > .material-icons {
     float: right;
     font-size: 5em;

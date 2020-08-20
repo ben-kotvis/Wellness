@@ -20,15 +20,16 @@
 @foreach (var item in EventParticipations)
 {
 <MatCard class="demo-mat-card">
+
+    <div class="demo-mat-card-content">
+        <MatHeadline6 class="demo-mat-card-clean-margin">
+            @item.Model.Event.Name
+
+
+            <MatChip Label="@Loc["Event"]" TrailingIcon="@MatIconNames.Event" Class="float-right"></MatChip>
+        </MatHeadline6>
+    </div>
     <MatCardContent>
-        <div class="demo-mat-card-content">
-            <MatHeadline6 class="demo-mat-card-clean-margin">
-                @item.Model.Event.Name
-
-
-                <MatChip Label="@Loc["Event"]" TrailingIcon="@MatIconNames.Event" Class="float-right"></MatChip>
-            </MatHeadline6>
-        </div>
         <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin border-top">
             <p>
                 <span class="points">@item.Model.PointsEarned</span>
@@ -36,12 +37,10 @@
 
                 @if (item.Model.Event.IconName != default)
                 {
-                    <MatIcon Icon="@item.Model.Event.IconName"></MatIcon>
-                }
-                else
-                {
-                    <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>
-                }
+<MatIcon Icon="@item.Model.Event.IconName"></MatIcon> }
+                                else
+                                {
+<MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
             </p>
             <p>
                 @item.Model.SubmissionDate.ToString("MM/dd/yyyy")

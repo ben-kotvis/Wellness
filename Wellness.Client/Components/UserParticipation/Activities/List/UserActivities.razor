@@ -20,43 +20,44 @@ else
 
     @foreach (var item in ActivityParticipations)
     {
-        <MatCard class="demo-mat-card">
-            <MatCardContent>
-                <div class="demo-mat-card-content">
-                    <MatHeadline6 class="demo-mat-card-clean-margin">
-                        @item.Model.Activity.Name
+<MatCard class="demo-mat-card">
+
+    <div class="demo-mat-card-content">
+        <MatHeadline6 class="demo-mat-card-clean-margin">
+            @item.Model.Activity.Name
 
 
-                        <MatChip Label="@Loc["Activity"]" TrailingIcon="@MatIconNames.Recent_actors" Class="float-right"></MatChip>
-                    </MatHeadline6>
-                </div>
-                <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin border-top">
-                    <p>
-                        <span class="points">@item.Model.PointsEarned</span>
-                        <span>@Loc["Points"]</span>
+            <MatChip Label="@Loc["Activity"]" TrailingIcon="@MatIconNames.Recent_actors" Class="float-right"></MatChip>
+        </MatHeadline6>
 
-                        @if (item.Model.Activity.IconName != default)
-                        {
-                            <MatIcon Icon="@item.Model.Activity.IconName"></MatIcon>
-                        }
-                        else
-                        {
-                            <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>
-                        }
-                    </p>
-                    <p>
-                        @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
-                    </p>
-                    <p>
-                        @item.Model.Minutes<span> @Loc["Minutes"]</span>
-                    </p>
-                    <p>
+        <MatDivider></MatDivider>
+    </div>
+    <MatCardContent>
+        <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+            <p>
+                <span class="points">@item.Model.PointsEarned</span>
+                <span>@Loc["Points"]</span>
 
-                        <MatIconButton Icon="@MatIconNames.Delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = item.Model.Id; })"></MatIconButton>
-                    </p>
-                </MatBody2>
-            </MatCardContent>
-        </MatCard>
+                @if (item.Model.Activity.IconName != default)
+                {
+<MatIcon Icon="@item.Model.Activity.IconName"></MatIcon> }
+                                else
+                                {
+<MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
+            </p>
+            <p>
+                @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
+            </p>
+            <p>
+                @item.Model.Minutes<span> @Loc["Minutes"]</span>
+            </p>
+            <p>
+
+                <MatIconButton Icon="@MatIconNames.Delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = item.Model.Id; })"></MatIconButton>
+            </p>
+        </MatBody2>
+    </MatCardContent>
+</MatCard>
     }
 
 
