@@ -12,5 +12,6 @@ namespace Wellness.Client.ViewModels
         IEnumerable<Activity> Activities { get; set; }
         Task SaveActivity();
         bool CreateActivityIsOpen { get; set; }
+        Task CancelActivitySubmission();
     }
 }

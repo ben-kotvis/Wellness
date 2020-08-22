@@ -129,6 +129,11 @@ namespace Wellness.Client.ViewModels
             LoadingEvents = false;
         }
 
+        public async Task CancelActivitySubmission()
+        {
+            CreateActivityIsOpen = false;
+        }
+
         public async Task PreviewAttachment(Guid id)
         {
             var eventParticipation = EventParticipations.FirstOrDefault(i => i.Model.Id == id);
@@ -164,6 +169,8 @@ namespace Wellness.Client.ViewModels
             await SetActivityParticipations();
             IconClass = "d-none";
             IsSaving = false;
+
+            CreateActivityIsOpen = false;
         }
 
         public async Task SaveEvent()
