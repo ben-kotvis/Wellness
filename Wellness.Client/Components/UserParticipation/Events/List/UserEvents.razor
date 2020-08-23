@@ -7,86 +7,62 @@
 
 
 
-@if (!EventParticipations.Any())
+@if (EventParticipations == default || !EventParticipations.Any())
 {
 <div class="text-xl-center m-5">
     <span>@Loc["EmptyEventsMessage"]</span>
-</div> }
-            else
-            {
-
-
-
-@foreach (var item in EventParticipations)
+</div> 
+}
+else
 {
-<MatCard class="demo-mat-card">
 
-    <div class="demo-mat-card-content">
-        <MatHeadline6 class="demo-mat-card-clean-margin">
-            @item.Model.Event.Name
+@foreach (var item in EventParticipations.OrderByDescending(i => i.Model.SubmissionDate))
+{
+    <MatCard class="demo-mat-card">
 
+        <div class="demo-mat-card-content">
+            <MatHeadline6 class="m-2">
+                @item.Model.Event.Name
 
-            <MatChip Label="@Loc["Event"]" TrailingIcon="@MatIconNames.Event" Class="float-right"></MatChip>
-        </MatHeadline6>
-    </div>
-    <MatCardContent>
-        <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin border-top">
-            <p>
-                <span class="points">@item.Model.PointsEarned</span>
-                <span>@Loc["Points"]</span>
+                <MatChip Label="@Loc["Event"]" TrailingIcon="@MatIconNames.Event" Class="float-right"></MatChip>
+            </MatHeadline6>
+            <MatDivider></MatDivider>
+        </div>
+        <MatCardContent>
+            <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+                <p>
+                    <span class="points">@item.Model.PointsEarned</span>
+                    <span>@Loc["Points"]</span>
 
-                @if (item.Model.Event.IconName != default)
-                {
-<MatIcon Icon="@item.Model.Event.IconName"></MatIcon> }
-                                else
-                                {
-<MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
-            </p>
-            <p>
-                @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
-            </p>
-            <p>
-                <MatIconButton Icon="@MatIconNames.Delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = item.Model.Id; })"></MatIconButton>
-            </p>
-        </MatBody2>
-    </MatCardContent>
-</MatCard>}
+                    @if (item.Model.Event.IconName != default)
+                    {
+    <MatIcon Icon="@item.Model.Event.IconName"></MatIcon> 
+    }
+                    else
+                    {
+    <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
+                </p>
+                <p>
+                    @if (item.Model.Attachment != null)
+                    {
+                        <span>
+                            @item.Model.Attachment?.Name
+                            <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(item.Model.Id))"></MatIconButton>
+                        </span>
+                    }
+                </p>
+                <p>
+                    @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
+                </p>
+                <p>
+                    <MatIconButton Icon="@MatIconNames.Delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = item.Model.Id; })"></MatIconButton>
+                </p>
+            </MatBody2>
+        </MatCardContent>
+    </MatCard>
+    }
 
-
-
-
-
-
-
-
-                <MatTable Items="@EventParticipations" class="wellness-table" PageSize="30" Striped="true"
-                          HeaderRowClass="wellness-table-header-row" RowClass="wellness-table-row" ShowPaging="false" ShowFooter="false">
-                    <MatTableHeader>
-                        <th></th>
-                        <th>@Loc["Event"]</th>
-                        <th>@Loc["UploadedFiles"]</th>
-                        <th>@Loc["Points"]</th>
-                        <th>@Loc["EventDate"]</th>
-                    </MatTableHeader>
-                    <MatTableRow>
-                        <td>
-                            <MatIconButton Icon="delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = context.Model.Id; })"></MatIconButton>
-                        </td>
-                        <td>@context.Model.Event.Name</td>
-                        <td>
-                            @if (context.Model.Attachment != null)
-                                {
-            <span>
-                @context.Model.Attachment?.Name
-                <MatIconButton Icon="open_in_new" OnClick="@((args) => ViewModel.PreviewAttachment(context.Model.Id))"></MatIconButton>
-            </span>}
-                        </td>
-                        <td>@context.Model.PointsEarned</td>
-                        <td>@context.Model.SubmissionDate.ToString("MM/dd/yyyy")</td>
-                    </MatTableRow>
-                </MatTable>
-
-                }
+}
 
 
 <ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>

@@ -44,6 +44,9 @@ namespace Wellness.Client.ViewModels
             NewEventParticipation = new EventParticipation();
             NewActivityParticipation = new ActivityParticipation();
             _hubConnection = hubConnection;
+
+            Activities = new List<Activity>();
+            Events = new List<Event>();
         }
 
         public EventParticipation NewEventParticipation { get; set; }
@@ -59,7 +62,7 @@ namespace Wellness.Client.ViewModels
         public int EventTabIndex { get; set; } = 1;
 
         public bool CreateActivityIsOpen { get; set; } = false;
-
+        public bool CreateEventIsOpen { get; set; } = false;
         private IActivityManagementService ActivityManagement { get; set; }
 
         public string SelectedId { set; get; } = Guid.Empty.ToString();
@@ -134,6 +137,11 @@ namespace Wellness.Client.ViewModels
             CreateActivityIsOpen = false;
         }
 
+        public async Task CancelEventSubmission()
+        {
+            CreateEventIsOpen = false;
+        }
+
         public async Task PreviewAttachment(Guid id)
         {
             var eventParticipation = EventParticipations.FirstOrDefault(i => i.Model.Id == id);
@@ -194,6 +202,7 @@ namespace Wellness.Client.ViewModels
 
             IconClass = "d-none";
             IsSaving = false;
+            CreateEventIsOpen = false;
         }
     }
 }

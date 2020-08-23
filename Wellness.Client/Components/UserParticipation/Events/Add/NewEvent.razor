@@ -7,30 +7,43 @@
 
 
 
-    <EditForm Model="@ViewModel.NewEventParticipation"  OnValidSubmit="@(async (e) => { await ViewModel.SaveEvent(); await OnEventSubmissionCompleted.InvokeAsync(null); })">
-        <FluentValidationValidator />
+<EditForm Model="@ViewModel.NewEventParticipation" OnValidSubmit="@(async (e) => { await ViewModel.SaveEvent(); await OnEventSubmissionCompleted.InvokeAsync(null); })">
+    <MatAccordion>
+        <MatExpansionPanel @bind-Expanded="@ViewModel.CreateEventIsOpen">
+            <MatExpansionPanelSummary>
+                <MatExpansionPanelHeader>@Loc["New"]</MatExpansionPanelHeader>
+            </MatExpansionPanelSummary>
+            <MatExpansionPanelDetails>
 
-        <div style="width: 50%; background-color: var(--theme-palette-background-paper);">
-            <div>
-                <MatSelectItem @bind-Disabled="ViewModel.IsSaving" Class="tab-form-select" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
-                       Label="@Loc["SelectEvent"]" Context="selectContext">
-                    <ItemTemplate>
-                        <span>@selectContext.Name</span>
-                    </ItemTemplate>
-                </MatSelectItem>
+                <FluentValidationValidator />
 
-                <ValidationMessage For="() => ViewModel.NewEventParticipation.Event" ></ValidationMessage>
-            </div>
-            <div>
-                <MatFileUpload Id="EventFileUpload" @bind-Disabled="ViewModel.IsSaving" OnChange="@FilesReady"></MatFileUpload>
-                <ValidationMessage For="() => ViewModel.NewEventParticipation.Attachment"></ValidationMessage>
-            </div>
-            <div>
-                <MatDatePicker @bind-Disabled="ViewModel.IsSaving" FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
-                <ValidationMessage For="() => ViewModel.NewEventParticipation.SubmissionDate"></ValidationMessage>
-            </div>
-            <div class="text-right p-2">
-                <MatButton Type="submit" Raised="true" @bind-Disabled="ViewModel.IsSaving">@Loc["Save"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
-            </div>
-        </div>
-    </EditForm>
+                <div>
+                    <div>
+                        <MatSelectItem @bind-Disabled="ViewModel.IsSaving" Class="tab-form-select" @bind-Value="ViewModel.NewEventParticipation.Event" Items="@ViewModel.Events.ToList()"
+                                       Label="@Loc["SelectEvent"]" Context="selectContext">
+                            <ItemTemplate>
+                                <span>@selectContext.Name</span>
+                            </ItemTemplate>
+                        </MatSelectItem>
+
+                        <ValidationMessage For="() => ViewModel.NewEventParticipation.Event"></ValidationMessage>
+                    </div>
+                    <div>
+                        <MatFileUpload Id="EventFileUpload" @bind-Disabled="ViewModel.IsSaving" OnChange="@FilesReady"></MatFileUpload>
+                        <ValidationMessage For="() => ViewModel.NewEventParticipation.Attachment"></ValidationMessage>
+                    </div>
+                    <div>
+                        <MatDatePicker @bind-Disabled="ViewModel.IsSaving" FullWidth="true" Label="@Loc["EventDate"]" TValue="DateTime" @bind-Value="ViewModel.NewEventParticipation.SubmissionDate"></MatDatePicker>
+                        <ValidationMessage For="() => ViewModel.NewEventParticipation.SubmissionDate"></ValidationMessage>
+                    </div>
+                    <div class="text-right">
+                        <MatButton Type="submit" Raised="true" @bind-Disabled="ViewModel.IsSaving">@Loc["Save"]<MatIcon Icon="cached" @bind-Class="ViewModel.IconClass"></MatIcon></MatButton>
+
+                        <MatButton Type="button" OnClick="@ViewModel.CancelEventSubmission">Cancel</MatButton>
+                    </div>
+
+                </div>
+            </MatExpansionPanelDetails>
+        </MatExpansionPanel>
+    </MatAccordion>
+</EditForm>

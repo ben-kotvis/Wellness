@@ -310,11 +310,19 @@ app {
     padding-top: 0.1rem;
 }
 
+.activity-column .mdc-chip {
+    background-color: #cee6d3;
+}
+
+.event-column .mdc-chip {
+    background-color: #d1e5e8;
+}
 
 .month-menu-item {
     width: 160px;
     text-align: center;
     justify-content: center;
+    white-space: nowrap;
 }
 
 .navbar-toggler {

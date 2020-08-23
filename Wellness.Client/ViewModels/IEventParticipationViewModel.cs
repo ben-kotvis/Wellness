@@ -17,5 +17,7 @@ namespace Wellness.Client.ViewModels
         Task EventFileAttached(EventAttachmentArgs args);
         Task PreviewAttachment(Guid id);
         Task SaveEvent();
+        bool CreateEventIsOpen { get; set; }
+        Task CancelEventSubmission();
     }
 }

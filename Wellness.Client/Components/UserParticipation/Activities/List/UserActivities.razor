@@ -7,15 +7,7 @@
 
 
 
-@if (!ActivityParticipations.Any())
-{
-    <div class="text-xl-center m-5">
-        <span>
-            @Loc["NoActivitiesMessage"]
-        </span>
-    </div>
-}
-else
+@if (ActivityParticipations != default && ActivityParticipations.Any())
 {
 
     @foreach (var item in ActivityParticipations.OrderByDescending(i => i.Model.SubmissionDate))
@@ -40,10 +32,10 @@ else
 
                         @if (item.Model.Activity.IconName != default)
                         {
-        <MatIcon Icon="@item.Model.Activity.IconName"></MatIcon> }
-                                        else
-                                        {
-        <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
+                            <MatIcon Icon="@item.Model.Activity.IconName"></MatIcon> }
+                        else
+                        {
+                            <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
                     </p>
                     <p>
                         @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
@@ -61,6 +53,14 @@ else
     }
 
 
+}
+else
+{
+<div class="text-xl-center m-5">
+    <span>
+        @Loc["NoActivitiesMessage"]
+    </span>
+</div>
 }
 
 <ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>
