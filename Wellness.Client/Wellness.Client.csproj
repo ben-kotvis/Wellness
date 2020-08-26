@@ -5,6 +5,7 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+    <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,7 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.6" />
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.0-preview.6.20312.15" />
-    <PackageReference Include="RestSharp" Version="106.11.5-alpha.0.2" />
+    <PackageReference Include="RestSharp" Version="106.11.5-alpha.0.18" />
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="3.2.0" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
   </ItemGroup>
@@ -42,6 +43,9 @@
 
   <ItemGroup>
     <Content Update="Pages\Dashboard.razor">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Content>
+    <Content Update="Pages\RouteTest.razor">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Content>
     <Content Update="Pages\ProfileInfoCapture.razor">

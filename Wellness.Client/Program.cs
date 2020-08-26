@@ -48,7 +48,7 @@ namespace Wellness.Client
                 .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
             
             builder.Services.AddScoped<HubConnection>((sp) => new HubConnectionBuilder()
-                .WithUrl("https://localhost:44354/notificationhub").Build());
+                .WithUrl($"{builder.Configuration["ServerAddress"]}/notificationhub").Build());
 
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Default"));
             builder.Services.AddMsalAuthentication(options =>
