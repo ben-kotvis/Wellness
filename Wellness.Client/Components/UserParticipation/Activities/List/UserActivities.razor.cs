@@ -12,9 +12,8 @@ namespace Wellness.Client.Components.UserParticipation.Activities.List
 
         [Parameter] public IEnumerable<PersistenceWrapper<ActivityParticipation>> ActivityParticipations { get; set; }
 
-        [Parameter] public EventCallback<Guid> OnConfirmDelete { get; set; }
-
-        public bool dialogIsOpen = false;
+        [Parameter] public EventCallback<Guid> OnDeleteRequested { get; set; }
+        [Parameter] public EventCallback OnConfirmDelete { get; set; }
 
         public Guid SelectedId { get; set; }
     }

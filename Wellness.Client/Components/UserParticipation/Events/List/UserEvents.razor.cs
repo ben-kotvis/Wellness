@@ -13,11 +13,8 @@ namespace Wellness.Client.Components.UserParticipation.Events.List
 
         [Parameter] public IEnumerable<PersistenceWrapper<EventParticipation>> EventParticipations { get; set; }
 
-        [Parameter] public EventCallback<Guid> OnConfirmDelete { get; set; }
-
-        public bool dialogIsOpen = false;
-
-        public Guid SelectedId { get; set; }
+        [Parameter] public EventCallback<Guid> OnDeleteRequested { get; set; }
+        [Parameter] public EventCallback OnConfirmDelete { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

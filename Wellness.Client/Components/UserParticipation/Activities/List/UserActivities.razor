@@ -45,7 +45,7 @@
                     </p>
                     <p>
 
-                        <MatIconButton Icon="@MatIconNames.Delete" OnClick="@((args) => { dialogIsOpen = true; SelectedId = item.Model.Id; })"></MatIconButton>
+                        <MatIconButton Icon="@MatIconNames.Delete" OnClick="@(async () => await OnDeleteRequested.InvokeAsync(item.Model.Id))"></MatIconButton>
                     </p>
                 </MatBody2>
             </MatCardContent>
@@ -63,4 +63,4 @@ else
 </div>
 }
 
-<ConfirmationDialog IsOpen="@dialogIsOpen" SelectedId="@SelectedId" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(selectedId))"></ConfirmationDialog>
+<ConfirmationDialog IsOpen="@ViewModel.IsDeletedActivityDialogOpen" OnConfirmDelete="@(async (selectedId) => await OnConfirmDelete.InvokeAsync(null))"></ConfirmationDialog>

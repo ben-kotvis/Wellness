@@ -19,5 +19,6 @@ namespace Wellness.Client.ViewModels
         Task SaveEvent();
         bool CreateEventIsOpen { get; set; }
         Task CancelEventSubmission();
+        bool IsDeletedEventDialogOpen { get; set; }
     }
 }

@@ -13,5 +13,6 @@ namespace Wellness.Client.ViewModels
         Task SaveActivity();
         bool CreateActivityIsOpen { get; set; }
         Task CancelActivitySubmission();
+        bool IsDeletedActivityDialogOpen { get; set; }
     }
 }

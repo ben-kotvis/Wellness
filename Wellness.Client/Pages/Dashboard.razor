@@ -22,7 +22,8 @@
         <MatBlazor.MatHeadline5>@Loc["Activities"]</MatBlazor.MatHeadline5>
         <NewActivity ViewModel="@ViewModel"
                      OnActivitySubmissionCompleted="@((e) => { ViewModel.ActivityTabIndex = 1; })" />
-        <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted" />
+        <UserActivities ViewModel="@ViewModel" ActivityParticipations="@ViewModel.ActivityParticipations" OnConfirmDelete="@ViewModel.ActivityParticipationDeleted"
+                        OnDeleteRequested="@ViewModel.ActivityDeletionRequested" />
     </div>
     <div class="col-lg-6 col-md-6 p-2 event-column">
 
@@ -31,6 +32,7 @@
         <NewEvent ViewModel="@ViewModel"
                   OnFileAttached="@ViewModel.EventFileAttached"
                   OnEventSubmissionCompleted="@((e) => { ViewModel.EventTabIndex = 1; })" />
-        <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" />
+        <UserEvents ViewModel="@ViewModel" EventParticipations="@ViewModel.EventParticipations" OnConfirmDelete="@ViewModel.EventParticipationDeleted" 
+                    OnDeleteRequested="@ViewModel.EventDeletionRequested" />
     </div>
 </div>

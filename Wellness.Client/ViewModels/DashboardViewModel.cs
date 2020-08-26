@@ -69,20 +69,40 @@ namespace Wellness.Client.ViewModels
 
         public int SelectedRelativeIndex { get; set; } = 0;
 
-        public async Task ActivityParticipationDeleted(Guid id)
+        public Guid EventDeletionRequestedId { get; set; }
+        public bool IsDeletedEventDialogOpen { get; set; }
+
+        public Guid ActivityDeletionRequestedId { get; set; }
+        public bool IsDeletedActivityDialogOpen { get; set; }
+
+        public async Task ActivityParticipationDeleted()
         {
             IconClass = "spinning-icon";
-            await _activityParticipationService.Delete(id);
+            await _activityParticipationService.Delete(ActivityDeletionRequestedId);
             await SetActivityParticipations();
             IconClass = "d-none";
+            IsDeletedActivityDialogOpen = false;
         }
 
-        public async Task EventParticipationDeleted(Guid id)
+        public void ActivityDeletionRequested(Guid id)
+        {
+            ActivityDeletionRequestedId = id;
+            IsDeletedActivityDialogOpen = true;
+        }
+
+        public async Task EventParticipationDeleted()
         {
             IconClass = "spinning-icon";
-            await _eventParticipationService.Delete(id);
+            await _eventParticipationService.Delete(EventDeletionRequestedId);
             await SetEventParticipations();
             IconClass = "d-none";
+            IsDeletedEventDialogOpen = false;
+        }
+
+        public void EventDeletionRequested(Guid id)
+        {
+            EventDeletionRequestedId = id;
+            IsDeletedEventDialogOpen = true;
         }
 
         public async Task OnInit()
