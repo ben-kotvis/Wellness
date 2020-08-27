@@ -26,7 +26,7 @@
 }
 
 .mat-body2 p:nth-child(1) {
-    line-height: 6em;
+    line-height: 2.2em;
 }
 
 .spinning-icon {
@@ -133,8 +133,12 @@ h6 .material-icons {
     margin-top: 9px;
 }
 
-.demo-mat-card-content {
+.demo-mat-card>div {
     padding: 1rem;
+}
+
+.demo-mat-card>p {
+    padding: 0 1rem 1rem 1rem;
 }
 
 .demo-mat-card-clean-margin {

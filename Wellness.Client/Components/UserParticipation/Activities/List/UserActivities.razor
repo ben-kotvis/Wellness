@@ -12,44 +12,47 @@
 
     @foreach (var item in ActivityParticipations.OrderByDescending(i => i.Model.SubmissionDate))
     {
-        <MatCard class="demo-mat-card">
+<MatCard class="demo-mat-card">
 
-            <div class="demo-mat-card-content">
-                <MatHeadline6 Class="m-2">
-                    @item.Model.Activity.Name
+    <div class="demo-mat-card-content">
+        <MatHeadline6 Class="m-2">
+            @item.Model.Activity.Name
 
 
-                    <MatChip Label="@Loc["Activity"]" TrailingIcon="@MatIconNames.Recent_actors" Class="float-right"></MatChip>
-                </MatHeadline6>
+            <MatChip Label="@Loc["Activity"]" TrailingIcon="@MatIconNames.Recent_actors" Class="float-right"></MatChip>
+        </MatHeadline6>
 
-                <MatDivider></MatDivider>
-            </div>
-            <MatCardContent>
-                <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
-                    <p>
-                        <span class="points">@item.Model.PointsEarned</span>
-                        <span>@Loc["Points"]</span>
+        <MatDivider></MatDivider>
+    </div>
+    <MatCardContent>
+        <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+            <p>
+                <span class="points">@item.Model.PointsEarned</span>
+                <span>@Loc["Points"]</span>
 
-                        @if (item.Model.Activity.IconName != default)
-                        {
-                            <MatIcon Icon="@item.Model.Activity.IconName"></MatIcon> }
-                        else
-                        {
-                            <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
-                    </p>
-                    <p>
-                        @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
-                    </p>
-                    <p>
-                        @item.Model.Minutes<span> @Loc["Minutes"]</span>
-                    </p>
-                    <p>
+                @if (item.Model.Activity.IconName != default)
+                {
+                    <MatIcon Icon="@item.Model.Activity.IconName"></MatIcon> }
+                else
+                {
+                    <MatIcon Icon="@MatIconNames.Cancel_presentation"></MatIcon>}
+            </p>
+            <p>
+                @item.Model.SubmissionDate.ToString("MM/dd/yyyy")
+            </p>
+            <p>
+                @item.Model.Minutes<span> @Loc["Minutes"]</span>
 
-                        <MatIconButton Icon="@MatIconNames.Delete" OnClick="@(async () => await OnDeleteRequested.InvokeAsync(item.Model.Id))"></MatIconButton>
-                    </p>
-                </MatBody2>
-            </MatCardContent>
-        </MatCard>
+                 </p>
+        </MatBody2>
+    </MatCardContent>
+    <MatCardActions>
+
+        <MatCardActionIcons>
+            <MatIconButton Class="float-right" Icon="@MatIconNames.Delete" OnClick="@(async () => await OnDeleteRequested.InvokeAsync(item.Model.Id))"></MatIconButton>
+        </MatCardActionIcons>
+    </MatCardActions>
+</MatCard>
     }
 
 
