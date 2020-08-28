@@ -11,6 +11,5 @@ namespace Wellness.Model
         public string LastName { get; set; }
         public decimal AnnualTotal { get; set; }
         public decimal AveragePointsPerMonth { get; set; }
-        public List<CompanyRoles> CompanyRoles { get; set; }
     }
 }

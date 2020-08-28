@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Client.Services.Mock;
@@ -23,6 +24,8 @@ namespace Wellness.Client.ViewModels
 
         public Event NewOrEditEvent { get; set; }
 
+        public IEnumerable<string> MatIconNames { get; set; }
+
         private IEventManagementService _eventManagementService;
 
         public EventManagementViewModel(IEventManagementService eventManagementService)
@@ -40,6 +43,13 @@ namespace Wellness.Client.ViewModels
         public async Task OnInit()
         {
             Events = await _eventManagementService.GetAll(CancellationToken.None);
+            MatIconNames = GetConstants(typeof(MatBlazor.MatIconNames));
+        }
+        private List<string> GetConstants(Type type)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Static)
+                      .Where(f => f.PropertyType == typeof(string))
+                      .Select(f => (string)f.GetValue(null)).ToList();
         }
 
         public async Task Load()

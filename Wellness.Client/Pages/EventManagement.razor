@@ -15,6 +15,7 @@
     <MatTableHeader>
         <th></th>
         <th>@Loc["Name"]</th>
+        <th>@Loc["Icon"]</th>
         <th>@Loc["PointsPerEvent"]</th>
         <th>@Loc["AnnualMax"]</th>
         <th>@Loc["Active"]</th>
@@ -26,6 +27,9 @@
             <MatIconButton Icon="edit" @onclick="(e => ViewModel.Edit(context.Model.Id))"></MatIconButton>
         </td>
         <td>@context.Model.Name</td>
+        <td>
+            <MatIcon Icon="@context.Model.IconName" />
+        </td>
         <td>@context.Model.Points</td>
         <td>@context.Model.AnnualMaximum</td>
         <td><MatCheckbox @bind-Value="context.Model.Active" Disabled="true"></MatCheckbox></td>
@@ -63,10 +67,20 @@
             <p>
                 <MatTextField @bind-Value="ViewModel.NewOrEditEvent.AnnualMaximum" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["AnnualMax"]"></MatTextField>
                 <ValidationMessage For="() => ViewModel.NewOrEditEvent.AnnualMaximum"></ValidationMessage>
-            </p>
+            </p>            
+            <div>
+                <MatAutocompleteList Items="@ViewModel.MatIconNames" TItem="String" Label="@Loc["SelectIcon"]" CustomStringSelector="@(i => i)"
+                                     @bind-Value="ViewModel.NewOrEditEvent.IconName" Context="selectContext">
+                    <ItemTemplate>
+                        <MatIcon Icon="@selectContext" />
+                        <span class="m-3">@selectContext</span>
+                    </ItemTemplate>
+                </MatAutocompleteList>
+            </div>
             <div>
                 <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.RequireAttachment" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["RequireAttachment"]"></MatCheckbox>
             </div>
+
             <div>
                 <MatCheckbox @bind-Value="ViewModel.NewOrEditEvent.Active" @bind-Disabled="ViewModel.IsSaving" Label="@Loc["Active"]"></MatCheckbox>
             </div>

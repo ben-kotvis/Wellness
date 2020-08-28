@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E3477C2-5546-470A-BD0F-A4776E3A592A}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		SignUpOrSignin.xml = SignUpOrSignin.xml
+		TrustFrameworkBase.xml = TrustFrameworkBase.xml
+		TrustFrameworkExtensions.xml = TrustFrameworkExtensions.xml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Api", "Wellness.Api\Wellness.Api.csproj", "{8E2B5A64-80C1-4ACC-B769-D0938ED87511}"
@@ -17,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Domain", "Wellness.Domain\Wellness.Domain.csproj", "{AABE5CCC-3019-4F84-8912-5B9FEE3C6932}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Persistance.Mongo", "Wellness.Persistance.Mongo\Wellness.Persistance.Mongo.csproj", "{29B2F770-E6FA-4C54-8E97-1D6813271F26}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Authorization.Api", "Wellness.Authorization.Api\Wellness.Authorization.Api.csproj", "{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +49,10 @@ Global
 		{29B2F770-E6FA-4C54-8E97-1D6813271F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29B2F770-E6FA-4C54-8E97-1D6813271F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29B2F770-E6FA-4C54-8E97-1D6813271F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
