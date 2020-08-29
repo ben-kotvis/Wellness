@@ -14,13 +14,13 @@ namespace Wellness.Domain
         {
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<T>>> GetBySelectedIndex(Guid userId, int selectedIndex, IRequestDependencies requestDependencies)
+        public async Task<IEnumerable<PersistenceWrapper<T>>> GetBySelectedIndex(Guid userId, int selectedIndex, IRequestDependencies<T> requestDependencies)
         {
             var dateBaseOnRelativeIndex = DateTimeOffset.UtcNow.AddMonths(selectedIndex);
 
             var startDate = new DateTime(dateBaseOnRelativeIndex.Year, dateBaseOnRelativeIndex.Month, 1, 0, 0, 0);
             var endDate = startDate.AddMonths(1);
-            var queryable = _domainDependencies.PersistanceService.Query.Where(i =>
+            var queryable = _domainDependencies.PersistanceService.Query(requestDependencies.CompanyId).Where(i =>
             i.Model.SubmissionDate >= startDate &&
             i.Model.SubmissionDate < endDate &&
             i.Model.UserId == userId);

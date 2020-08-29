@@ -14,18 +14,19 @@ namespace Wellness.Api.Controllers
     [Route("api/[controller]")]
     public class EventParticipationsController : WellnessControllerBase<EventParticipation>
     {
-        private readonly IParticipationDomainService<EventParticipation> _domainServiceBase;
 
         public EventParticipationsController(IParticipationDomainService<EventParticipation> domainServiceBase)
             :base(domainServiceBase)
         {
-            _domainServiceBase = domainServiceBase;
         }
 
         [HttpGet("users/{userId}/relativeIndex/{relativeIndex}")]
-        public async Task<IEnumerable<PersistenceWrapper<EventParticipation>>> Get(Guid userId, int relativeIndex, [FromServices] IRequestDependencies requestDependencies)
+        public async Task<IEnumerable<PersistenceWrapper<EventParticipation>>> Get(
+            Guid userId, 
+            int relativeIndex, 
+            [FromServices] IRequestDependencies<EventParticipation> requestDependencies)
         {
-            return await _domainServiceBase.GetBySelectedIndex(userId, relativeIndex, requestDependencies);
+            return await (_domainServiceBase as IParticipationDomainService<EventParticipation>).GetBySelectedIndex(userId, relativeIndex, requestDependencies);
         }
     }
 }

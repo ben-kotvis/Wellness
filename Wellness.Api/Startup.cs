@@ -16,12 +16,7 @@ using Wellness.Domain;
 using Wellness.Domain.ModelValidation;
 using Wellness.Model;
 using Wellness.Persistance.Mongo;
-
-
-
-
 using System.Linq;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace Wellness.Api
@@ -63,24 +58,24 @@ namespace Wellness.Api
                 return user ?? throw new System.Exception("User not resolved");
             });
 
-            services.AddTransient<IRequestDependencies, RequestDependencies>();
+            services.AddTransient(typeof(IRequestDependencies<>), typeof(RequestDependencies<>)); 
 
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());
             services.AddSingleton<IPersistanceReaderService<Activity>>(sp => sp.GetService<IPersistanceService<Activity>>());
-            services.AddSingleton(typeof(IValidate<>), typeof(Validation<>));
+            services.AddTransient(typeof(IValidate<>), typeof(Validation<>));
             services.AddSingleton(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddSingleton<IProfileDomainService, ProfileDomainService>();
             services.AddSingleton(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));
 
-            services.AddSingleton<IValidator<Activity>, ActivityValidation>();
-            services.AddSingleton<IValidator<Event>, EventValidation>();
-            services.AddSingleton<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
-            services.AddSingleton<IValidator<EventParticipation>, EventParticipationValidation>();
-            services.AddSingleton<IValidator<FrequentlyAskedQuestion>, FAQValidation>();
-            services.AddSingleton<IValidator<User>, UserValidation>();
+            services.AddTransient<IValidator<Activity>, ActivityValidation>();
+            services.AddTransient<IValidator<Event>, EventValidation>();
+            services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
+            services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
+            services.AddTransient<IValidator<FrequentlyAskedQuestion>, FAQValidation>();
+            services.AddTransient<IValidator<User>, UserValidation>();
 
             Console.WriteLine(Configuration.GetValue<string>("ClientSource"));
 

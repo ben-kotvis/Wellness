@@ -29,15 +29,15 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Update(frequentlyAskedQuestion, cancellationToken);
         }
 
-        public async Task<PersistenceWrapper<FrequentlyAskedQuestion>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<FrequentlyAskedQuestion>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
         {
-            var all = await _proxy.GetAll(cancellationToken);
+            var all = await _proxy.GetAll(companyId, cancellationToken);
             return all.FirstOrDefault(i => i.Model.Id == id);
         }
 
-        public Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(CancellationToken cancellationToken)
+        public Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
-            return _proxy.GetAll(cancellationToken);
+            return _proxy.GetAll(companyId, cancellationToken);
         }
 
         public Task Delete(Guid id, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace Wellness.Client.Services.Mock
         public IFrequentlyAskedQuestionService CreateEventManagement()
         {
             var eventManagementMock = new Mock<IFrequentlyAskedQuestionService>();
-            eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
+            eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .Returns((CancellationToken token) =>
             {
                 return Task.FromResult(new List<PersistenceWrapper<FrequentlyAskedQuestion>>(MockDataGenerator.FrequentlyAskedQuestions).AsEnumerable());

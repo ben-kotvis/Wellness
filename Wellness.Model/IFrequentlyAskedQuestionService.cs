@@ -10,8 +10,6 @@ namespace Wellness.Model
     {
         Task Create(FrequentlyAskedQuestion frequentlyAskedQuestion, CancellationToken cancellationToken);
 
-        Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(CancellationToken cancellationToken);
-
         Task Delete(Guid id, CancellationToken cancellationToken);
 
         Task Update(FrequentlyAskedQuestion frequentlyAskedQuestion, CancellationToken cancellationToken);

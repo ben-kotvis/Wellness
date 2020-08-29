@@ -26,7 +26,7 @@ namespace Wellness.Api.Controllers
         }
 
         [HttpGet("me")]
-        public async Task<IActionResult> GetMe([FromServices] IRequestDependencies requestDependencies)
+        public async Task<IActionResult> GetMe([FromServices] IRequestDependencies<User> requestDependencies)
         {
             var item =  await (_domainServiceBase as IProfileDomainService).GetCurrentUser(requestDependencies);
 

@@ -15,12 +15,11 @@ namespace Wellness.Domain
         {
         }
 
-
-        public async Task<PersistenceWrapper<User>> GetCurrentUser(IRequestDependencies requestDependencies)
+        public async Task<PersistenceWrapper<User>> GetCurrentUser(IRequestDependencies<User> requestDependencies)
         {
-            var id = requestDependencies.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var id = requestDependencies.Principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
-            var queryable = _domainDependencies.PersistanceService.Query.Where(i => i.Model.ProviderObjectId == id);
+            var queryable = _domainDependencies.PersistanceService.Query(requestDependencies.CompanyId).Where(i => i.Model.ProviderObjectId == id);
             return await queryable.FirstOrDefaultAsync(requestDependencies.CancellationToken);
         }
 

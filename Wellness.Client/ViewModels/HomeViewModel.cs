@@ -46,7 +46,7 @@ namespace Wellness.Client.ViewModels
                     _navigation.NavigateTo("/Dashboard");
                 }
                 var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-                NewOrEditUser.ProviderObjectId = state.User.FindFirst("oid").Value;
+                NewOrEditUser.ProviderObjectId = state.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
                 IsLoading = false;
             }
         }

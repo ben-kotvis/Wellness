@@ -59,7 +59,7 @@ namespace Wellness.Api
                 return user ?? throw new System.Exception("User not resolved");
             });
 
-            services.AddTransient<IRequestDependencies, RequestDependencies>();
+            services.AddTransient(typeof(IRequestDependencies<>), typeof(RequestDependencies<>));
 
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));

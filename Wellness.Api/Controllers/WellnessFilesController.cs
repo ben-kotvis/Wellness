@@ -20,7 +20,7 @@ namespace Wellness.Api.Controllers
     public class WellnessFilesController: ControllerBase
     {
         [HttpPost]
-        public async Task<IEnumerable<EventAttachment>> Post([FromServices] IRequestDependencies requestDependencies)
+        public async Task<IEnumerable<EventAttachment>> Post()
         {
             var fileList = new List<EventAttachment>();
             if (HttpContext.Request.Form.Files.Any())
@@ -49,7 +49,7 @@ namespace Wellness.Api.Controllers
         }
 
         [HttpGet("{contentType}/{fileName}")]
-        public async Task<IActionResult> Get([FromRoute] string contentType, [FromRoute] string fileName, [FromServices] IRequestDependencies requestDependencies)
+        public async Task<IActionResult> Get([FromRoute] string contentType, [FromRoute] string fileName)
         {
             if (fileName == null)
                 return Content("filename not present");

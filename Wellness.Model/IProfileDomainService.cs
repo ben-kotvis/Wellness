@@ -7,6 +7,6 @@ namespace Wellness.Model
 {
     public interface IProfileDomainService : IDomainService<User> 
     {
-        Task<PersistenceWrapper<User>> GetCurrentUser(IRequestDependencies requestDependencies);
+        Task<PersistenceWrapper<User>> GetCurrentUser(IRequestDependencies<User> requestDependencies);
     }
 }

@@ -25,14 +25,14 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Update(eventObj);
         }
 
-        public Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(CancellationToken cancellationToken)
+        public Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
-            return _proxy.GetAll(cancellationToken);
+            return _proxy.GetAll(MockDataGenerator.CompanyId, cancellationToken);
         }
 
-        public async Task<PersistenceWrapper<Event>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<Event>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
         {
-            return (await _proxy.GetAll(cancellationToken)).FirstOrDefault(i => i.Model.Id == id);
+            return (await _proxy.GetAll(companyId, cancellationToken)).FirstOrDefault(i => i.Model.Id == id);
         }
 
         public Task Disable(Guid eventId)
@@ -43,7 +43,7 @@ namespace Wellness.Client.Services.Mock
         public IEventManagementService CreateEventManagement()
         {
             var eventManagementMock = new Mock<IEventManagementService>();
-            eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
+            eventManagementMock.Setup(ams => ams.GetAll(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .Returns(() =>
             {
                 return Task.FromResult(new List<PersistenceWrapper<Event>>(MockDataGenerator.Events).AsEnumerable());

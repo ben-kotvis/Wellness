@@ -11,9 +11,11 @@ namespace Wellness.Domain.ModelValidation
     public class EventParticipationValidation : AbstractValidator<EventParticipation>
     {
         private readonly IPersistanceReaderService<Event> _eventManagementService;
+        private readonly IRequestDependencies<Event> _requestDependencies;
 
-        public EventParticipationValidation(IPersistanceReaderService<Event> eventManagementService)
+        public EventParticipationValidation(IPersistanceReaderService<Event> eventManagementService, IRequestDependencies<Event> requestDependencies)
         {
+            _requestDependencies = requestDependencies;
             _eventManagementService = eventManagementService;
             RuleFor(e => e.Event).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
@@ -37,7 +39,7 @@ namespace Wellness.Domain.ModelValidation
                 return true;
             }
 
-            var events = await _eventManagementService.GetAll(cancellationToken);
+            var events = await _eventManagementService.GetAll(_requestDependencies.CompanyId, cancellationToken);
 
             var eventObj = events.FirstOrDefault(i => i.Model.Id == eventParticipation.Event.Id);
 

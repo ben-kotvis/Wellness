@@ -10,7 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E3477C2-5546-470A-BD0F-A4776E3A592A}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		SignUpOrSignin.xml = SignUpOrSignin.xml
+		SignUpSignInGoogle.xml = SignUpSignInGoogle.xml
 		TrustFrameworkBase.xml = TrustFrameworkBase.xml
 		TrustFrameworkExtensions.xml = TrustFrameworkExtensions.xml
 	EndProjectSection

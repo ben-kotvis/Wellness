@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,11 +37,11 @@ namespace Wellness.Client.Services
             Reset();
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
             return await _events.Value;
         }
-        public async Task<PersistenceWrapper<Event>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<Event>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
         {
             return (await _events.Value).FirstOrDefault(i => i.Model.Id == id);
         }

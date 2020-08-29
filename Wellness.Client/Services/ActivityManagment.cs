@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,11 +40,11 @@ namespace Wellness.Client.Services
             Reset();
         }
 
-        public async Task<PersistenceWrapper<Activity>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<Activity>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
         {
             return (await _activities.Value).FirstOrDefault(i => i.Model.Id == id);
         }
-        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
             return await _activities.Value;
         }
