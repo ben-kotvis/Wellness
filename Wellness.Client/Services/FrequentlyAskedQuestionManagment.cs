@@ -41,11 +41,11 @@ namespace Wellness.Client.Services
             Reset();
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(Guid companyId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(CancellationToken cancellationToken)
         {
             return await _events.Value;
         }
-        public async Task<PersistenceWrapper<FrequentlyAskedQuestion>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<FrequentlyAskedQuestion>> Get(Guid id, CancellationToken cancellationToken)
         {
             return (await _events.Value).FirstOrDefault(i => i.Model.Id == id);
         }

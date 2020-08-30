@@ -8,11 +8,9 @@ namespace Wellness.Domain.ModelValidation
 {
     public class CompanyValidation : AbstractValidator<Company>
     {
-        private readonly IPersistanceReaderService<Company> _activityManagementService;
-        private readonly IRequestDependencies<Company> _requestDependencies;
-        public CompanyValidation(IPersistanceReaderService<Company> activityManagementService, IRequestDependencies<Company> requestDependencies)
+        private readonly IReaderService<Company> _activityManagementService;
+        public CompanyValidation(IReaderService<Company> activityManagementService)
         {
-            _requestDependencies = requestDependencies;
             _activityManagementService = activityManagementService;
             RuleFor(e => e.Name).NotEmpty().MaximumLength(50).WithMessage("Please provide a value that is less than 50 characters");
             RuleFor(e => e.Name).MustAsync(CompanyNameIsUnique).WithMessage("Activity name must be unique");
@@ -20,7 +18,7 @@ namespace Wellness.Domain.ModelValidation
 
         private async Task<bool> CompanyNameIsUnique(Company activity, string activityName, CancellationToken cancellationToken)
         {
-            var activities = await _activityManagementService.GetAll(_requestDependencies.CompanyId, cancellationToken);
+            var activities = await _activityManagementService.GetAll(cancellationToken);
             return !activities.Any(i => i.Model.Id != activity.Id && i.Model.Name.ToLower() == activityName.ToLower());
         }
     }

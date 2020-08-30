@@ -27,7 +27,7 @@ namespace Wellness.Client.Services.Mock
         public IActivityManagementService CreateActivityManagement()
         {
             var activityManagementMock = new Mock<IActivityManagementService>();
-            activityManagementMock.Setup(ams => ams.GetAll(MockDataGenerator.CompanyId, It.IsAny<CancellationToken>()))
+            activityManagementMock.Setup(ams => ams.GetAll(It.IsAny<CancellationToken>()))
             .Returns(() =>
             {
                 return Task.FromResult(new List<PersistenceWrapper<Activity>>(MockDataGenerator.Activities).AsEnumerable());
@@ -75,14 +75,14 @@ namespace Wellness.Client.Services.Mock
             return _proxy.Disable(activityId);
         }
 
-        public async Task<PersistenceWrapper<Activity>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<Activity>> Get(Guid id, CancellationToken cancellationToken)
         {
-            return (await GetAll(companyId, cancellationToken)).FirstOrDefault(i => i.Model.Id == id);
+            return (await GetAll(cancellationToken)).FirstOrDefault(i => i.Model.Id == id);
         }
 
-        public Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(Guid companyId, CancellationToken cancellationToken)
+        public Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(CancellationToken cancellationToken)
         {
-            return _proxy.GetAll(MockDataGenerator.CompanyId, cancellationToken);
+            return _proxy.GetAll(cancellationToken);
         }
 
         public Task Update(Activity activity)
