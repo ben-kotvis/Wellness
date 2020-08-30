@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
 namespace Wellness.Client.ViewModels
 {
@@ -46,7 +47,8 @@ namespace Wellness.Client.ViewModels
                     _navigation.NavigateTo("/Dashboard");
                 }
                 var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-                NewOrEditUser.ProviderObjectId = state.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+                NewOrEditUser.ProviderObjectId = state.User.FindFirst("sub").Value;
                 IsLoading = false;
             }
         }
@@ -59,6 +61,7 @@ namespace Wellness.Client.ViewModels
 
             if (_clientState.CurrentUser == default)
             {
+                NewOrEditUser.Id = Guid.Parse(NewOrEditUser.ProviderObjectId);
                 await _profileService.Create(NewOrEditUser);
                 _clientState.CurrentUser = NewOrEditUser;
             }
