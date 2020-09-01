@@ -25,7 +25,7 @@
         <OutputClaim ClaimTypeReferenceId="email" />
         <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub"/>
         <OutputClaim ClaimTypeReferenceId="identityProvider" />        
-        <OutputClaim ClaimTypeReferenceId="companyId" AlwaysUseDefaultValue="true" DefaultValue="6f783ddd-2c46-4ba2-8c20-5c641daa6f36" />
+        <OutputClaim ClaimTypeReferenceId="companyId" DefaultValue="" />
         <OutputClaim ClaimTypeReferenceId="tenantId" AlwaysUseDefaultValue="true" DefaultValue="{Policy:TenantObjectId}" />
       </OutputClaims>
       <SubjectNamingInfo ClaimType="sub" />

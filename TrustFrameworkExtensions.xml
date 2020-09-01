@@ -18,6 +18,12 @@
         <DisplayName>Company Id</DisplayName>
         <DataType>string</DataType>
         <UserHelpText>Enter CompanyId</UserHelpText>
+        <UserInputType>DropdownSingleSelect</UserInputType>
+        <Restriction>
+          <Enumeration Text="Bellevue" Value="6f783ddd-2c46-4ba2-8c20-5c641daa6f36" SelectByDefault="false" />
+          <Enumeration Text="Redmond" Value="6f783ddd-2c46-4ba2-8c20-5c641daa6f36" SelectByDefault="false" />
+          <Enumeration Text="Kirkland" Value="6f783ddd-2c46-4ba2-8c20-5c641daa6f36" SelectByDefault="false" />
+        </Restriction>
       </ClaimType>
     </ClaimsSchema>
   </BuildingBlocks>
@@ -81,6 +87,30 @@
       </TechnicalProfiles>
     </ClaimsProvider>
 
+
+    <ClaimsProvider>
+      <DisplayName>Self Asserted</DisplayName>
+      <TechnicalProfiles>
+        <!--Federated account first-time sign-in page-->
+        <TechnicalProfile Id="SelfAsserted-Social">
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="displayName"/>
+            <OutputClaim ClaimTypeReferenceId="givenName"/>
+            <OutputClaim ClaimTypeReferenceId="surname"/>
+            <OutputClaim ClaimTypeReferenceId="companyId"/>
+          </OutputClaims>
+        </TechnicalProfile>
+        <!--Edit profile page-->
+        <TechnicalProfile Id="SelfAsserted-ProfileUpdate">
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="displayName"/>
+            <OutputClaim ClaimTypeReferenceId="givenName" />
+            <OutputClaim ClaimTypeReferenceId="surname" />
+            <OutputClaim ClaimTypeReferenceId="companyId"/>
+          </OutputClaims>
+        </TechnicalProfile>
+      </TechnicalProfiles>
+    </ClaimsProvider>
   </ClaimsProviders>
 
 
