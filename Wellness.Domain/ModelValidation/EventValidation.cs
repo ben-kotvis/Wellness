@@ -8,9 +8,9 @@ namespace Wellness.Domain.ModelValidation
 {
     public class EventValidation : AbstractValidator<Event>
     {
-        private readonly IReaderService<Event> _eventManagementService;
+        private readonly IPersistanceReaderService<Event> _eventManagementService;
 
-        public EventValidation(IReaderService<Event> eventManagementService)
+        public EventValidation(IPersistanceReaderService<Event> eventManagementService)
         {
             _eventManagementService = eventManagementService;
             RuleFor(e => e.Name).NotEmpty().MaximumLength(50).WithMessage("Please provide a value that is less than 50 characters");

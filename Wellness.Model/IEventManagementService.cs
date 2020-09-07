@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public interface IEventManagementService : IReaderService<Event>
+    public interface IEventManagementService : IPersistanceReaderService<Event>
     {
         Task Create(Event eventObj);
         Task Update(Event eventObj);

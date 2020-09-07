@@ -19,7 +19,7 @@ namespace Wellness.Domain
         {
             var id = requestDependencies.Principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
-            var queryable = _domainDependencies.PersistanceService.Query(requestDependencies.CompanyId).Where(i => i.Model.ProviderObjectId == id);
+            var queryable = _domainDependencies.PersistanceService.Reader.Query(requestDependencies.CompanyId).Where(i => i.Model.ProviderObjectId == id);
             return await queryable.FirstOrDefaultAsync(requestDependencies.CancellationToken);
         }
 

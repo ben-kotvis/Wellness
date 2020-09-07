@@ -8,8 +8,8 @@ namespace Wellness.Domain.ModelValidation
 {
     public class CompanyValidation : AbstractValidator<Company>
     {
-        private readonly IReaderService<Company> _activityManagementService;
-        public CompanyValidation(IReaderService<Company> activityManagementService)
+        private readonly IPersistanceReaderService<Company> _activityManagementService;
+        public CompanyValidation(IPersistanceReaderService<Company> activityManagementService)
         {
             _activityManagementService = activityManagementService;
             RuleFor(e => e.Name).NotEmpty().MaximumLength(50).WithMessage("Please provide a value that is less than 50 characters");

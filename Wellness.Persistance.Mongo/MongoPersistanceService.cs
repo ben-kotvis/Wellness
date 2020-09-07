@@ -40,11 +40,11 @@ namespace Wellness.Persistance.Mongo
             }
         }
 
-        public IModelQueryable<PersistenceWrapper<T>> Query(Guid companyId)
+        public ICompanyModelQueryable<PersistenceWrapper<T>> Query(Guid companyId)
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return new ModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable(), companyId);
+            return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable(), companyId);
 
         }
 

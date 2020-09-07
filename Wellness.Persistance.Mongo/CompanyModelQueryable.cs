@@ -10,15 +10,17 @@ using Wellness.Model;
 
 namespace Wellness.Persistance.Mongo
 {
-    public class ModelQueryable<T> : IModelQueryable<T> where T : IIdentifiable
+    public class CompanyModelQueryable<T> : ICompanyModelQueryable<T> where T : IHaveCommon
     {
         private IMongoQueryable<T> _wrapped;
-        public ModelQueryable(IMongoQueryable<T> wrapped)
+        private readonly Guid _companyId;
+        public CompanyModelQueryable(IMongoQueryable<T> wrapped, Guid companyId)
         {
             _wrapped = wrapped;
+            _companyId = companyId;
         }
 
-        public IModelQueryable<T> Where(Expression<Func<T, bool>> condition)
+        public ICompanyModelQueryable<T> Where(Expression<Func<T, bool>> condition)
         {
             _wrapped = _wrapped.Where(condition);
             return this;
@@ -26,12 +28,12 @@ namespace Wellness.Persistance.Mongo
 
         public async Task<List<T>> ToListAsync(CancellationToken cancellationToken)
         {
-            return await _wrapped.ToListAsync(cancellationToken);
+            return await _wrapped.Where(i => i.Common.CompanyId == _companyId).ToListAsync(cancellationToken);
         }
 
         public async Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken)
         {
-            return await _wrapped.FirstOrDefaultAsync(cancellationToken);
+            return await _wrapped.Where(i => i.Common.CompanyId == _companyId).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

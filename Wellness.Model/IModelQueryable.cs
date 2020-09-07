@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public interface IModelQueryable<T> where T : IHaveCommon
+    public interface IModelQueryable<T> where T : IIdentifiable
     {
 
         Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken);

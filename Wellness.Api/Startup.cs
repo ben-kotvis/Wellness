@@ -61,11 +61,11 @@ namespace Wellness.Api
             services.AddTransient(typeof(IRequestDependencies<>), typeof(RequestDependencies<>)); 
 
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
-            services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
-            services.AddSingleton<IPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());
-            services.AddSingleton<IPersistanceReaderService<Activity>>(sp => sp.GetService<IPersistanceService<Activity>>());
-            services.AddTransient<IReaderService<Event>>(sp => new ReaderService<Event>(sp.GetService<IPersistanceReaderService<Event>>(), sp.GetService<ClaimsPrincipal>()));
-            services.AddTransient<IReaderService<Activity>>(sp => new ReaderService<Activity>(sp.GetService<IPersistanceReaderService<Activity>>(), sp.GetService<ClaimsPrincipal>()));
+            services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoCompanyPersistanceService<>));
+            services.AddSingleton<ICompanyPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());
+            services.AddSingleton<ICompanyPersistanceReaderService<Activity>>(sp => sp.GetService<IPersistanceService<Activity>>());
+            services.AddTransient<IPersistanceReaderService<Event>>(sp => new ReaderService<Event>(sp.GetService<ICompanyPersistanceReaderService<Event>>(), sp.GetService<ClaimsPrincipal>()));
+            services.AddTransient<IPersistanceReaderService<Activity>>(sp => new ReaderService<Activity>(sp.GetService<ICompanyPersistanceReaderService<Activity>>(), sp.GetService<ClaimsPrincipal>()));
             services.AddTransient(typeof(IValidate<>), typeof(Validation<>));
             services.AddSingleton(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));

@@ -8,19 +8,21 @@ using Wellness.Model;
 
 namespace Wellness.Api
 {
-    public class ReaderService<T> : IReaderService<T>
+    public class ReaderService<T> : IPersistanceReaderService<T>
         where T : IIdentifiable
     {
-        private readonly IPersistanceReaderService<T> _persistanceReaderService;
+        private readonly ICompanyPersistanceReaderService<T> _persistanceReaderService;
         private readonly ClaimsPrincipal _claimsPrincipal;
         private readonly Guid _companyId;
         public ReaderService(
-            IPersistanceReaderService<T> persistanceReaderService, ClaimsPrincipal claimsPrincipal)
+            ICompanyPersistanceReaderService<T> persistanceReaderService, ClaimsPrincipal claimsPrincipal)
         {
             _persistanceReaderService = persistanceReaderService;
             _claimsPrincipal = claimsPrincipal;
             _companyId = Guid.Parse(claimsPrincipal.FindFirstValue("companyId"));
         }
+
+        public ICompanyModelQueryable<PersistenceWrapper<T>> Query { get { return _persistanceReaderService.Query(_companyId); } }
 
         public Task<PersistenceWrapper<T>> Get(Guid id, CancellationToken cancellationToken)
         {

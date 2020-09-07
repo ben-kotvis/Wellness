@@ -10,9 +10,9 @@ namespace Wellness.Domain.ModelValidation
 {
     public class EventParticipationValidation : AbstractValidator<EventParticipation>
     {
-        private readonly IReaderService<Event> _eventManagementService;
+        private readonly IPersistanceReaderService<Event> _eventManagementService;
 
-        public EventParticipationValidation(IReaderService<Event> eventManagementService)
+        public EventParticipationValidation(IPersistanceReaderService<Event> eventManagementService)
         {
             _eventManagementService = eventManagementService;
             RuleFor(e => e.Event).NotNull();

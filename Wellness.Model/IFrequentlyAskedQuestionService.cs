@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wellness.Model
 {
-    public interface IFrequentlyAskedQuestionService : IReaderService<FrequentlyAskedQuestion>
+    public interface IFrequentlyAskedQuestionService : IPersistanceReaderService<FrequentlyAskedQuestion>
     {
         Task Create(FrequentlyAskedQuestion frequentlyAskedQuestion, CancellationToken cancellationToken);
 

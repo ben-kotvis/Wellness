@@ -8,8 +8,8 @@ namespace Wellness.Domain.ModelValidation
 {
     public class CompanyUserRolesValidation : AbstractValidator<CompanyUserRoles>
     {
-        private readonly IReaderService<CompanyUserRoles> _activityManagementService;
-        public CompanyUserRolesValidation(IReaderService<CompanyUserRoles> activityManagementService)
+        private readonly IPersistanceReaderService<CompanyUserRoles> _activityManagementService;
+        public CompanyUserRolesValidation(IPersistanceReaderService<CompanyUserRoles> activityManagementService)
         {
             _activityManagementService = activityManagementService;
         }

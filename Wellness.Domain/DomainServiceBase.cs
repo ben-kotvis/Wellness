@@ -30,25 +30,25 @@ namespace Wellness.Domain
                 UpdatedOn = DateTimeOffset.UtcNow,
                 CompanyId = requestDependencies.CompanyId
             });
-            await _domainDependencies.PersistanceService.Create(wrapper, requestDependencies.CancellationToken);
+            await _domainDependencies.PersistanceService.Transactions.Create(wrapper, requestDependencies.CancellationToken);
         }
         public async Task Update(T model, IRequestDependencies<T> requestDependencies)
         {
             await requestDependencies.Validator.ValidateAndThrowAsync(model);
 
-            var existing = await _domainDependencies.PersistanceService.Get(model.Id, requestDependencies.CompanyId, requestDependencies.CancellationToken);
+            var existing = await _domainDependencies.PersistanceService.Reader.Get(model.Id, requestDependencies.CompanyId, requestDependencies.CancellationToken);
             existing.Common.UpdatedBy = requestDependencies.Principal.Identity.Name;
             existing.Common.UpdatedOn = DateTimeOffset.UtcNow;
             existing.Common.CompanyId = requestDependencies.CompanyId;
 
             _domainDependencies.Mapper.Map(model, existing.Model);
 
-            await _domainDependencies.PersistanceService.Update(existing, requestDependencies.CancellationToken);
+            await _domainDependencies.PersistanceService.Transactions.Update(existing, requestDependencies.CancellationToken);
         }
 
         public async Task<IEnumerable<PersistenceWrapper<T>>> GetAll(IRequestDependencies<T> requestDependencies)
         {
-            var result = await _domainDependencies.PersistanceService.GetAll(requestDependencies.CompanyId, requestDependencies.CancellationToken);
+            var result = await _domainDependencies.PersistanceService.Reader.GetAll(requestDependencies.CompanyId, requestDependencies.CancellationToken);
             if(result == null)
             {
                 return Enumerable.Empty<PersistenceWrapper<T>>();
@@ -59,12 +59,12 @@ namespace Wellness.Domain
 
         public async Task<PersistenceWrapper<T>> Get(Guid id, IRequestDependencies<T> requestDependencies)
         {
-            return await _domainDependencies.PersistanceService.Get(id, requestDependencies.CompanyId, requestDependencies.CancellationToken);
+            return await _domainDependencies.PersistanceService.Reader.Get(id, requestDependencies.CompanyId, requestDependencies.CancellationToken);
         }
 
         public async Task Delete(Guid id, IRequestDependencies<T> requestDependencies)
         {
-            await _domainDependencies.PersistanceService.Delete(id, requestDependencies.CancellationToken);
+            await _domainDependencies.PersistanceService.Transactions.Delete(id, requestDependencies.CancellationToken);
             await _domainDependencies.ClientNotifier.SendNotification("Test");
         }
 
