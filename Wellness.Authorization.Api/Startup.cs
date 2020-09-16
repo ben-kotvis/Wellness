@@ -62,9 +62,9 @@ namespace Wellness.Api
             services.AddTransient(typeof(IRequestDependencies<>), typeof(RequestDependencies<>));
 
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
-            services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoCompanyPersistanceService<>));
+            services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
             services.AddSingleton(typeof(IValidate<>), typeof(Validation<>));
-            services.AddSingleton(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
+            services.AddSingleton(typeof(IDomainDependencies<>), typeof(CompanyDomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddSingleton<IProfileDomainService, ProfileDomainService>();
 

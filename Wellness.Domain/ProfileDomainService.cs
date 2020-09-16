@@ -10,7 +10,7 @@ namespace Wellness.Domain
 {
     public class ProfileDomainService : DomainServiceBase<User>, IProfileDomainService
     {
-        public ProfileDomainService(IDomainDependencies<User> domainDependencies)
+        public ProfileDomainService(ICompanyDomainDependencies<User> domainDependencies)
             :base(domainDependencies)
         {
         }

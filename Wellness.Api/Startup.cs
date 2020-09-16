@@ -67,7 +67,7 @@ namespace Wellness.Api
             services.AddTransient<IPersistanceReaderService<Event>>(sp => new ReaderService<Event>(sp.GetService<ICompanyPersistanceReaderService<Event>>(), sp.GetService<ClaimsPrincipal>()));
             services.AddTransient<IPersistanceReaderService<Activity>>(sp => new ReaderService<Activity>(sp.GetService<ICompanyPersistanceReaderService<Activity>>(), sp.GetService<ClaimsPrincipal>()));
             services.AddTransient(typeof(IValidate<>), typeof(Validation<>));
-            services.AddSingleton(typeof(IDomainDependencies<>), typeof(DomainDependencies<>));
+            services.AddSingleton(typeof(ICompanyDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddSingleton<IProfileDomainService, ProfileDomainService>();
             services.AddSingleton(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));

@@ -16,6 +16,9 @@ namespace Wellness.Client.Services
         private readonly HttpClient _httpClient;
 
         private Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>> _activities;
+
+        public ICompanyModelQueryable<PersistenceWrapper<Activity>> Query => throw new NotImplementedException();
+
         public ActivityManagment(HttpClient httpClient)
         {
             _httpClient = httpClient;

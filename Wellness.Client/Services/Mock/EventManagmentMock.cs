@@ -11,6 +11,9 @@ namespace Wellness.Client.Services.Mock
     public class EventManagmentMock : IEventManagementService
     {
         private IEventManagementService _proxy;
+
+        public ICompanyModelQueryable<PersistenceWrapper<Event>> Query => throw new NotImplementedException();
+
         public EventManagmentMock()
         {
             _proxy = CreateEventManagement();

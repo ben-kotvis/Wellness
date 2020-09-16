@@ -19,6 +19,9 @@ namespace Wellness.Client.Services
         private Lazy<Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>>> _events;
 
         private readonly HttpClient _httpClient;
+
+        public ICompanyModelQueryable<PersistenceWrapper<FrequentlyAskedQuestion>> Query => throw new NotImplementedException();
+
         public FrequentlyAskedQuestionManagment(IHttpClientFactory clientFactory)
         {
             _httpClient = clientFactory.CreateClient("Default");

@@ -9,7 +9,7 @@ namespace Wellness.Domain
     public class ParticipationDomainService<T> : DomainServiceBase<T>, IParticipationDomainService<T>
         where T : IIdentifiable, IParticipate
     {
-        public ParticipationDomainService(IDomainDependencies<T> domainDependencies)
+        public ParticipationDomainService(ICompanyDomainDependencies<T> domainDependencies)
             : base(domainDependencies)
         {
         }

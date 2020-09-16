@@ -19,6 +19,8 @@ namespace Wellness.Client.Services.Mock
             _proxy = CreateActivityManagement();
         }
 
+        public ICompanyModelQueryable<PersistenceWrapper<Activity>> Query => throw new NotImplementedException();
+
         public Task Create(Activity activity)
         {
             return _proxy.Create(activity);

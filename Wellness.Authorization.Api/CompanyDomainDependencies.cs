@@ -4,23 +4,19 @@ using Wellness.Model;
 
 namespace Wellness.Api
 {
-    public class DomainDependencies<T> : IDomainDependencies<T>
+    public class CompanyDomainDependencies<T> : IDomainDependencies<T>
         where T : IIdentifiable
     {
-        public DomainDependencies(
-            IPersistanceService<T> persistanceService,
-            IValidate<T> validator,
+        public CompanyDomainDependencies(
+            ICompoundPersistanceService<T> persistanceService,
             IMap mapper,
             IClientNotifier clientNotifier)
         {
             PersistanceService = persistanceService;
-            Validator = validator;
             this.Mapper = mapper;
             this.ClientNotifier = clientNotifier;
         }
-        public IPersistanceService<T> PersistanceService { get; }
-
-        public IValidate<T> Validator { get; }
+        public ICompoundPersistanceService<T> PersistanceService { get; }
 
         public IMap Mapper { get; }
 

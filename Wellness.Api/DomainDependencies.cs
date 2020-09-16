@@ -8,7 +8,7 @@ namespace Wellness.Api
         where T : IIdentifiable
     {
         public DomainDependencies(
-            IPersistanceService<T> persistanceService,
+            ICompoundCompanyPersistanceService<T> persistanceService,
             IMap mapper,
             IClientNotifier clientNotifier)
         {
@@ -16,7 +16,7 @@ namespace Wellness.Api
             this.Mapper = mapper;
             this.ClientNotifier = clientNotifier;
         }
-        public IPersistanceService<T> PersistanceService { get; }
+        public ICompoundCompanyPersistanceService<T> PersistanceService { get; }
 
         public IMap Mapper { get; }
 

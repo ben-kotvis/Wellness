@@ -11,8 +11,8 @@ namespace Wellness.Domain
     public class DomainServiceBase<T> : IDomainService<T>
         where T : IIdentifiable
     {
-        protected readonly IDomainDependencies<T> _domainDependencies;
-        public DomainServiceBase(IDomainDependencies<T> domainDependencies)
+        protected readonly ICompanyDomainDependencies<T> _domainDependencies;
+        public DomainServiceBase(ICompanyDomainDependencies<T> domainDependencies)
         {
             _domainDependencies = domainDependencies;
         }

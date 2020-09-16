@@ -15,6 +15,9 @@ namespace Wellness.Client.Services
         private Lazy<Task<IEnumerable<PersistenceWrapper<Event>>>> _events;
 
         private readonly HttpClient _httpClient;
+
+        public ICompanyModelQueryable<PersistenceWrapper<Event>> Query => throw new NotImplementedException();
+
         public EventManagment(IHttpClientFactory clientFactory)
         {
             _httpClient = clientFactory.CreateClient("Default");

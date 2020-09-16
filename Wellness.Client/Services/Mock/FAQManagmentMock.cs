@@ -14,6 +14,9 @@ namespace Wellness.Client.Services.Mock
     {
         private IFrequentlyAskedQuestionService _proxy;
         private IMapper _mapper;
+
+        public ICompanyModelQueryable<PersistenceWrapper<FrequentlyAskedQuestion>> Query => throw new NotImplementedException();
+
         public FAQManagmentMock(IMapper mapper)
         {
             _mapper = mapper;
