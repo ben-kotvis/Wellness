@@ -14,10 +14,9 @@ namespace Wellness.Persistance.Mongo
     {
         private IMongoQueryable<T> _wrapped;
         private readonly Guid _companyId;
-        public CompanyModelQueryable(IMongoQueryable<T> wrapped, Guid companyId)
+        public CompanyModelQueryable(IMongoQueryable<T> wrapped)
         {
             _wrapped = wrapped;
-            _companyId = companyId;
         }
 
         public ICompanyModelQueryable<T> Where(Expression<Func<T, bool>> condition)

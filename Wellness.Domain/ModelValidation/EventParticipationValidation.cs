@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Model;
@@ -10,11 +11,12 @@ namespace Wellness.Domain.ModelValidation
 {
     public class EventParticipationValidation : AbstractValidator<EventParticipation>
     {
-        private readonly IPersistanceReaderService<Event> _eventManagementService;
-
-        public EventParticipationValidation(IPersistanceReaderService<Event> eventManagementService)
+        private readonly ICompanyPersistanceReaderService<Event> _eventManagementService;
+        private readonly Guid _companyId;
+        public EventParticipationValidation(ICompanyPersistanceReaderService<Event> eventManagementService, ClaimsPrincipal claimsPrincipal)
         {
             _eventManagementService = eventManagementService;
+            _companyId = Guid.Parse(claimsPrincipal.FindFirst("companyId").Value);
             RuleFor(e => e.Event).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
             RuleFor(e => e.Attachment).MustAsync(AttachmentIsMissing);
@@ -37,7 +39,7 @@ namespace Wellness.Domain.ModelValidation
                 return true;
             }
 
-            var events = await _eventManagementService.GetAll(cancellationToken);
+            var events = await _eventManagementService.GetAll(_companyId, cancellationToken);
 
             var eventObj = events.FirstOrDefault(i => i.Model.Id == eventParticipation.Event.Id);
 

@@ -12,7 +12,7 @@ using Wellness.Model;
 
 namespace Wellness.Persistance.Mongo
 {
-    public class MongoPersistanceService<T> : IPersistanceService<T> where T : IIdentifiable
+    public class MongoPersistanceService<T> : IPersistanceService<T>, IPersistanceReaderService<T> where T : IIdentifiable
     {
         private readonly MongoClient _mongoClient;
         private readonly string _database;
@@ -40,13 +40,17 @@ namespace Wellness.Persistance.Mongo
             }
         }
 
-        public ICompanyModelQueryable<PersistenceWrapper<T>> Query(Guid companyId)
+        public ICompanyModelQueryable<PersistenceWrapper<T>> Query
         {
-            var database = _mongoClient.GetDatabase(_database);
-            var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable(), companyId);
-
+            get
+            {
+                var database = _mongoClient.GetDatabase(_database);
+                var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
+                return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable());
+            }
         }
+
+        ICompanyModelQueryable<PersistenceWrapper<T>> IPersistanceReaderService<T>.Query => throw new NotImplementedException();
 
         public async Task Create(PersistenceWrapper<T> wrapped, CancellationToken cancellationToken)
         {
@@ -56,11 +60,11 @@ namespace Wellness.Persistance.Mongo
             await collection.InsertOneAsync(wrapped, options, cancellationToken);
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<T>>> GetAll(Guid companyId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<T>>> GetAll(CancellationToken cancellationToken)
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return await collection.AsQueryable().Where(i => i.Common.CompanyId == companyId).ToListAsync(cancellationToken);
+            return await collection.AsQueryable().ToListAsync(cancellationToken);
         }
 
         public async Task Update(PersistenceWrapper<T> wrapped, CancellationToken cancellationToken)
@@ -77,19 +81,19 @@ namespace Wellness.Persistance.Mongo
             await collection.UpdateOneAsync(filter.Eq(i => i.Model.Id, wrapped.Model.Id), updateDefinition, cancellationToken: cancellationToken);
         }
 
-        public async Task<PersistenceWrapper<T>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<T>> Get(Guid id, CancellationToken cancellationToken)
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
             var filter = new FilterDefinitionBuilder<PersistenceWrapper<T>>();
-            return await collection.AsQueryable().Where(i => i.Common.CompanyId == companyId).Where(i => i.Model.Id == id).SingleAsync(cancellationToken);
+            return await collection.AsQueryable().Where(i => i.Model.Id == id).SingleAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<T>>> Get(Guid companyId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<T>>> Get(CancellationToken cancellationToken)
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return await collection.AsQueryable().Where(i => i.Common.CompanyId == companyId).ToListAsync(cancellationToken);
+            return await collection.AsQueryable().ToListAsync(cancellationToken);
         }
 
         public async Task Delete(Guid id, CancellationToken cancellationToken)

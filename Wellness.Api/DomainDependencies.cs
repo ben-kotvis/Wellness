@@ -4,7 +4,7 @@ using Wellness.Model;
 
 namespace Wellness.Api
 {
-    public class DomainDependencies<T> : IDomainDependencies<T>
+    public class DomainDependencies<T> : ICompanyDomainDependencies<T>
         where T : IIdentifiable
     {
         public DomainDependencies(

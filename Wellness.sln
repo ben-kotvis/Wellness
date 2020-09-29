@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Persistance.Mongo"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Authorization.Api", "Wellness.Authorization.Api\Wellness.Authorization.Api.csproj", "{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wellness.Authorization.Domain", "Wellness.Authorization.Domain\Wellness.Authorization.Domain.csproj", "{87888686-DA30-4317-B0D5-B31E5DA48F1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3039DFAE-A06E-4CD2-A8AE-72D1F089E507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87888686-DA30-4317-B0D5-B31E5DA48F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87888686-DA30-4317-B0D5-B31E5DA48F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87888686-DA30-4317-B0D5-B31E5DA48F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87888686-DA30-4317-B0D5-B31E5DA48F1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -62,16 +62,18 @@ namespace Wellness.Api
 
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoCompanyPersistanceService<>));
-            services.AddSingleton<ICompanyPersistanceReaderService<Event>>(sp => sp.GetService<IPersistanceService<Event>>());
-            services.AddSingleton<ICompanyPersistanceReaderService<Activity>>(sp => sp.GetService<IPersistanceService<Activity>>());
-            services.AddTransient<IPersistanceReaderService<Event>>(sp => new ReaderService<Event>(sp.GetService<ICompanyPersistanceReaderService<Event>>(), sp.GetService<ClaimsPrincipal>()));
-            services.AddTransient<IPersistanceReaderService<Activity>>(sp => new ReaderService<Activity>(sp.GetService<ICompanyPersistanceReaderService<Activity>>(), sp.GetService<ClaimsPrincipal>()));
+
+            services.AddSingleton<ICompanyPersistanceReaderService<User>>(sp => (ICompanyPersistanceReaderService<User>)sp.GetService<IPersistanceService<User>>());
+            services.AddSingleton<ICompanyPersistanceReaderService<Event>>(sp => (ICompanyPersistanceReaderService<Event>)sp.GetService<IPersistanceService<Event>>());
+            services.AddSingleton<ICompanyPersistanceReaderService<Activity>>(sp => (ICompanyPersistanceReaderService<Activity>)sp.GetService<IPersistanceService<Activity>>());
+
             services.AddTransient(typeof(IValidate<>), typeof(Validation<>));
             services.AddSingleton(typeof(ICompanyDomainDependencies<>), typeof(DomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));
             services.AddSingleton<IProfileDomainService, ProfileDomainService>();
             services.AddSingleton(typeof(IParticipationDomainService<>), typeof(ParticipationDomainService<>));
-
+            services.AddSingleton(typeof(ICompoundCompanyPersistanceService<>), typeof(CompoundPersistanceService<>));
+            
             services.AddTransient<IValidator<Activity>, ActivityValidation>();
             services.AddTransient<IValidator<Event>, EventValidation>();
             services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();

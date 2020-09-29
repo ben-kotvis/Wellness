@@ -12,7 +12,7 @@ using Wellness.Model;
 
 namespace Wellness.Persistance.Mongo
 {
-    public class MongoCompanyPersistanceService<T> : IPersistanceService<T> where T : IIdentifiable
+    public class MongoCompanyPersistanceService<T> : IPersistanceService<T>, ICompanyPersistanceReaderService<T> where T : IIdentifiable
     {
         private readonly MongoClient _mongoClient;
         private readonly string _database;
@@ -44,7 +44,7 @@ namespace Wellness.Persistance.Mongo
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable(), companyId);
+            return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable());
 
         }
 

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wellness.Domain\Wellness.Domain.csproj" />
+    <ProjectReference Include="..\Wellness.Authorization.Domain\Wellness.Authorization.Domain.csproj" />
     <ProjectReference Include="..\Wellness.Model\Wellness.Model.csproj" />
     <ProjectReference Include="..\Wellness.Persistance.Mongo\Wellness.Persistance.Mongo.csproj" />
   </ItemGroup>

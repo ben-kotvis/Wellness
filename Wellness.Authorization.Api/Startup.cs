@@ -12,13 +12,14 @@ using System;
 using System.Security.Claims;
 using System.Threading;
 using Wellness.Api.Authorization;
-using Wellness.Domain;
-using Wellness.Domain.ModelValidation;
+using Wellness.Authorization.Domain;
+using Wellness.Authorization.Domain.ModelValidation;
 using Wellness.Model;
 using Wellness.Persistance.Mongo;
 using System.Linq;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
+using Wellness.Authorization.Api;
 
 namespace Wellness.Api
 {
@@ -63,10 +64,16 @@ namespace Wellness.Api
 
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoPersistanceService<>));
+
+            services.AddSingleton(typeof(ICompoundPersistanceService<>), typeof(CompoundPersistanceService<>));
+
+            services.AddSingleton<IPersistanceReaderService<Company>>(sp => (IPersistanceReaderService<Company>)sp.GetService<IPersistanceService<Company>>());
+            services.AddSingleton<IPersistanceReaderService<CompanyUserRoles>>(sp => (IPersistanceReaderService<CompanyUserRoles>)sp.GetService<IPersistanceService<CompanyUserRoles>>());
+
             services.AddSingleton(typeof(IValidate<>), typeof(Validation<>));
             services.AddSingleton(typeof(IDomainDependencies<>), typeof(CompanyDomainDependencies<>));
             services.AddSingleton(typeof(IDomainService<>), typeof(DomainServiceBase<>));
-            services.AddSingleton<IProfileDomainService, ProfileDomainService>();
+
 
             services.AddSingleton<IValidator<Company>, CompanyValidation>();
             services.AddSingleton<IValidator<CompanyUserRoles>, CompanyUserRolesValidation>();
