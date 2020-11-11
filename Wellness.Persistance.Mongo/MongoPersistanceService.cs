@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Options;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
@@ -35,18 +38,20 @@ namespace Wellness.Persistance.Mongo
                 BsonClassMap.RegisterClassMap<PersistenceWrapper<T>>(cm =>
                 {
                     cm.AutoMap();
-                    cm.MapIdMember(c => c.Id);                    
+                    cm.MapIdMember(c => c.Id);
+                    cm.GetMemberMap(c => c.Common.CompanyId)
+                        .SetSerializer(new GuidSerializer(BsonType.ObjectId));
                 });
-            }
+            }                
         }
 
-        public ICompanyModelQueryable<PersistenceWrapper<T>> Query
+        public IModelQueryable<T> Query
         {
             get
             {
                 var database = _mongoClient.GetDatabase(_database);
-                var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-                return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable());
+                var collection = database.GetCollection<T>(_collectionName);
+                return new ModelQueryable<T>(collection.AsQueryable());
             }
         }
 

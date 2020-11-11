@@ -54,6 +54,18 @@ namespace Wellness.Client
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
+
+                //hack for now! msft bug
+                options.ProviderOptions.DefaultAccessTokenScopes = new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/user_impersonation", "offline_access", "openid" };
+                //hack for now! msft bug
+
+                // no popup window
+                options.ProviderOptions.LoginMode = "redirect";
+
+                //sign out, the user should be brought back to the home page
+                options.AuthenticationPaths.LogOutSucceededPath = "";
+
+
                 options.ProviderOptions.AdditionalScopesToConsent.Add("https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard");
             });
 
@@ -80,7 +92,7 @@ namespace Wellness.Client
             
             ConfigureHandler(
                 authorizedUrls: new[] { configuration.GetValue<string>("ServerAddress") },
-                scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile" });
+                scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile", "offline_access" });
         }
 
     }

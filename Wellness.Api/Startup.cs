@@ -63,9 +63,14 @@ namespace Wellness.Api
             services.AddSingleton<IClientNotifier, ClientNotificationHub>();
             services.AddSingleton(typeof(IPersistanceService<>), typeof(MongoCompanyPersistanceService<>));
 
-            services.AddSingleton<ICompanyPersistanceReaderService<User>>(sp => (ICompanyPersistanceReaderService<User>)sp.GetService<IPersistanceService<User>>());
-            services.AddSingleton<ICompanyPersistanceReaderService<Event>>(sp => (ICompanyPersistanceReaderService<Event>)sp.GetService<IPersistanceService<Event>>());
-            services.AddSingleton<ICompanyPersistanceReaderService<Activity>>(sp => (ICompanyPersistanceReaderService<Activity>)sp.GetService<IPersistanceService<Activity>>());
+
+            //ICompanyPersistanceReaderService
+            services.AddSingleton(sp => (ICompanyPersistanceReaderService<User>)sp.GetService<IPersistanceService<User>>());
+            services.AddSingleton(sp => (ICompanyPersistanceReaderService<Event>)sp.GetService<IPersistanceService<Event>>());
+            services.AddSingleton(sp => (ICompanyPersistanceReaderService<Activity>)sp.GetService<IPersistanceService<Activity>>());
+            services.AddSingleton(sp => (ICompanyPersistanceReaderService<EventParticipation>)sp.GetService<IPersistanceService<EventParticipation>>());
+            services.AddSingleton(sp => (ICompanyPersistanceReaderService<ActivityParticipation>)sp.GetService<IPersistanceService<ActivityParticipation>>());
+
 
             services.AddTransient(typeof(IValidate<>), typeof(Validation<>));
             services.AddSingleton(typeof(ICompanyDomainDependencies<>), typeof(DomainDependencies<>));
@@ -97,7 +102,7 @@ namespace Wellness.Api
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddMicrosoftWebApi(options =>
+                    .AddMicrosoftIdentityWebApi(options =>
                     {
                         Configuration.Bind("AzureAdB2C", options);
 

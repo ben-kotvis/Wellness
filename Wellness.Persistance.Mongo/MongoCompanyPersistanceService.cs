@@ -44,7 +44,7 @@ namespace Wellness.Persistance.Mongo
         {
             var database = _mongoClient.GetDatabase(_database);
             var collection = database.GetCollection<PersistenceWrapper<T>>(_collectionName);
-            return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable());
+            return new CompanyModelQueryable<PersistenceWrapper<T>>(collection.AsQueryable(), companyId);
 
         }
 

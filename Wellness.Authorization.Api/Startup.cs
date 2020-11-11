@@ -94,7 +94,7 @@ namespace Wellness.Api
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddMicrosoftWebApi(options =>
+                    .AddMicrosoftIdentityWebApi(options =>
                     {
                         Configuration.Bind("AzureAdB2C", options);
 
