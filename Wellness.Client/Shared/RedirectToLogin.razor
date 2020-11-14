@@ -3,7 +3,7 @@
 @code {
     protected override void OnInitialized()
     {
-        string redirectUri = $"{Navigation.Uri}/ProfileInfo";
+        string redirectUri = $"{Navigation.Uri}";
         Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(redirectUri)}");
     }
 }

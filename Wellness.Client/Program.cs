@@ -37,6 +37,9 @@ namespace Wellness.Client
             builder.Services.AddTransient<IValidator<User>, UserValidation>();
             builder.Services.AddSingleton<IClientState, ClientState>();
 
+
+
+            
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
@@ -61,10 +64,6 @@ namespace Wellness.Client
 
                 // no popup window
                 options.ProviderOptions.LoginMode = "redirect";
-
-                //sign out, the user should be brought back to the home page
-                options.AuthenticationPaths.LogOutSucceededPath = "";
-
 
                 options.ProviderOptions.AdditionalScopesToConsent.Add("https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard");
             });
