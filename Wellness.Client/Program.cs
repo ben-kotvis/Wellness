@@ -40,7 +40,7 @@ namespace Wellness.Client
             builder.Services.AddSingleton<IClientState, ClientState>();
 
 
-            builder.Services.AddScoped<ClaimsPrincipal>(sp =>
+            builder.Services.AddTransient<ClaimsPrincipal>(sp =>
             {
                 var provider = sp.GetService<AuthenticationStateProvider>();
                 var state = provider.GetAuthenticationStateAsync().GetAwaiter().GetResult();

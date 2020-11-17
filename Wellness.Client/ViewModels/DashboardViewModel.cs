@@ -189,8 +189,6 @@ namespace Wellness.Client.ViewModels
 
             await _activityParticipationService.Create(NewActivityParticipation);
 
-            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewActivityParticipation.SubmissionDate.Month);
-
             //clear out UI
             NewActivityParticipation = new ActivityParticipation();
 
@@ -212,8 +210,6 @@ namespace Wellness.Client.ViewModels
             NewEventParticipation.UserId = Id;
 
             await _eventParticipationService.Create(NewEventParticipation);
-
-            SelectedRelativeIndex = (DateTimeOffset.UtcNow.Month - NewEventParticipation.SubmissionDate.Month);
 
             await SetEventParticipations();
 
