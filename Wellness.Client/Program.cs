@@ -2,6 +2,7 @@ using FluentValidation;
 using Markdig;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Wellness.Client.Services;
@@ -38,7 +40,12 @@ namespace Wellness.Client
             builder.Services.AddSingleton<IClientState, ClientState>();
 
 
-
+            builder.Services.AddScoped<ClaimsPrincipal>(sp =>
+            {
+                var provider = sp.GetService<AuthenticationStateProvider>();
+                var state = provider.GetAuthenticationStateAsync().GetAwaiter().GetResult();
+                return state.User;
+            });
             
             builder.RootComponents.Add<App>("app");
 
@@ -64,6 +71,7 @@ namespace Wellness.Client
 
                 // no popup window
                 options.ProviderOptions.LoginMode = "redirect";
+                options.AuthenticationPaths.LogInCallbackPath = "https://localhost:44353/ProfileInfo";
 
                 options.ProviderOptions.AdditionalScopesToConsent.Add("https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard");
             });

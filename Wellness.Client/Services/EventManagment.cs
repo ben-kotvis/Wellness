@@ -16,7 +16,7 @@ namespace Wellness.Client.Services
 
         private readonly HttpClient _httpClient;
 
-        public ICompanyModelQueryable<PersistenceWrapper<Event>> Query => throw new NotImplementedException();
+        public ICompanyModelQueryable<PersistenceWrapper<Event>> Query(Guid companyId)  => throw new NotImplementedException();
 
         public EventManagment(IHttpClientFactory clientFactory)
         {
@@ -40,11 +40,11 @@ namespace Wellness.Client.Services
             Reset();
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<Event>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
             return await _events.Value;
         }
-        public async Task<PersistenceWrapper<Event>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<Event>> Get(Guid id, Guid companyId, CancellationToken cancellationToken)
         {
             return (await _events.Value).FirstOrDefault(i => i.Model.Id == id);
         }

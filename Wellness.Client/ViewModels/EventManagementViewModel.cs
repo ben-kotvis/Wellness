@@ -42,7 +42,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            Events = await _eventManagementService.GetAll(CancellationToken.None);
+            Events = await _eventManagementService.GetAll(Guid.Empty, CancellationToken.None);
             MatIconNames = GetConstants(typeof(MatBlazor.MatIconNames));
         }
         private List<string> GetConstants(Type type)
@@ -69,7 +69,7 @@ namespace Wellness.Client.ViewModels
         public async Task OnDeleteConfirmed(Guid id)
         {
             await _eventManagementService.Disable(id);
-            Events = await _eventManagementService.GetAll(CancellationToken.None);
+            Events = await _eventManagementService.GetAll(Guid.Empty, CancellationToken.None);
 
             DeleteDialogIsOpen = false;
             SelectedDeleteId = default;
@@ -113,7 +113,7 @@ namespace Wellness.Client.ViewModels
                 await _eventManagementService.Update(NewOrEditEvent);
             }
 
-            Events = await _eventManagementService.GetAll(CancellationToken.None);
+            Events = await _eventManagementService.GetAll(Guid.Empty, CancellationToken.None);
 
             EditModalOpen = false;
             NewOrEditEvent = new Event();
