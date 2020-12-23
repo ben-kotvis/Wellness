@@ -49,7 +49,6 @@
 }
 <EditForm Model="@ViewModel.NewOrEditEvent" OnValidSubmit="@ViewModel.Save">
     <FluentValidationValidator />
-    <ValidationSummary />
     <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
         <MatDialogTitle>
             @Loc["Event"]

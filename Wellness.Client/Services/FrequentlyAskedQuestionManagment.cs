@@ -20,7 +20,7 @@ namespace Wellness.Client.Services
 
         private readonly HttpClient _httpClient;
 
-        public ICompanyModelQueryable<PersistenceWrapper<FrequentlyAskedQuestion>> Query => throw new NotImplementedException();
+        public ICompanyModelQueryable<PersistenceWrapper<FrequentlyAskedQuestion>> Query(Guid companyId) => throw new NotImplementedException();
 
         public FrequentlyAskedQuestionManagment(IHttpClientFactory clientFactory)
         {
@@ -44,11 +44,11 @@ namespace Wellness.Client.Services
             Reset();
         }
 
-        public async Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<FrequentlyAskedQuestion>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
             return await _events.Value;
         }
-        public async Task<PersistenceWrapper<FrequentlyAskedQuestion>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<FrequentlyAskedQuestion>> Get(Guid companyId, Guid id, CancellationToken cancellationToken)
         {
             return (await _events.Value).FirstOrDefault(i => i.Model.Id == id);
         }

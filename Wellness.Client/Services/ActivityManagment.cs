@@ -17,7 +17,7 @@ namespace Wellness.Client.Services
 
         private Lazy<Task<IEnumerable<PersistenceWrapper<Activity>>>> _activities;
 
-        public ICompanyModelQueryable<PersistenceWrapper<Activity>> Query => throw new NotImplementedException();
+        public ICompanyModelQueryable<PersistenceWrapper<Activity>> Query(Guid companyId) => throw new NotImplementedException();
 
         public ActivityManagment(HttpClient httpClient)
         {
@@ -43,11 +43,11 @@ namespace Wellness.Client.Services
             Reset();
         }
 
-        public async Task<PersistenceWrapper<Activity>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<PersistenceWrapper<Activity>> Get(Guid companyId, Guid id, CancellationToken cancellationToken)
         {
             return (await _activities.Value).FirstOrDefault(i => i.Model.Id == id);
         }
-        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<PersistenceWrapper<Activity>>> GetAll(Guid companyId, CancellationToken cancellationToken)
         {
             return await _activities.Value;
         }

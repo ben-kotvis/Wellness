@@ -29,8 +29,8 @@ namespace Wellness.Client.Services
             }
             
             services.AddScoped<ICompanyPersistanceReaderService<Event>>(sp => sp.GetService<IEventManagementService>());
-            services.AddScoped<IPersistanceReaderService<FrequentlyAskedQuestion>>(sp => sp.GetService<IFrequentlyAskedQuestionService>());
-            services.AddScoped<IPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
+            services.AddScoped<ICompanyPersistanceReaderService<FrequentlyAskedQuestion>>(sp => sp.GetService<IFrequentlyAskedQuestionService>());
+            services.AddScoped<ICompanyPersistanceReaderService<Activity>>(sp => sp.GetService<IActivityManagementService>());
 
             services.AddScoped<HomeViewModel>();
             services.AddScoped<DashboardViewModel>();

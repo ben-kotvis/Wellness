@@ -70,6 +70,7 @@ namespace Wellness.Api
             services.AddSingleton(sp => (ICompanyPersistanceReaderService<Activity>)sp.GetService<IPersistanceService<Activity>>());
             services.AddSingleton(sp => (ICompanyPersistanceReaderService<EventParticipation>)sp.GetService<IPersistanceService<EventParticipation>>());
             services.AddSingleton(sp => (ICompanyPersistanceReaderService<ActivityParticipation>)sp.GetService<IPersistanceService<ActivityParticipation>>());
+            services.AddSingleton(sp => (ICompanyPersistanceReaderService<FrequentlyAskedQuestion>)sp.GetService<IPersistanceService<FrequentlyAskedQuestion>>());
 
 
             services.AddTransient(typeof(IValidate<>), typeof(Validation<>));

@@ -29,7 +29,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            FAQs = await _frequentlyAskedQuestionService.GetAll(CancellationToken.None);
+            FAQs = await _frequentlyAskedQuestionService.GetAll(Guid.Empty, CancellationToken.None);
         }
 
         public async Task New()
@@ -64,7 +64,7 @@ namespace Wellness.Client.ViewModels
                 await _frequentlyAskedQuestionService.Update(NewOrEditFAQ, CancellationToken.None);
             }
 
-            FAQs = await _frequentlyAskedQuestionService.GetAll(CancellationToken.None);
+            FAQs = await _frequentlyAskedQuestionService.GetAll(Guid.Empty, CancellationToken.None);
             NewOrEditFAQ = new FrequentlyAskedQuestion();
             EditModalOpen = false;
 

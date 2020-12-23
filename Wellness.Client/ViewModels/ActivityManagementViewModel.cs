@@ -48,7 +48,7 @@ namespace Wellness.Client.ViewModels
 
         public async Task OnInit()
         {
-            Activities = await _activityManagementService.GetAll(CancellationToken.None);
+            Activities = await _activityManagementService.GetAll(Guid.Empty, CancellationToken.None);
             MatIconNames = GetConstants(typeof(MatBlazor.MatIconNames));
         }
 
@@ -68,7 +68,7 @@ namespace Wellness.Client.ViewModels
         public async Task OnDeleteConfirmed(Guid id)
         {
             await _activityManagementService.Disable(id);
-            Activities = await _activityManagementService.GetAll(CancellationToken.None);
+            Activities = await _activityManagementService.GetAll(Guid.Empty, CancellationToken.None);
 
             DeleteDialogIsOpen = false;
             SelectedDeleteId = default;
@@ -117,7 +117,7 @@ namespace Wellness.Client.ViewModels
                 await _activityManagementService.Update(NewOrEditActivity);
             }
 
-            Activities = await _activityManagementService.GetAll(CancellationToken.None);
+            Activities = await _activityManagementService.GetAll(Guid.Empty, CancellationToken.None);
             NewOrEditActivity = new Activity() { Active = true };
             IconClass = "d-none";
             EditModalOpen = false;
