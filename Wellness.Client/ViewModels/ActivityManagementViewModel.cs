@@ -1,9 +1,11 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Wellness.Client.Services;
 using Wellness.Client.Services.Mock;
 using Wellness.Model;
 
@@ -11,7 +13,7 @@ namespace Wellness.Client.ViewModels
 {
     public class ActivityManagementViewModel : IViewModelBase
     {
-
+        
 
         public string IconClass { get; set; } = "d-none";
         public bool IsSaving { get; set; } = false;
@@ -31,11 +33,13 @@ namespace Wellness.Client.ViewModels
         public IEnumerable<string> MatIconNames { get; set; }
 
         private IActivityManagementService _activityManagementService;
+        private readonly ModelValidators<Activity> _modelValidators;
+        public IValidator<Activity> Validator { get { return _modelValidators?.Validator; } }
 
-        public ActivityManagementViewModel(IActivityManagementService activityManagementService)
+        public ActivityManagementViewModel(IActivityManagementService activityManagementService, ModelValidators<Activity> modelValidators)
         {
             _activityManagementService = activityManagementService;
-
+            _modelValidators = modelValidators;
             NewOrEditActivity = new Activity()
             {
                 Active = true
@@ -105,6 +109,14 @@ namespace Wellness.Client.ViewModels
         {
             IconClass = "spinning-icon";
             IsSaving = true;
+
+            var result = await _modelValidators.AsyncValidator.ValidateAsync(NewOrEditActivity, CancellationToken.None);
+
+            if(!result.IsValid)
+            {
+                return;
+            }
+
             var activity = Activities.FirstOrDefault(i => i.Model.Id == DialogId)?.Model;
 
             if (activity == default)

@@ -109,7 +109,7 @@ namespace Wellness.Client.ViewModels
         {
             Activities = (await _activityManagementService.GetAll(Guid.Empty, CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
             Events = (await _eventManagementService.GetAll(Guid.Empty, CancellationToken.None)).Select(i => i.Model).Where(i => i.Active).ToList();
-
+/*
             if (_hubConnection.State == HubConnectionState.Disconnected)
             {
                 _hubConnection.On<string>("NotificationMessage", (message) =>
@@ -117,7 +117,7 @@ namespace Wellness.Client.ViewModels
                     Console.WriteLine(message);
                 });
                 await _hubConnection.StartAsync();
-            }
+            }*/
         }
 
         public async Task EventFileAttached(EventAttachmentArgs args)

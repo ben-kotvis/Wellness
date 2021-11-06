@@ -46,7 +46,7 @@
 }
 <EditForm Model="@ViewModel.NewOrEditActivity" OnValidSubmit="@ViewModel.Save">
     <MatDialog @bind-IsOpen="ViewModel.EditModalOpen">
-        <FluentValidationValidator />
+        <FluentValidationValidator Validator="@ViewModel.Validator" />
         <MatDialogTitle>
             @Loc["Activity"]
         </MatDialogTitle>

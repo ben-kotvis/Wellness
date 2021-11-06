@@ -31,12 +31,13 @@ namespace Wellness.Client
 
             builder.Services.AddSingleton(MappingConfigurator.Configure());
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.BuildWellness(false);
-            builder.Services.AddTransient<IValidator<Model.Event>, EventValidation>();
-            builder.Services.AddTransient<IValidator<EventParticipation>, EventParticipationValidation>();
-            builder.Services.AddTransient<IValidator<Model.Activity>, ActivityValidation>();
-            builder.Services.AddTransient<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
-            builder.Services.AddTransient<IValidator<User>, UserValidation>();
+            builder.Services.BuildWellness(true);
+            builder.Services.AddScoped<IValidator<Model.Event>, EventValidation>();
+            builder.Services.AddScoped<IValidator<EventParticipation>, EventParticipationValidation>();
+            builder.Services.AddScoped<IValidator<Model.Activity>, AsyncActivityValidation>();
+            builder.Services.AddScoped<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
+            builder.Services.AddScoped<IValidator<User>, UserValidation>();
+            builder.Services.AddScoped<ModelValidators<Activity>>(implementationFactory => new ModelValidators<Activity>(new ActivityValidation(), implementationFactory.GetService<IValidator<Model.Activity>>()));
             builder.Services.AddSingleton<IClientState, ClientState>();
 
 
@@ -49,7 +50,7 @@ namespace Wellness.Client
             
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
+            //builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
             builder.Services.AddHttpClient("Default",
                     client =>
                     {
