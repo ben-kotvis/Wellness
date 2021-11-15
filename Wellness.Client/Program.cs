@@ -50,7 +50,7 @@ namespace Wellness.Client
             
             builder.RootComponents.Add<App>("app");
 
-            //builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
+            builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
             builder.Services.AddHttpClient("Default",
                     client =>
                     {
