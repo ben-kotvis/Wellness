@@ -3,11 +3,23 @@
     "compounds": [
         {
             "name": "Compound",
-            "configurations": ["Blazor Server"],
+            "configurations": ["Blazor Server","API"],
             "preLaunchTask": "build"
         }
     ],
     "configurations": [
+        {
+            "name": "API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build api",
+            "program": "${workspaceFolder}/Wellness.Api/bin/Debug/net5.0/Wellness.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Wellness.Api",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "url":"https://localhost:44354"
+        },
         {
             "name": "Blazor Server",
             "hosted":true,

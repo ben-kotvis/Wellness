@@ -29,9 +29,13 @@ namespace Wellness.Client
 
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+            bool useMockData = true;
+            
+            bool.TryParse(builder.Configuration["UseMockData"], out useMockData);
+            Console.WriteLine(useMockData);
             builder.Services.AddSingleton(MappingConfigurator.Configure());
             builder.Services.AddSingleton<MarkdownPipeline>(new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.BuildWellness(true);
+            builder.Services.BuildWellness(useMockData);
             builder.Services.AddScoped<IValidator<Model.Event>, EventValidation>();
             builder.Services.AddScoped<IValidator<EventParticipation>, EventParticipationValidation>();
             builder.Services.AddScoped<IValidator<Model.Activity>, AsyncActivityValidation>();

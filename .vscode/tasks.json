@@ -18,6 +18,22 @@
               "problemMatcher": "$msCompile"
         },    
         {
+            "label": "build api",
+            "command": "dotnet",
+            "type": "shell",
+              "args": [
+                "build",
+                "${workspaceFolder}/Wellness.Api/Wellness.Api.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+              ],
+              "group": "build",
+              "presentation": {
+                "reveal": "silent"
+              },
+              "problemMatcher": "$msCompile"
+        },    
+        {
             "label": "publish",
             "command": "dotnet",
             "type": "process",

@@ -23,7 +23,6 @@ namespace Wellness.Api
 {
     public class Startup
     {
-        public const string CorsPolicyName = "CorsPolicyName";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -88,19 +87,6 @@ namespace Wellness.Api
             services.AddTransient<IValidator<User>, UserValidation>();
 
             Console.WriteLine(Configuration.GetValue<string>("ClientSource"));
-
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                                  builder =>
-                                  {
-                                      builder
-                                      .WithOrigins(Configuration.GetValue<string>("ClientSource"))
-                                      .AllowAnyHeader()
-                                      .AllowAnyMethod()
-                                      .AllowCredentials();
-                                  });
-            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddMicrosoftIdentityWebApi(options =>
