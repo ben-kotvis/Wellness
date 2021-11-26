@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Compound",
+            "configurations": ["Blazor Server"],
+            "preLaunchTask": "build"
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Blazor Server",
+            "hosted":true,
+            "type": "blazorwasm",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Wellness.Server/bin/Debug/net5.0/Wellness.Server.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Wellness.Server",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "url": "https://localhost:44353"
+        }
+    ]
+}
