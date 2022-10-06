@@ -33,10 +33,10 @@ namespace Wellness.Client.ViewModels
         public IEnumerable<string> MatIconNames { get; set; }
 
         private IActivityManagementService _activityManagementService;
-        private readonly ModelValidators<Activity> _modelValidators;
-        public IValidator<Activity> Validator { get { return _modelValidators?.Validator; } }
+        private readonly IValidator<Activity> _modelValidators;
+        public IValidator<Activity> Validator { get { return _modelValidators; } }
 
-        public ActivityManagementViewModel(IActivityManagementService activityManagementService, ModelValidators<Activity> modelValidators)
+        public ActivityManagementViewModel(IActivityManagementService activityManagementService, IValidator<Activity> modelValidators)
         {
             _activityManagementService = activityManagementService;
             _modelValidators = modelValidators;
@@ -110,7 +110,7 @@ namespace Wellness.Client.ViewModels
             IconClass = "spinning-icon";
             IsSaving = true;
 
-            var result = await _modelValidators.AsyncValidator.ValidateAsync(NewOrEditActivity, CancellationToken.None);
+            var result = _modelValidators.Validate(NewOrEditActivity);
 
             if(!result.IsValid)
             {

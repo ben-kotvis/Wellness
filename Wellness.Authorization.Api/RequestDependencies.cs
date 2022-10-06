@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Bson.IO;
 using System;
 using System.Security.Claims;
 using System.Threading;
 using Wellness.Model;
+using News
 
 namespace Wellness.Api
 {
@@ -13,7 +15,8 @@ namespace Wellness.Api
             this.Validator = validator;
             this.Principal = claimsPrincipal;
             this.CancellationToken = contextAccessor.HttpContext.RequestAborted;
-            this.CompanyId = Guid.Parse(claimsPrincipal.FindFirstValue("companyId"));
+            this.CompanyId = Guid.Parse(claimsPrincipal.FindFirstValue("extn.companyId"));
+
         }
 
         public IValidate<T> Validator { get; }

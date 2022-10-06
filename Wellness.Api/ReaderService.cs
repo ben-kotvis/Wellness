@@ -19,7 +19,7 @@ namespace Wellness.Api
         {
             _persistanceReaderService = persistanceReaderService;
             _claimsPrincipal = claimsPrincipal;
-            _companyId = Guid.Parse(claimsPrincipal.FindFirstValue("companyId"));
+            _companyId = Guid.Parse(claimsPrincipal.FindFirstValue("extn.companyId"));
         }
 
         public ICompanyModelQueryable<PersistenceWrapper<T>> Query { get { return _persistanceReaderService.Query(_companyId); } }

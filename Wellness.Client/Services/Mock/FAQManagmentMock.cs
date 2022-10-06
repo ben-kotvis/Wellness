@@ -60,7 +60,7 @@ namespace Wellness.Client.Services.Mock
         {
             var eventManagementMock = new Mock<IFrequentlyAskedQuestionService>();
             eventManagementMock.Setup(ams => ams.GetAll(Guid.Empty, It.IsAny<CancellationToken>()))
-            .Returns((CancellationToken token) =>
+            .Returns((Guid companyId, CancellationToken token) =>
             {
                 return Task.FromResult(new List<PersistenceWrapper<FrequentlyAskedQuestion>>(MockDataGenerator.FrequentlyAskedQuestions).AsEnumerable());
             });

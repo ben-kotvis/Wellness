@@ -7,13 +7,12 @@
             "type": "shell",
               "args": [
                 "build",
-                "${workspaceFolder}/Wellness.Server/Wellness.Server.csproj",
+                "${workspaceFolder}/Wellness.Client/Wellness.Client.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary",
               ],
               "group": "build",
               "presentation": {
-                "reveal": "silent"
               },
               "problemMatcher": "$msCompile"
         },    

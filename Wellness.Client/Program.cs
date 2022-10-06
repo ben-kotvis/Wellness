@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -41,9 +42,16 @@ namespace Wellness.Client
             builder.Services.AddScoped<IValidator<Model.Activity>, AsyncActivityValidation>();
             builder.Services.AddScoped<IValidator<ActivityParticipation>, ActivityParticipationValidation>();
             builder.Services.AddScoped<IValidator<User>, UserValidation>();
-            builder.Services.AddScoped<ModelValidators<Activity>>(implementationFactory => new ModelValidators<Activity>(new ActivityValidation(), implementationFactory.GetService<IValidator<Model.Activity>>()));
+            builder.Services.AddScoped<IValidator<Activity>, ActivityValidation>();
+            //builder.Services.AddScoped<ModelValidators<Activity>>(implementationFactory => new ModelValidators<Activity>(new ActivityValidation(), implementationFactory.GetService<IValidator<Model.Activity>>()));
             builder.Services.AddSingleton<IClientState, ClientState>();
 
+            builder.Services.AddMsalAuthentication(options =>
+            {
+                
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://graph.microsoft.com/User.Read");
+                builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+            });
 
             builder.Services.AddTransient<ClaimsPrincipal>(sp =>
             {
@@ -66,20 +74,6 @@ namespace Wellness.Client
                 .WithUrl($"{builder.Configuration["ServerAddress"]}/notificationhub").Build());
 
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Default"));
-            builder.Services.AddMsalAuthentication(options =>
-            {
-                builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
-
-                //hack for now! msft bug
-                options.ProviderOptions.DefaultAccessTokenScopes = new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/user_impersonation", "offline_access", "openid" };
-                //hack for now! msft bug
-
-                // no popup window
-                options.ProviderOptions.LoginMode = "redirect";
-                options.AuthenticationPaths.LogInCallbackPath = "https://localhost:44353/ProfileInfo";
-
-                options.ProviderOptions.AdditionalScopesToConsent.Add("https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard");
-            });
 
             builder.Services.AddLocalization();
 
@@ -103,8 +97,7 @@ namespace Wellness.Client
         {
             
             ConfigureHandler(
-                authorizedUrls: new[] { configuration.GetValue<string>("ServerAddress") },
-                scopes: new[] { "https://corporatewellnessmanager.onmicrosoft.com/api/Auth.Standard", "openid", "profile", "offline_access" });
+                authorizedUrls: new[] { configuration.GetValue<string>("ServerAddress") });
         }
 
     }

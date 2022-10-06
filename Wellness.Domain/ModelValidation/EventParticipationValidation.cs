@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,10 @@ namespace Wellness.Domain.ModelValidation
         public EventParticipationValidation(ICompanyPersistanceReaderService<Event> eventManagementService, ClaimsPrincipal claimsPrincipal)
         {
             _eventManagementService = eventManagementService;
-            _companyId = Guid.Parse(claimsPrincipal.FindFirst("companyId").Value);
+            var claim = claimsPrincipal.FindFirst("extn.companyId");
+            var claimType = claim.Type;
+            var companyId = JsonConvert.DeserializeObject<string[]>(claim.Value);
+            _companyId = Guid.Parse(companyId[0]);
             RuleFor(e => e.Event).NotNull();
             RuleFor(e => e.SubmissionDate).NotEqual(default(DateTime));
             RuleFor(e => e.Attachment).MustAsync(AttachmentIsMissing);

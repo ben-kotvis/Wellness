@@ -1,13 +1,15 @@
 {
     "version": "0.2.0",
     "compounds": [
-        {
-            "name": "Compound",
-            "configurations": ["Blazor Server","API"],
-            "preLaunchTask": "build"
-        }
     ],
     "configurations": [
+        {
+            "name": "Launch and Debug",
+            "type": "blazorwasm",
+            "preLaunchTask": "build",
+            "request": "launch",
+            "url": "https://localhost:44353"
+        },
         {
             "name": "API",
             "type": "coreclr",
@@ -18,17 +20,14 @@
             "cwd": "${workspaceFolder}/Wellness.Api",
             "stopAtEntry": false,
             "console": "internalConsole",
-            "url":"https://localhost:44354"
         },
         {
-            "name": "Blazor Server",
-            "hosted":true,
+            "name": "Blazor Client",
             "type": "blazorwasm",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Wellness.Server/bin/Debug/net5.0/Wellness.Server.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Wellness.Server",
+            "program": "${workspaceFolder}/Wellness.Client/bin/Debug/net5.0/Wellness.Client.dll",
+            "cwd": "${workspaceFolder}/Wellness.Client",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },

@@ -37,7 +37,7 @@ namespace Wellness.Client.Services.Mock
         {
             var profileServiceMock = new Mock<IProfileService>();
             profileServiceMock.Setup(ams => ams.GetCurrent(It.IsAny<CancellationToken>()))
-                .Returns((CancellationToken cancellationToken) => Task.FromResult(CurrentUser));
+                .Returns((CancellationToken cancellationToken) => Task.FromResult(Users.First()));
 
             profileServiceMock.Setup(ams => ams.Create(It.IsAny<User>()))
                 .Returns((User u) => { CurrentUser = new PersistenceWrapper<User>() { Model = u, Common = CreateCommon() }; return Task.FromResult(true); });
